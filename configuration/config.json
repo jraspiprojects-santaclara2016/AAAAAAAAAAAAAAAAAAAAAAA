@@ -1,4 +1,9 @@
 {
+  "botName" : "MonikaBot",
   "commandPrefix" : "!m.",
-  "presenceGame" : "!m.help for help"
+  "presenceGame" : "!m.help for help",
+  "ownerID" : "127938763535024128",
+  "maxPermission" : 0,
+  "minPermission" : 1,
+  "danbooruImageLimit" : 100
 }
