@@ -1,4 +1,6 @@
 # MonikaBot
+![alt text](https://api.travis-ci.org/Emdix/MonikaBot.svg?branch=master)
+
 This is a bot for the text and voice chat software "Discord".
 </hr>
 
