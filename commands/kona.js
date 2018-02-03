@@ -27,7 +27,7 @@ exports.run = (client, message, args) => {
                 }
             },function (error, response, body) {
                 //If there are no errors proceed with this segment.
-                if(!error && response.statusCode == 200) {
+                if(!error && response.statusCode === 200) {
                     //Building and sending an embedded message.
                     let index = Math.floor(Math.random()*config.danbooruImageLimit);
                     let json = JSON.parse(body);
