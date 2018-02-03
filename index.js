@@ -6,19 +6,12 @@
 //Require needed npm modules.
 const Discord = require('discord.js');
 const fs = require('fs');
-const http2 = require('http2');
 
 //Load the config file for some configurable values.
 const config = require('./configuration/config');
 
 //Create a Discord client object.
 const client = new Discord.Client();
-
-//Timeout protection to run on Heroku free tier.
-function timeoutProtection(){
-    console.log('I\'m here!');
-    setTimeout(timeoutProtection, 1740000);
-}
 
 //This loop reads the /events/ folder and attaches each event file to the appropriate event.
 fs.readdir("./events/", (err, files) => {
@@ -53,8 +46,6 @@ client.on("message", message => {
 //This event is used to connect the bot to the Discord servers.
 client.login(process.env.discordToken).then(() => {
     console.log('I connected to the Discord server!');
-    http2.createServer().listen(process.env.PORT || 6000)
-    timeoutProtection();
 }).catch((error) => {
     console.log('I had troubles connecting to the Discord servers!');
     console.log(error);
