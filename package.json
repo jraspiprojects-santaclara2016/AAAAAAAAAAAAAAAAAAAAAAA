@@ -14,7 +14,8 @@
   "devDependencies": {},
   "scripts": {
     "test": "mocha",
-    "start": "forever start index.js"
+    "start": "forever start index.js",
+    "stop": "forever stopall"
   },
   "author": "emdix",
   "license": "ISC"
