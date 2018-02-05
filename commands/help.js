@@ -14,6 +14,7 @@ exports.run = (client, message, args) => {
     //Building and sending an embedded message.
     let embed = new Discord.RichEmbed()
         .setTitle('Help Command:')
+        .addField('!m.8ball','Ask 8ball a question and get true answers!')
         .addField('!m.clear','Clears the chat.')
         .addField('!m.coinflip','Flips a coin.')
         .addField('!m.help','Get this message delivered to you. (obviously...)')
