@@ -12,7 +12,7 @@ exports.run = (client, message, args) => {
         .then((success) => {
             console.log(success);
             let embed = new Discord.RichEmbed()
-                .setTitle('Lolrank command:')
+                .setTitle('Lolinfo command:')
                 .setColor('DARK_GREEN')
                 .setThumbnail('http://avatar.leagueoflegends.com/euw/'+ args.join('%20') +'.png')
                 .addField('SummonerName',success.name)
