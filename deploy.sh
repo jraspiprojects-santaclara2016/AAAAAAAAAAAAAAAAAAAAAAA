@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 echo 'Pulling repo off Github...';
-git pull;
+git fetch --all
 echo 'Installing all dependencies...';
 npm install;
 echo 'Stopping running forever instances...';
