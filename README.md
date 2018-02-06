@@ -13,8 +13,11 @@ Or get involved by making new contributions to the bot as it gets developed.
 Feel free to open new issues as soon as you are experiencing a bug or want something specific added to the project.
 
 ### Libraries
-*     "node.js": "^8.9.4"
-*     "discord.js": "^11.3.0"
-*     "request": "^2.83.0"
+* chai ^4.1.2
+* discord.js ^11.3.0
+* forever ^0.15.3
+* mocha ^5.0.0
+* request ^2.83.0
+* xml2js ^0.4.19
 
 

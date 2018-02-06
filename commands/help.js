@@ -20,6 +20,8 @@ exports.run = (client, message, args) => {
         .addField('!m.help','Get this message delivered to you. (obviously...)')
         .addField('!m.kona [tags]','Post a random image from konachan.com (if no tags are specified)')
         .addField('!m.ping','Responds with pong!')
+        .addField('!m.rule34 [tags]','You know what that means :^)')
+        .addField('!m.safebooru [tags]','Post a random image from Safebooru.org (if no tags are specified)')
         .addField('!m.setPermission @mention [level]','Set permissions for other users. (only Owners can do this)')
         .addField('!m.weather [location]','Get the current weather for a given location.')
         .addField('!m.whoami [@mention]','Responds either with your or a mentioned user profile.')
