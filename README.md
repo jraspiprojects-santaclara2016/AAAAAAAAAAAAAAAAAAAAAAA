@@ -19,5 +19,5 @@ Feel free to open new issues as soon as you are experiencing a bug or want somet
 * mocha ^5.0.0
 * request ^2.83.0
 * xml2js ^0.4.19
-
+* league-api-2.0 ^1.0.12
 

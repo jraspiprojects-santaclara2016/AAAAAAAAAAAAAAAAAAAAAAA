@@ -19,6 +19,7 @@ exports.run = (client, message, args) => {
         .addField('!m.coinflip','Flips a coin.')
         .addField('!m.help','Get this message delivered to you. (obviously...)')
         .addField('!m.kona [tags]','Post a random image from konachan.com (if no tags are specified)')
+        .addField('!m.lolinfo [summonername]','Display information about a specified summoner (currently EUW only)')
         .addField('!m.ping','Responds with pong!')
         .addField('!m.rule34 [tags]','You know what that means :^)')
         .addField('!m.safebooru [tags]','Post a random image from Safebooru.org (if no tags are specified)')
