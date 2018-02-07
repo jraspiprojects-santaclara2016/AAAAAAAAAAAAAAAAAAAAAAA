@@ -4,10 +4,10 @@ const request = require('request');
 const config = require('../configuration/config.json');
 
 exports.run = (client, message, args) => {
-    if(args.length === 1) {
+    if(args.length >= 1) {
         request.get('https://api.openweathermap.org/data/2.5/weather', {
             qs: {
-                q :args[0],
+                q :args.join(' '),
                 appid : process.env.openWeatherMapToken,
                 units : 'metric',
                 lang : 'en',
