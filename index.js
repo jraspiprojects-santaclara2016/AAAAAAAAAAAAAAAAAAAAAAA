@@ -3,53 +3,29 @@
  * @author emdix
  **/
 
+/*
+ *todo implement errorEmbedHandler everywhere
+ *todo implement winston logger everywhere
+ */
+
 //Require needed npm modules.
 const Discord = require('discord.js');
-const fs = require('fs');
-
-//Load the config file for some configurable values.
-const config = require('./configuration/config');
-
 //Create a Discord client object.
 const client = new Discord.Client();
 
-//This loop reads the /events/ folder and attaches each event file to the appropriate event.
-fs.readdir("./events/", (err, files) => {
-    if (err) return console.error(err);
-    files.forEach(file => {
-        let eventFunction = require(`./events/${file}`);
-        let eventName = file.split(".")[0];
-        //super-secret recipe to call events with all their proper arguments *after* the `client` var.
-        client.on(eventName, (...args) => eventFunction.run(client, ...args));
-    });
-});
+//Require my own 'handlers'
+const discordEventHandler = require('./handler/discordEventHandler');
+const winstonLogHandler = require('./handler/winstonLogHandler');
+const discordLoginHandler = require('./handler/discordLoginHandler');
 
-//Client onMessage event.
-client.on("message", message => {
-    if (message.author.bot) return;
-    if(message.content.indexOf(config.commandPrefix) !== 0) return;
+//create logger
+const logger = winstonLogHandler.run();
 
-    //This is the best way to define args. Trust me.
-    const args = message.content.slice(config.commandPrefix.length).trim().split(/ +/g);
-    const command = args.shift().toLowerCase();
+//dynamic event caller
+discordEventHandler.run(client, logger);
 
-    //This matches an incoming command with right command prefix to a file located in /commands/.
-    try {
-        let commandFile = require(`./commands/${command}.js`);
-        commandFile.run(client, message, args);
-    } catch (err) {
-        console.error(err);
-        message.channel.send(err)
-    }
-});
-
-//This event is used to connect the bot to the Discord servers.
-client.login(process.env.discordToken).then(() => {
-    console.log('I connected to the Discord server!');
-}).catch((error) => {
-    console.log('I had troubles connecting to the Discord servers!');
-    console.log(error);
-});
+//connect the bot to the discord servers.
+discordLoginHandler.run(client, logger);
 
 /*
 Every day, I imagine a future where I can be with you

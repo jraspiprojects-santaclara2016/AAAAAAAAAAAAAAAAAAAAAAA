@@ -13,11 +13,18 @@ Or get involved by making new contributions to the bot as it gets developed.
 Feel free to open new issues as soon as you are experiencing a bug or want something specific added to the project.
 
 ### Libraries
-* chai ^4.1.2
-* discord.js ^11.3.0
-* forever ^0.15.3
-* mocha ^5.0.0
-* request ^2.83.0
-* xml2js ^0.4.19
-* league-api-2.0 ^1.0.12
+* chai
+* discord.js
+* forever
+* league-api-2.0
+* mocha
+* request
+* winston
+* winston-daily-rotate-files
+* xml2js
 
+### Environment variables
+* discordToken => Discord API token.
+* openWeatherMapToken => openWeatherMap API token.
+* LOL_TOKEN => league of legends API token.
+* NODE_ENV => environment (development or production).

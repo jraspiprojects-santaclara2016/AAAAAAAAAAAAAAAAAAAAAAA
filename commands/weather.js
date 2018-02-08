@@ -1,14 +1,14 @@
 const Discord = require('discord.js');
 const request = require('request');
 
-const config = require('../configuration/config.json');
+const errorEmbedHandler = require('../handler/discordErrorEmbedHandler');
 
-exports.run = (client, message, args) => {
+exports.run = (client, message, args, logger) => {
     if(args.length >= 1) {
         request.get('https://api.openweathermap.org/data/2.5/weather', {
             qs: {
                 q :args.join(' '),
-                appid : process.env.openWeatherMapToken,
+                appid : process.env.OPENWEATHERMAP_TOKEN,
                 units : 'metric',
                 lang : 'en',
             }
@@ -27,25 +27,10 @@ exports.run = (client, message, args) => {
                 ;
                 message.channel.send({embed});
             } else {
-                let embed = new Discord.RichEmbed()
-                    .setTitle('Weather command:')
-                    .setColor('DARK_RED')
-                    .addField('Error','I haven\'t found any city that matches your input.')
-                    .setFooter('By ' + config.botName)
-                    .setTimestamp()
-                ;
-                message.channel.send({embed});
+                errorEmbedHandler.run(client, message, 'I haven\'t found any city that matches your input.')
             }
         });
     } else {
-        let embed = new Discord.RichEmbed()
-            .setTitle('Weather command:')
-            .setColor('DARK_RED')
-            .addField('Error','The structure of the command was wrong!')
-            .addField('Structure',config.commandPrefix + 'weather')
-            .setFooter('By ' + config.botName)
-            .setTimestamp()
-        ;
-        message.channel.send({embed});
+        errorEmbedHandler.run(client, message, 'The structure of the command was wrong!');
     }
 };

@@ -11,7 +11,7 @@ const config = require('../configuration/config');
 const permissions = require('../configuration/permissions');
 
 //This segment is executed whenever the bot receives a setPermissions command
-exports.run = (client, message, args) => {
+exports.run = (client, message, args, logger) => {
     //Check if the sender is permission level 0 (Owner).
     if(permissions[message.author.id] === '0') {
         //Check if the command has 2 arguments and if there is a mention.

@@ -10,7 +10,7 @@ const Discord = require('discord.js');
 const config = require('../configuration/config');
 
 //This segment is executed whenever the bot receives a help command
-exports.run = (client, message, args) => {
+exports.run = (client, message, args, logger) => {
     //Building and sending an embedded message.
     let embed = new Discord.RichEmbed()
         .setTitle('Help Command:')
@@ -20,6 +20,7 @@ exports.run = (client, message, args) => {
         .addField('!m.help','Get this message delivered to you. (obviously...)')
         .addField('!m.kona [tags]','Post a random image from konachan.com (if no tags are specified)')
         .addField('!m.lolinfo [summonername]','Display information about a specified summoner (currently EUW only)')
+        .addField('!m.lolstatus','Get the current incidents of "League of Legends"')
         .addField('!m.ping','Responds with pong!')
         .addField('!m.rule34 [tags]','You know what that means :^)')
         .addField('!m.safebooru [tags]','Post a random image from Safebooru.org (if no tags are specified)')

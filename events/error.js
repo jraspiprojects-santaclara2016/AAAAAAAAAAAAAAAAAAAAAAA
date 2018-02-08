@@ -4,6 +4,6 @@
  **/
 
 //This segment is executed whenever the bot receives a error event
-exports.run = (client, args) => {
-    console.log(args.error.Error);
-}
+exports.run = (client, logger, args) => {
+    logger.error(args.error.Error);
+};

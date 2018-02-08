@@ -11,7 +11,7 @@ const config = require('../configuration/config');
 const permission = require('../configuration/permissions');
 
 //This segment gets emitted after {commandPrefix}whoami is incoming via the message event.
-exports.run = (client, message, args) => {
+exports.run = (client, message, args, logger) => {
     let user;
     //Check if there is a @mention in the request.
     if(args.length === 1 && message.mentions.users.first() !== undefined) {
