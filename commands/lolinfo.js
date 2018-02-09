@@ -26,7 +26,9 @@ exports.run = (client, message, args, logger) => {
                 logger.debug('lol api getEloOfSummonerName call executed successfully');
                 logger.silly(response);
                 for(let i = 0; i<response.length;i++) {
-                    embed.addField(response[i].queueType, response[i].leagueName + ' ' + response[i].tier + ' ' + response[i].rank + '  ' + response[i].leaguePoints + 'LP');
+                    embed.addField(response[i].queueType, response[i].leagueName + ' ' + response[i].tier + ' ' +
+                        response[i].rank + ' | ' + response[i].leaguePoints + 'LP | Wins:' +
+                        response[i].wins + ' | Losses: ' +response[i].losses);
                 }
                 message.channel.send({embed});
             }).catch((error) => {

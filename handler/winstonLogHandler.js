@@ -19,7 +19,7 @@ exports.run = () => {
             new (winston.transports.Console)({
                 colorize: true,
                 timestamp: tsFormat,
-                level: env === 'development' ? 'debug' : 'info'
+                level: env === 'development' ? 'silly' : 'info'
             }),
             new (require('winston-daily-rotate-file'))({
                 filename: `${logDir}/-results.log`,
