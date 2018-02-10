@@ -6,6 +6,7 @@
 /*
  *todo implement errorEmbedHandler everywhere
  *todo implement winston logger everywhere
+ *todo implement docker
  */
 
 //Require needed npm modules.
@@ -19,7 +20,7 @@ const winstonLogHandler = require('./handler/winstonLogHandler');
 const discordLoginHandler = require('./handler/discordLoginHandler');
 
 //create logger
-const logger = winstonLogHandler.run();
+const logger = winstonLogHandler.run(client);
 
 //dynamic event caller
 discordEventHandler.run(client, logger);
