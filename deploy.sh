@@ -5,3 +5,4 @@ echo 'Pulling repo off Github...';
 git pull;
 echo 'Running docker...';
 docker build Dockerfile
+docker run monikabot
