@@ -1,0 +1,14 @@
+[Unit]
+Description=Monikabot (Discord)
+After=network.target
+
+[Service]
+Environment=NODE_ENV=production DISCORD_TOKEN=<DISCORD TOKEN HERE> OPENWEATHERMAP_TOKEN=<OPENWEATHERMAP TOKEN HERE> LOL_TOKEN=<LOL TOKEN HERE>
+ExecStart=/usr/bin/node /path/to/sharder.js
+WorkingDirectory=/path/to/monikabot
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=monikabot
+
+[Install]
+WantedBy=multi-user.target

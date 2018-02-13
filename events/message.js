@@ -18,5 +18,6 @@ exports.run = (client, logger, message) => {
         logger.verbose('The file: ' + command + '.js does not exist and therefore cannot be required!');
         let errorMessage = 'The command "' + command + '" does not exist.';
         errorEmbedHandler.run(client, message, errorMessage);
+        logger.error(err);
     }
 };
