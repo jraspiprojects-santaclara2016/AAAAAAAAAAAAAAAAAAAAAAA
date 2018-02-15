@@ -21,7 +21,7 @@ exports.run = (client, message, args, logger) => {
                 //TODO: save the UID and permission level to the permission.json
             } else {
                 //Building and sending an embedded message.
-                let embed = new Discord.RichEmbed()
+                let embed = new Discord.MessageEmbed()
                     .setTitle('Set permission Command')
                     .setColor('DARK_RED')
                     .addField('Error:','Permission level not found!')
@@ -34,7 +34,7 @@ exports.run = (client, message, args, logger) => {
             }
         } else {
             //Building and sending an embedded message.
-            let embed = new Discord.RichEmbed()
+            let embed = new Discord.MessageEmbed()
                 .setTitle('Set permission Command')
                 .setColor('DARK_RED')
                 .addField('Error:','The structure of the command was wrong!')
@@ -47,7 +47,7 @@ exports.run = (client, message, args, logger) => {
         }
     } else {
         //Building and sending an embedded message.
-        let embed = new Discord.RichEmbed()
+        let embed = new Discord.MessageEmbed()
             .setTitle('Set permission Command')
             .setColor('DARK_RED')
             .addField('Error:','You currently don\'t have enough permissions to execute this command.')

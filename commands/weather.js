@@ -15,7 +15,7 @@ exports.run = (client, message, args, logger) => {
         },function (error, response, body) {
             if(!error && response.statusCode === 200) {
                 let jsonResponse = JSON.parse(body);
-                let embed = new Discord.RichEmbed()
+                let embed = new Discord.MessageEmbed()
                     .setTitle('Weather command:')
                     .setThumbnail(`https://openweathermap.org/img/w/${jsonResponse.weather[0].icon}.png`)
                     .addField('Location:', `${jsonResponse.name} (${jsonResponse.sys.country})`)

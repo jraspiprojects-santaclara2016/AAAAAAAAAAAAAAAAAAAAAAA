@@ -12,7 +12,7 @@ const config = require('../configuration/config');
 //This segment is executed whenever the bot receives a help command
 exports.run = (client, message, args, logger) => {
     //Building and sending an embedded message.
-    let embed = new Discord.RichEmbed()
+    let embed = new Discord.MessageEmbed()
         .setTitle('Help Command:')
         .addField('!m.8ball','Ask 8ball a question and get true answers!')
         .addField('!m.clear','Clears the chat.')

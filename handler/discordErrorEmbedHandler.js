@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const config = require('../configuration/config.json');
 
 exports.run = (client, message, errorMessage) => {
-    let embed = new Discord.RichEmbed()
+    let embed = new Discord.MessageEmbed()
         .setTitle(config.botName + ' error:')
         .setColor('DARK_RED')
         .addField('Error', errorMessage)
