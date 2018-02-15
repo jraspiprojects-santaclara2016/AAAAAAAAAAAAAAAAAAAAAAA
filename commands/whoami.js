@@ -32,7 +32,7 @@ exports.run = (client, message, args, logger) => {
             perm = 'User';
     }
     //Building and sending an embedded message.
-    let embed = new Discord.RichEmbed()
+    let embed = new Discord.MessageEmbed()
         .setTitle('Whoami command:')
         .setThumbnail(user.avatarURL)
         .setColor('DARK_GREEN')

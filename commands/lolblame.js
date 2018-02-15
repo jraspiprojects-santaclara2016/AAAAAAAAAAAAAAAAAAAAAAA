@@ -18,7 +18,7 @@ exports.run = (client, message, args, logger) => {
                     let pgsBlamed = leagueBlameHandler.run(summonerProfile.accountId,matchDataBlamed);
                     console.log(pgsBlamed.general.gameTime);
                     console.log(pgsFaker.general.gameTime);
-                    let embed = new Discord.RichEmbed()
+                    let embed = new Discord.MessageEmbed()
                         .setColor('DARK_GREEN')
                         .addField('Game comparison with Faker:',`Faker / ${args.join(' ')}`)
                         .addField('Win', `${pgsFaker.general.win} / ${pgsBlamed.general.win}`)

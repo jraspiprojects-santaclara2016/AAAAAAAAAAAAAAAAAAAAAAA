@@ -7,7 +7,7 @@ exports.run = (client, message, args, logger) => {
     lolApi.base.setKey(process.env.LOL_TOKEN);
     lolApi.base.setRegion("euw1");
     lolApi.executeCall("Status","getLolStatus").then((response) => {
-        let embed = new Discord.RichEmbed()
+        let embed = new Discord.MessageEmbed()
             .setTitle('Lolstatus command:')
             .setColor('DARK_GREEN')
             .setFooter('By ' + config.botName)

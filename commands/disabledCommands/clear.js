@@ -7,14 +7,14 @@
 const Discord = require('discord.js');
 
 //Require needed config or permission files.
-const config = require('../configuration/config');
+const config = require('../../configuration/config');
 
 //This segment is executed whenever the bot receives a clear command.
 exports.run = (client, message, args) => {
     if (message.member.hasPermission('MANAGE_MESSAGES')) {
         message.channel.fetchMessages().then((list) => {
             message.channel.bulkDelete(list).then(() => {
-                let embed = new Discord.RichEmbed()
+                let embed = new Discord.MessageEmbed()
                     .setTitle('Clearchat Command:')
                     .addField('Success','Cleared the chat!')
                     .setColor('DARK_GREEN')
@@ -25,7 +25,7 @@ exports.run = (client, message, args) => {
             }).catch((error) => {
             });
         }).catch((error) => {
-            let embed = new Discord.RichEmbed()
+            let embed = new Discord.MessageEmbed()
                 .setTitle('Clearchat Command:')
                 .addField('Error','Cannot fetch the messages in the Channel...')
                 .addField('ERROR:', error)

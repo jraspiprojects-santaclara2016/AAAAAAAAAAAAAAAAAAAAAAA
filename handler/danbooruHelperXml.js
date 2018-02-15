@@ -46,7 +46,7 @@ exports.run = (client, message, args, link, siteName, urlPrefix) => {
                             let index = Math.floor(Math.random()*result.posts.post.length);
                             let timestamp = result.posts.post[index].$.created_at;
                             timestamp = new Date(timestamp*1000);
-                            let embed = new Discord.RichEmbed()
+                            let embed = new Discord.MessageEmbed()
                                 .setTitle(siteName + ' random image')
                                 .addField('ID:',result.posts.post[index].$.id)
                                 .addField('Tags:',result.posts.post[index].$.tags)
@@ -58,7 +58,7 @@ exports.run = (client, message, args, link, siteName, urlPrefix) => {
                             message.channel.send({embed}).catch(console.error);
                         } else {
                             //Building and sending an embedded message.
-                            let embed = new Discord.RichEmbed()
+                            let embed = new Discord.MessageEmbed()
                                 .setTitle(siteName + ' command:')
                                 .setColor('DARK_RED')
                                 .addField('Error:','Could\'t find any pictures with the tags you have given me!')
@@ -70,7 +70,7 @@ exports.run = (client, message, args, link, siteName, urlPrefix) => {
                     });
                 } else {
                     //Building and sending an embedded message.
-                    let embed = new Discord.RichEmbed()
+                    let embed = new Discord.MessageEmbed()
                         .setTitle(siteName + ' command:')
                         .setColor('DARK_RED')
                         .addField('Error:','Could\'t connect to ' + siteName + '!')
@@ -85,7 +85,7 @@ exports.run = (client, message, args, link, siteName, urlPrefix) => {
             })
         } else {
             //Building and sending an embedded message.
-            let embed = new Discord.RichEmbed()
+            let embed = new Discord.MessageEmbed()
                 .setTitle(siteName + ' command:')
                 .setColor('DARK_RED')
                 .addField('Error:','This request to ' + siteName + ' contains banned tags!')
@@ -97,7 +97,7 @@ exports.run = (client, message, args, link, siteName, urlPrefix) => {
         }
     } else {
         //Building and sending an embedded message.
-        let embed = new Discord.RichEmbed()
+        let embed = new Discord.MessageEmbed()
             .setTitle(siteName + ' command:')
             .setColor('DARK_RED')
             .addField('Error:','This is a SFW channel. ' +

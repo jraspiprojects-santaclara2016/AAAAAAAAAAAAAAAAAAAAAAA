@@ -9,7 +9,7 @@ exports.run = (client, message, args, logger) => {
                      'Signs point to yes', 'Concentrate and ask again', 'Very doubtful'];
     const index = Math.floor(Math.random()*answers.length);
     logger.info('8ball executed');
-    let embed = new Discord.RichEmbed()
+    let embed = new Discord.MessageEmbed()
         .setTitle('8ball Command:')
         .setColor('DARK_GREEN')
         .addField('8ball says:',answers[index])

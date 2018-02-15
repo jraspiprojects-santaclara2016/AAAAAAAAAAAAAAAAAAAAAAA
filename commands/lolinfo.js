@@ -11,7 +11,7 @@ exports.run = (client, message, args, logger) => {
     lolApi.executeCall("Summoner","getSummonerBySummonerName",args.join(' ')).then((responseSummoner) => {
         logger.debug('lol api getSummonerBySummonerName call executed successfully');
         logger.silly(responseSummoner);
-        let embed = new Discord.RichEmbed()
+        let embed = new Discord.MessageEmbed()
             .setTitle('Lolinfo command:')
             .setColor('DARK_GREEN')
             .setThumbnail('http://avatar.leagueoflegends.com/euw/'+ args.join('%20') +'.png')
