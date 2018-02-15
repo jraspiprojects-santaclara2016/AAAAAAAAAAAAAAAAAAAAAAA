@@ -6,6 +6,7 @@
 /*
  *todo implement errorEmbedHandler everywhere
  *todo implement winston logger everywhere
+ *todo implement docker
  */
 
 //Require needed npm modules.
@@ -19,13 +20,16 @@ const winstonLogHandler = require('./handler/winstonLogHandler');
 const discordLoginHandler = require('./handler/discordLoginHandler');
 
 //create logger
-const logger = winstonLogHandler.run();
+const logger = winstonLogHandler.createLogger(client);
 
 //dynamic event caller
 discordEventHandler.run(client, logger);
 
 //connect the bot to the discord servers.
 discordLoginHandler.run(client, logger);
+
+//Catch unhandled promises
+process.on('unhandledRejection', err => logger.error(`Uncaught Promise Rejection: \n${err.stack}`));
 
 /*
 Every day, I imagine a future where I can be with you

@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+echo 'rm package-lock.json';
+rm package-lock.json;
 echo 'Pulling repo off Github...';
 git pull;
 echo 'Installing all dependencies...';

@@ -14,14 +14,14 @@ exports.run = (client, message, args, logger) => {
             }
         },function (error, response, body) {
             if(!error && response.statusCode === 200) {
-                let json = JSON.parse(body);
+                let jsonResponse = JSON.parse(body);
                 let embed = new Discord.RichEmbed()
                     .setTitle('Weather command:')
-                    .setThumbnail('https://openweathermap.org/img/w/' + json.weather[0].icon + '.png')
-                    .addField('Location:',json.name + '('+ json.sys.country +')')
-                    .addField('Condition:',json.weather[0].description)
-                    .addField('Temperature (min/max):',json.main.temp_min + '°C / ' + json.main.temp_max + '°C')
-                    .addField('Wind speed:',json.wind.speed + ' m/s')
+                    .setThumbnail(`https://openweathermap.org/img/w/${jsonResponse.weather[0].icon}.png`)
+                    .addField('Location:', `${jsonResponse.name} (${jsonResponse.sys.country})`)
+                    .addField('Condition:',jsonResponse.weather[0].description)
+                    .addField('Temperature (min/max):',`${jsonResponse.main.temp_min}°C / ${jsonResponse.main.temp_max}°C`)
+                    .addField('Wind speed:',`${jsonResponse.wind.speed} m/s`)
                     .setTimestamp()
                     .setFooter('Data from OpenWeatherMap')
                 ;

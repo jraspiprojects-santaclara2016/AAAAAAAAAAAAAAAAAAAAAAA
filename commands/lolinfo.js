@@ -3,7 +3,7 @@ const config = require('../configuration/config');
 const lolApi = require('league-api-2.0');
 
 exports.run = (client, message, args, logger) => {
-    lolApi.base.loadConfig('../../configuration/lolConfig.json');
+    lolApi.base.loadConfig('./configuration/lolConfig.json');
     lolApi.base.setKey(process.env.LOL_TOKEN);
     lolApi.base.setRegion("euw1");
 

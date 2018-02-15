@@ -60,3 +60,5 @@ typings/
 # Idea Folder
 /.idea/*
 
+#configs
+configuration/databaseConfig.json

@@ -1,8 +1,17 @@
-# MonikaBot
-![alt text](https://api.travis-ci.org/Emdix/MonikaBot.svg?branch=master)
-
-This is a bot for the text and voice chat software "Discord".
-</hr>
+<h1 align="center">
+    <a href="https://discord.gg/JtFFkzk"><img src="http://lolisafe.monikabot.moe/7QSiVpxGnfzLDjoC5PDD4DO26KIva6WI.png" width="256px" alt="Monika"></a>
+  <br>
+    MonikaBot
+  <br>
+ </h1>
+<h4 align="center">The friendly Monikabot greets you <3</h4>
+<h5 align="center">This Code is provided as is, there will be no support for getting it to run.</h5>
+  <p align="center">
+      <a href="https://discord.gg/JtFFkzk" target="_blank"><img src="https://discordapp.com/assets/fc0b01fe10a0b8c602fb0106d8189d9b.png" width="256px" alt="Discord"></a>
+  </p>
+  <p align="center">
+      [![dependencies Status](https://david-dm.org/emdix/monikabot/status.png)](https://david-dm.org/emdix/monikabot)
+  </p>
 
 ### Intentions
 My intention behind this bot was to build knowledge in other programming 
@@ -24,7 +33,7 @@ Feel free to open new issues as soon as you are experiencing a bug or want somet
 * xml2js
 
 ### Environment variables
-* discordToken => Discord API token.
-* openWeatherMapToken => openWeatherMap API token.
+* DISCORD_TOKEN => Discord API token.
+* OPENWEATHERMAP_TOKEN => openWeatherMap API token.
 * LOL_TOKEN => league of legends API token.
 * NODE_ENV => environment (development or production).
