@@ -16,7 +16,7 @@ pool.on('release', function (connection) {
 });
 
 functions = {
-    getLeagueAccounts: function(discordId) {
+    getLeagueAccountsOfDiscordId: function(discordId) {
         return new Promise(function(resolve, reject) {
             pool.getConnection(function (err, connection) {
                 let selectSummonerNames = `SELECT summonerName, region, isMain FROM summonerNames, discordUser WHERE summonerNames.discordId = discordUser.discordId AND discordUser.discordId = ${connection.escape(discordId)}`;
