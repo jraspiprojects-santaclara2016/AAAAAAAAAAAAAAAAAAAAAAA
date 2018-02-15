@@ -9,6 +9,7 @@
     "forever": "^0.15.3",
     "league-api-2.0": "^1.4.0",
     "mocha": "^5.0.0",
+    "mysql": "^2.15.0",
     "request": "^2.83.0",
     "winston": "^2.4.0",
     "winston-daily-rotate-file": "^1.7.2",

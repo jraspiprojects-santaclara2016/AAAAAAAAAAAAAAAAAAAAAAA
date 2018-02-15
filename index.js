@@ -29,7 +29,7 @@ discordEventHandler.run(client, logger);
 discordLoginHandler.run(client, logger);
 
 //Catch unhandled promises
-process.on('unhandledRejection', err => logger.error(`Uncaught Promise Rejection: \n${err.stack}`);
+process.on('unhandledRejection', err => logger.error(`Uncaught Promise Rejection: \n${err.stack}`));
 
 /*
 Every day, I imagine a future where I can be with you
