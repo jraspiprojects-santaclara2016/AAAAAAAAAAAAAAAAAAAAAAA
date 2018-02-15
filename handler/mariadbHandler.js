@@ -1,42 +1,63 @@
 const mysql = require('mysql');
 const databaseConfig = require('../configuration/databaseConfig.json');
+const logHandler = require('../handler/winstonLogHandler');
+const logger = logHandler.getLogger();
 
-let config = databaseConfig;
+let pool = mysql.createPool(databaseConfig);
 
-let connection;
+pool.on('acquire', function (connection) {
+    logger.verbose('Connection %d acquired', connection.threadId);
+});
+pool.on('enqueue', function () {
+    logger.verbose('Waiting for available connection slot');
+});
+pool.on('release', function (connection) {
+    logger.verbose('Connection %d released', connection.threadId);
+});
 
 functions = {
     getLeagueAccounts: function(discordId) {
         return new Promise(function(resolve, reject) {
-            connection = mysql.createConnection(config);
-            connection.connect();
-            connection.query('SELECT summonerName, region FROM summonerNames, discordUser WHERE summonerNames.discordId = discordUser.discordId AND discordUser.discordId = ?', discordId, function (error, results, fields) {
-                if (error) {
-                    reject(error);
-                }
-                resolve(results);
+            pool.getConnection(function (err, connection) {
+                let selectSummonerNames = `SELECT summonerName, region FROM summonerNames, discordUser WHERE summonerNames.discordId = discordUser.discordId AND discordUser.discordId = ${connection.escape(discordId)}`;
+                connection.query(selectSummonerNames, function (error, results, fields) {
+                    if (error) {
+                        reject(error);
+                    }
+                    resolve(results);
+                    connection.release();
+                });
             });
-            connection.end();
         });
     },
 
     addLeagueAccount: function(summonerName, region, discordId) {
         return new Promise(function (resolve, reject) {
-            connection = mysql.createConnection(config);
-            connection.connect();
-            connection.query('INSERT INTO discordUser (discordId) VALUES (?)', discordId, function (error, results, fields) {
-                if (error) {
-
-                }
+            pool.getConnection(function (err, connection) {
+                let insertDiscordId = `INSERT INTO discordUser (discordId) VALUES (${connection.escape(discordId)})`;
+                let insertSummonerName = `INSERT INTO summonerNames (summonerName, region, discordId) VALUES (${connection.escape(summonerName)}, ${connection.escape(region)}, ${connection.escape(discordId)})`;
+                connection.query(insertDiscordId, function (error, results, fields) {});
+                connection.query(insertSummonerName, function (error, results, fields) {
+                    if (error) reject(error);
+                    resolve(results);
+                });
+                connection.release();
             });
-            connection.query('INSERT INTO summonerNames (summonerName, region, discordId) VALUES (?, ?, ?)', [summonerName, region, discordId] , function (error, results, fields) {
-                if (error) reject(error);
-                resolve(results);
-            });
-            connection.end();
         });
-    }
+    },
 
+    deleteLeagueAccount: function(summonerName, discordId) {
+        return new Promise(function (resolve, reject) {
+            pool.getConnection(function (err, connection) {
+                let deleteSummonerName = `DELETE FROM summonerNames WHERE summonerName = ${connection.escape(summonerName)} AND discordId = ${connection.escape(discordId)}`;
+                connection.query(deleteSummonerName, function (error, results, fields) {
+                    if(error) reject(error);
+                    resolve(results);
+                });
+                connection.release();
+            });
+        });
+    },
 };
 
 module.exports = {

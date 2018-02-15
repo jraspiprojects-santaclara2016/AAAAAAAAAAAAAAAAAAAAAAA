@@ -13,7 +13,6 @@ exports.run = (client, logger, message) => {
         logger.verbose('Try to require: ' + command + '.js');
         let commandFile = require(`../commands/${command}.js`);
         commandFile.run(client, message, args, logger);
-        logger.verbose(command + '.js has been required and executed!');
     } catch (err) {
         logger.verbose('The file: ' + command + '.js does not exist and therefore cannot be required!');
         let errorMessage = 'The command "' + command + '" does not exist.';

@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 
 //require logger
 const winstonLogHandler = require('./handler/winstonLogHandler');
-const logger = winstonLogHandler.run();
+const logger = winstonLogHandler.createLogger();
 
 //Create shard manager object
 const ShardManager = new Discord.ShardingManager('./index.js', {
