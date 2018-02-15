@@ -57,5 +57,8 @@ typings/
 # dotenv environment variables file
 .env
 
+# Idea Folder
+/.idea/*
+
 #configs
 configuration/databaseConfig.json
