@@ -19,7 +19,7 @@ functions = {
     getLeagueAccounts: function(discordId) {
         return new Promise(function(resolve, reject) {
             pool.getConnection(function (err, connection) {
-                let selectSummonerNames = `SELECT summonerName, region FROM summonerNames, discordUser WHERE summonerNames.discordId = discordUser.discordId AND discordUser.discordId = ${connection.escape(discordId)}`;
+                let selectSummonerNames = `SELECT summonerName, region, isMain FROM summonerNames, discordUser WHERE summonerNames.discordId = discordUser.discordId AND discordUser.discordId = ${connection.escape(discordId)}`;
                 connection.query(selectSummonerNames, function (error, results, fields) {
                     if (error) {
                         reject(error);
@@ -31,11 +31,11 @@ functions = {
         });
     },
 
-    addLeagueAccount: function(summonerName, region, discordId) {
+    addLeagueAccount: function(summonerName, region, discordId, isMain) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 let insertDiscordId = `INSERT INTO discordUser (discordId) VALUES (${connection.escape(discordId)})`;
-                let insertSummonerName = `INSERT INTO summonerNames (summonerName, region, discordId) VALUES (${connection.escape(summonerName)}, ${connection.escape(region)}, ${connection.escape(discordId)})`;
+                let insertSummonerName = `INSERT INTO summonerNames (summonerName, region, discordId, isMain) VALUES (${connection.escape(summonerName)}, ${connection.escape(region)}, ${connection.escape(discordId)}, ${connection.escape(isMain)})`;
                 connection.query(insertDiscordId, function (error, results, fields) {});
                 connection.query(insertSummonerName, function (error, results, fields) {
                     if (error) reject(error);
