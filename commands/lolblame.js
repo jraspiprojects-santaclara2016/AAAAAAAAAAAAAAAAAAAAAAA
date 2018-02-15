@@ -6,7 +6,7 @@ const discordErrorEmbedHandler = require('../handler/discordErrorEmbedHandler');
 const accountIdFaker = 3440481;
 
 exports.run = (client, message, args, logger) => {
-    lolApi.base.loadConfig('../../configuration/lolConfig.json');
+    lolApi.base.loadConfig('./configuration/lolConfig.json');
     lolApi.base.setKey(process.env.LOL_TOKEN);
     lolApi.base.setRegion("KR");
 
