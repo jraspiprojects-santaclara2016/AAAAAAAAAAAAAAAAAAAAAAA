@@ -5,7 +5,48 @@ const logger = winstonLogHandler.createLogger();
 
 const lolApi = require('league-api-2.0');
 
-let summonerName;
+const tierIconURL = 'https://raw.githubusercontent.com/RiotAPI/Riot-Games-API-Developer-Assets/master/tier-icons/tier-icons-base/';
+
+let summonerNameObj;
+let clientObj;
+let discordUserIdObj;
+
+exports.run = (client, logger, discordUserId) => {
+
+    console.log("Executing function");
+
+    clientObj = client;
+    discordUserIdObj = discordUserId;
+
+    lolApi.base.loadConfig('./configuration/lolConfig.json');
+    lolApi.base.setKey(process.env.LOL_TOKEN);
+    lolApi.base.setRegion("EUW1");
+
+    mariadbHandler.functions.getLeagueAccountsOfDiscordId(discordUserId).then(accountList => {
+        if (!(accountList.length === 0)) {
+            let mainAccount = getMain(accountList);
+            if (mainAccount) {
+                summonerNameObj = mainAccount.summonerName;
+                //TODO testing
+                lolApi.executeCall('Special', 'getCurrentGameParticipantElo', 'DeezZ NuTts xD')
+                    .then(gameParticipants => {
+                        buildEmbeds((gameParticipants)).then(embedArray => {
+                            sendResult((embedArray));
+                        })
+                    })
+                    .catch(error => {
+                        if (error.status === 404) {
+                            tryOtherAccounts(accountList);
+                        } else {
+                            console.log("some error");
+                            console.log(error);
+                            //TODO Error handling
+                        }
+                    })
+            }
+        }
+    })
+};
 
 async function callEachAccount(accountList) {
     for (account in accountList) {
@@ -30,10 +71,11 @@ function getAllWithoutMain(list) {
 }
 
 function sendResult(embedArray) {
-    let discordUser = client.fetch(discordUserId);
-    for(embed in embedArray) {
-        discordUser.send({embed})
-    }
+    clientObj.users.fetch(discordUserIdObj).then(discordUser => {
+        for (embed of embedArray) {
+            discordUser.send({embed});
+        }
+    });
 }
 
 function tryOtherAccounts(accountList) {
@@ -41,10 +83,10 @@ function tryOtherAccounts(accountList) {
     let otherAccounts = getAllWithoutMain(accountList);
 
     callEachAccount(otherAccounts).then(result => {
-        if (result != "default") {
+        if (result !== "default") {
             buildEmbeds(result).then(embedArray => {
                 sendResult(embedArray);
-            })
+            });
         } else {
             console.log("No account in game")
             //TODO Error handling no account in game
@@ -54,92 +96,75 @@ function tryOtherAccounts(accountList) {
 }
 
 function buildEmbeds(summoners) {
-    return new Promise(function (resolve, reject) {
-        let array = summoners;
-        let embedArray = [];
-
-        for (let i = 0; i < array.length; i++) {
-            let embed = new Discord.MessageEmbed();
-            embed.setTitle(array[i].name);
-            embed.setColor(0x00AE86);
-            if (array[i].soloQ !== undefined) {
-                if (array[i].soloQ.tier === "CHALLENGER") {
-                    embed.setThumbnail('https://raw.githubusercontent.com/Zelle97/Discord-Bot/master/tier-icons/base_icons/challenger.png?raw=true')
-                }
-                else if (array[i].soloQ.tier === "MASTER") {
-                    embed.setThumbnail('https://raw.githubusercontent.com/Zelle97/Discord-Bot/master/tier-icons/base_icons/master.png?raw=true')
-                }
-                else if (array[i].soloQ.tier === "DIAMOND") {
-                    embed.setThumbnail('https://raw.githubusercontent.com/Zelle97/Discord-Bot/master/tier-icons/base_icons/diamond.png?raw=true')
-                }
-                else if (array[i].soloQ.tier === "PLATINUM") {
-                    embed.setThumbnail('https://raw.githubusercontent.com/Zelle97/Discord-Bot/master/tier-icons/base_icons/platinum.png?raw=true')
-                }
-                else if (array[i].soloQ.tier === "GOLD") {
-                    embed.setThumbnail('https://raw.githubusercontent.com/Zelle97/Discord-Bot/master/tier-icons/base_icons/gold.png?raw=true')
-                }
-                else if (array[i].soloQ.tier === "SILVER") {
-                    embed.setThumbnail('https://raw.githubusercontent.com/Zelle97/Discord-Bot/master/tier-icons/base_icons/silver.png?raw=true')
-                }
-                else if (array[i].soloQ.tier === "BRONZE") {
-                    embed.setThumbnail('https://raw.githubusercontent.com/Zelle97/Discord-Bot/master/tier-icons/base_icons/bronze.png')
-                }
-                else {
-                    embed.setThumbnail('https://raw.githubusercontent.com/Zelle97/Discord-Bot/master/tier-icons/base_icons/provisional.png?raw=true')
-                }
-
-                embed.addField('Solo Q', array[i].soloQ.tier + ' ' + array[i].soloQ.rank)
-
-            } else {
-                embed.setThumbnail('https://raw.githubusercontent.com/Zelle97/Discord-Bot/master/tier-icons/base_icons/provisional.png?raw=true')
-                embed.addField('Solo Q', 'unranked')
-            }
-
-            if (array[i].flexQ !== undefined) {
-                embed.addField('Flex Q', array[i].flexQ.tier + ' ' + array[i].flexQ.rank)
-            }
-            else {
-                embed.addField('FlexQ Q', 'unranked')
-            }
-
-            /*
-             * Takes a Date object, defaults to current date.
-             */
-            embed.setTimestamp();
-            embed.setURL('https://euw.op.gg/summoner/userName=' + encodeURI(array[i].name));
-
-            embedArray[i] = embed;
+    return new Promise(function (resolve) {
+        console.log(summoners);
+        let promiseArray = [];
+        for (summoner of summoners) {
+            promiseArray.push(buildEmbedForSummoner(summoner));
         }
-
-        resolve(embedArray);
+        Promise.all(promiseArray).then(embeds => {
+            resolve(embeds);
+        })
     })
 }
 
+function buildEmbedForSummoner(summoner) {
+    return new Promise(function (resolve, reject) {
+        let embed = new Discord.MessageEmbed();
+        embed.setTitle(summoner.SummonerName);
+        embed.setColor('DARK_GREEN');
+        embed.setTimestamp();
+        embed.setURL('https://euw.op.gg/summoner/userName=' + encodeURI(summoner.SummonerName));
 
+        if (summoner.SummonerElo.length === 0) {
+            embed.setThumbnail(tierIconURL + 'provisional.png');
+            embed.addField('All Queues', 'unranked');
+            resolve(embed);
+        }
 
-exports.run = (client, logger, discordUserId) => {
-
-    mariadbHandler.functions.getLeagueAccountsOfDiscordId(discordUserId).then(accountList => {
-        if (!(accountList.length === 0)) {
-            let mainAccount = getMain(accountList);
-            if (mainAccount) {
-                summonerName = mainAccount.summonerName;
-                lolApi.executeCall('Special', 'getCurrentGameParticipantElo', summonerName)
-                    .then(gameParticipants => {
-
-                    })
-                    .catch(error => {
-                        if (error.status === 404) {
-                            tryOtherAccounts(accountList);
-                        } else {
-                            console.log("some error")
-                            console.log(error);
-                            //TODO Error handling
-                        }
-                    })
+        for (elo of summoner.SummonerElo) {
+            if (elo.queueType === 'RANKED_FLEX_SR') {
+                embed.addField('Flex Q', elo.tier + ' ' + elo.rank);
+            } else if (elo.queueType === 'RANKED_SOLO_5x5') {
+                switch (elo.tier) {
+                    case 'BRONZE':
+                        embed.setThumbnail(tierIconURL + 'bronze.png');
+                        embed.addField('Solo Q', elo.tier + ' ' + elo.rank);
+                        break;
+                    case 'SILVER':
+                        embed.setThumbnail(tierIconURL + 'silver.png');
+                        embed.addField('Solo Q', elo.tier + ' ' + elo.rank);
+                        break;
+                    case 'GOLD':
+                        embed.setThumbnail(tierIconURL + 'gold.png');
+                        embed.addField('Solo Q', elo.tier + ' ' + elo.rank);
+                        break;
+                    case 'PLATINUM':
+                        embed.setThumbnail(tierIconURL + 'platinum.png');
+                        embed.addField('Solo Q', elo.tier + ' ' + elo.rank);
+                        break;
+                    case 'DIAMOND':
+                        embed.setThumbnail(tierIconURL + 'diamond.png');
+                        embed.addField('Solo Q', elo.tier + ' ' + elo.rank);
+                        break;
+                    case 'MASTER':
+                        embed.setThumbnail(tierIconURL + 'master.png');
+                        embed.addField('Solo Q', elo.tier + ' ' + elo.rank);
+                        break;
+                    case 'CHALLENGER':
+                        embed.setThumbnail(tierIconURL + 'challenger.png');
+                        embed.addField('Solo Q', elo.tier + ' ' + elo.rank);
+                        break;
+                    default:
+                        embed.setThumbnail(tierIconURL + 'provisional.png');
+                        embed.addField('Solo Q', 'unranked');
+                }
             }
         }
-    })
-};
+        resolve(embed);
+    });
+}
+
+
 
 
