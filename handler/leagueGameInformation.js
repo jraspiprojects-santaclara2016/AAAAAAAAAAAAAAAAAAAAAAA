@@ -13,8 +13,6 @@ let discordUserIdObj;
 
 exports.run = (client, logger, discordUserId) => {
 
-    console.log("Executing function");
-
     clientObj = client;
     discordUserIdObj = discordUserId;
 
@@ -26,9 +24,9 @@ exports.run = (client, logger, discordUserId) => {
         if (!(accountList.length === 0)) {
             let mainAccount = getMain(accountList);
             if (mainAccount) {
+                logger.info("leagueGameInformation: User found in DB and requesting game data...");
                 summonerNameObj = mainAccount.summonerName;
-                //TODO testing
-                lolApi.executeCall('Special', 'getCurrentGameParticipantElo', 'DeezZ NuTts xD')
+                lolApi.executeCall('Special', 'getCurrentGameParticipantElo', summonerNameObj)
                     .then(gameParticipants => {
                         buildEmbeds((gameParticipants)).then(embedArray => {
                             sendResult((embedArray));
@@ -38,25 +36,59 @@ exports.run = (client, logger, discordUserId) => {
                         if (error.status === 404) {
                             tryOtherAccounts(accountList);
                         } else {
-                            console.log("some error");
-                            console.log(error);
-                            //TODO Error handling
+                            logger.error("leagueGameInformation: Error requesting game information. Status: " + error.status + " Message: " + error.message);
                         }
                     })
+            } else {
+                tryOtherAccounts(accountList);
             }
         }
     })
 };
 
+function buildEmbeds(summoners) {
+    return new Promise(function (resolve) {
+        console.log(summoners);
+        let promiseArray = [];
+        for (let summoner of summoners) {
+            promiseArray.push(buildEmbedForSummoner(summoner));
+        }
+        Promise.all(promiseArray).then(embeds => {
+            resolve(embeds);
+        })
+    })
+}
+
+function sendResult(embedArray) {
+    clientObj.users.fetch(discordUserIdObj).then(discordUser => {
+        for (let embed of embedArray) {
+            discordUser.send({embed}).catch(error => {
+                logger.debug("leagueGameInformation: Error sending Embed to User. Error: " + error);
+            });
+        }
+    });
+}
+
+function tryOtherAccounts(accountList) {
+    let otherAccounts = getAllWithoutMain(accountList);
+    callEachAccount(otherAccounts).then(result => {
+        if (result !== "default") {
+            buildEmbeds(result).then(embedArray => {
+                sendResult(embedArray);
+            });
+        } else {
+            logger.debug("leagueGameInformation: No Account for User with discordId: " + discordUserIdObj + " in-game!");
+        }
+    });
+}
+
 async function callEachAccount(accountList) {
-    for (account in accountList) {
+    for (let account of accountList) {
         let result = await lolApi.executeCall('Special', 'getCurrentGameParticipantElo', account.summonerName);
-        if (!result.status) {
+        if (result.status === 200) {
             return result;
         }
     }
-
-    //TODO default value
     return "default";
 }
 
@@ -70,46 +102,8 @@ function getAllWithoutMain(list) {
     });
 }
 
-function sendResult(embedArray) {
-    clientObj.users.fetch(discordUserIdObj).then(discordUser => {
-        for (embed of embedArray) {
-            discordUser.send({embed});
-        }
-    });
-}
-
-function tryOtherAccounts(accountList) {
-
-    let otherAccounts = getAllWithoutMain(accountList);
-
-    callEachAccount(otherAccounts).then(result => {
-        if (result !== "default") {
-            buildEmbeds(result).then(embedArray => {
-                sendResult(embedArray);
-            });
-        } else {
-            console.log("No account in game")
-            //TODO Error handling no account in game
-        }
-    });
-
-}
-
-function buildEmbeds(summoners) {
-    return new Promise(function (resolve) {
-        console.log(summoners);
-        let promiseArray = [];
-        for (summoner of summoners) {
-            promiseArray.push(buildEmbedForSummoner(summoner));
-        }
-        Promise.all(promiseArray).then(embeds => {
-            resolve(embeds);
-        })
-    })
-}
-
 function buildEmbedForSummoner(summoner) {
-    return new Promise(function (resolve, reject) {
+    return new Promise(function (resolve) {
         let embed = new Discord.MessageEmbed();
         embed.setTitle(summoner.SummonerName);
         embed.setColor('DARK_GREEN');
@@ -122,7 +116,7 @@ function buildEmbedForSummoner(summoner) {
             resolve(embed);
         }
 
-        for (elo of summoner.SummonerElo) {
+        for (let elo of summoner.SummonerElo) {
             if (elo.queueType === 'RANKED_FLEX_SR') {
                 embed.addField('Flex Q', elo.tier + ' ' + elo.rank);
             } else if (elo.queueType === 'RANKED_SOLO_5x5') {
