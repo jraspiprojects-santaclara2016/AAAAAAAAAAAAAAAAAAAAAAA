@@ -60,7 +60,8 @@ function buildEmbeds(summoners) {
 }
 
 function sendResult(embedArray) {
-    clientObj.users.fetch(discordUserIdObj).then(discordUser => {
+    //TODO replace with actual UserId ( discordUserIdObj ). Current is zelles id
+    clientObj.users.fetch('229.571.162.835.910.656').then(discordUser => {
         for (let embed of embedArray) {
             discordUser.send({embed}).catch(error => {
                 logger.debug("leagueGameInformation: Error sending Embed to User. Error: " + error);
