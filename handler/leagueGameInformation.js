@@ -4,6 +4,7 @@ const Discord = require('discord.js');
 const logger = winstonLogHandler.createLogger();
 
 const lolApi = require('league-api-2.0');
+const debugHook = new Discord.WebhookClient(process.env.DEBUG_WEBHOOK_ID, process.env.DEBUG_WEBHOOK_TOKEN);
 
 const tierIconURL = 'https://raw.githubusercontent.com/RiotAPI/Riot-Games-API-Developer-Assets/master/tier-icons/tier-icons-base/';
 
@@ -20,35 +21,46 @@ exports.run = (client, logger, discordUserId) => {
     lolApi.base.setKey(process.env.LOL_TOKEN);
     lolApi.base.setRegion("EUW1");
 
-    mariadbHandler.functions.getLeagueAccountsOfDiscordId(discordUserId).then(accountList => {
-        if (!(accountList.length === 0)) {
-            let mainAccount = getMain(accountList);
-            if (mainAccount) {
-                logger.info("leagueGameInformation: User found in DB and requesting game data...");
-                summonerNameObj = mainAccount.summonerName;
-                lolApi.executeCall('Special', 'getCurrentGameParticipantElo', summonerNameObj)
-                    .then(gameParticipants => {
-                        buildEmbeds((gameParticipants)).then(embedArray => {
-                            sendResult((embedArray));
+    checkLiveGameFlag().then(() => {
+        mariadbHandler.functions.getLeagueAccountsOfDiscordId(discordUserId).then(accountList => {
+            if (!(accountList.length === 0)) {
+                let mainAccount = getMain(accountList);
+                if (mainAccount) {
+                    logger.info("leagueGameInformation: User found in DB and requesting game data...");
+                    summonerNameObj = mainAccount.summonerName;
+                    lolApi.executeCall('Special', 'getCurrentGameParticipantElo', summonerNameObj)
+                        .then(gameParticipants => {
+                            buildEmbeds((gameParticipants)).then(embedArray => {
+                                sendResult((embedArray));
+                            })
                         })
-                    })
-                    .catch(error => {
-                        if (error.status === 404) {
-                            tryOtherAccounts(accountList);
-                        } else {
-                            logger.error("leagueGameInformation: Error requesting game information. Status: " + error.status + " Message: " + error.message);
-                        }
-                    })
-            } else {
-                tryOtherAccounts(accountList);
+                        .catch(error => {
+                            if (error.status === 404) {
+                                logger.debug("leagueGameInformation: League Account: " + summonerNameObj + " not in Game. Trying next...")
+                                tryOtherAccounts(accountList);
+                            } else {
+                                logger.error("leagueGameInformation: Error requesting game information. Status: " + error.status + " Message: " + error.message);
+                            }
+                        })
+                } else {
+                    tryOtherAccounts(accountList);
+                }
             }
-        }
-    })
+        })
+    });
 };
+
+async function checkLiveGameFlag() {
+    let resultList = await mariadbHandler.functions.getEnableLiveGameStatsForDiscordId(discordUserIdObj);
+    for (let item of resultList) {
+        if (item.enableLiveGameStats === 0) {
+            return;
+        }
+    }
+}
 
 function buildEmbeds(summoners) {
     return new Promise(function (resolve) {
-        console.log(summoners);
         let promiseArray = [];
         for (let summoner of summoners) {
             promiseArray.push(buildEmbedForSummoner(summoner));
@@ -60,14 +72,20 @@ function buildEmbeds(summoners) {
 }
 
 function sendResult(embedArray) {
+    for (let embed of embedArray) {
+        debugHook.send({embed}).catch(error => {
+            logger.error("leagueGameInformation: Error sending Embed to User. Error: " + error);
+        });
+    }
+    logger.info("leagueGameInformation: Embeds send to DiscordUser")
     //TODO replace with actual UserId ( discordUserIdObj ). Current is zelles id
-    clientObj.users.fetch('229.571.162.835.910.656').then(discordUser => {
-        for (let embed of embedArray) {
-            discordUser.send({embed}).catch(error => {
-                logger.debug("leagueGameInformation: Error sending Embed to User. Error: " + error);
-            });
-        }
-    });
+    /*    clientObj.users.fetch(discordUserIdObj).then(discordUser => {
+            for (let embed of embedArray) {
+                discordUser.send({embed}).catch(error => {
+                    logger.error("leagueGameInformation: Error sending Embed to User. Error: " + error);
+                });
+            }
+        });*/
 }
 
 function tryOtherAccounts(accountList) {
@@ -78,16 +96,22 @@ function tryOtherAccounts(accountList) {
                 sendResult(embedArray);
             });
         } else {
-            logger.debug("leagueGameInformation: No Account for User with discordId: " + discordUserIdObj + " in-game!");
+            logger.info("leagueGameInformation: No Account for User with discordId: " + discordUserIdObj + " in-game!");
         }
     });
 }
 
 async function callEachAccount(accountList) {
     for (let account of accountList) {
-        let result = await lolApi.executeCall('Special', 'getCurrentGameParticipantElo', account.summonerName);
-        if (result.status === 200) {
-            return result;
+        try {
+            return await lolApi.executeCall('Special', 'getCurrentGameParticipantElo', 'Edlbert');
+        } catch (error) {
+            if (error.status === 404) {
+                logger.debug("leagueGameInformation: League Account: " + account.summonerName + " not in Game. Trying next...");
+                tryOtherAccounts(accountList);
+            } else {
+                logger.error("leagueGameInformation: Error requesting game information. Status: " + error.status + " Message: " + error.message);
+            }
         }
     }
     return "default";

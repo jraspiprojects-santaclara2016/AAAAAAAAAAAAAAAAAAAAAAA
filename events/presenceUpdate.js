@@ -8,7 +8,7 @@ exports.run = (client, logger, oldMember, newMember) => {
         let memberId = newMember.user.id;
         if(!cacheIdsForBug.includes(memberId)) {
             cacheIdsForBug.push(memberId);
-            logger.info("Added DiscordUserId: " + memberId + " to cache list:");
+            logger.info("Added DiscordUserId: " + memberId + " to cache list");
             //TODO change game name
             if(newMember.presence.activity.name === "JetBrains IDE") {
                 let eventFunction = require('../handler/leagueGameInformation');
@@ -17,7 +17,7 @@ exports.run = (client, logger, oldMember, newMember) => {
             setTimeout(function(){
                 let index = cacheIdsForBug.indexOf(memberId);
                 cacheIdsForBug.splice(index, 1);
-                logger.info("Removed DiscordUserId: " + memberId + " from cache list:");
+                logger.info("Removed DiscordUserId: " + memberId + " from cache list");
 
             }, 1000 * 2)
         }
