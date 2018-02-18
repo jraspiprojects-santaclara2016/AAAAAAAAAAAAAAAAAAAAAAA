@@ -1,13 +1,14 @@
 const Discord = require('discord.js');
 const lolApi = require('league-api-2.0');
 const config = require('../../configuration/config');
+const apiKeys = require('../../configuration/apiKeyConfig');
 
 module.exports = {
     name: 'lolstatus',
     description: 'Display the current status of the LeagueOfLegends server. (currently EUW only)',
     execute(client, message, args, logger) {
         lolApi.base.loadConfig('./configuration/lolConfig.json');
-        lolApi.base.setKey(process.env.LOL_TOKEN);
+        lolApi.base.setKey(apiKeys.leagueOfLegends);
         lolApi.base.setRegion('euw1');
         lolApi.executeCall('Status', 'getLolStatus').then((response) => {
             const embed = new Discord.MessageEmbed()

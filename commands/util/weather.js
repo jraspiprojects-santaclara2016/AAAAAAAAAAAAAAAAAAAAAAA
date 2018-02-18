@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const request = require('request');
+const apiKeys = require('../../configuration/apiKeyConfig');
 
 const errorEmbedHandler = require('../../handler/discordErrorEmbedHandler');
 
@@ -11,7 +12,7 @@ module.exports = {
             request.get('https://api.openweathermap.org/data/2.5/weather', {
                 qs: {
                     q :args.join(' '),
-                    appid : process.env.OPENWEATHERMAP_TOKEN,
+                    appid : apiKeys.openWeatherMap,
                     units : 'metric',
                     lang : 'en',
                 },

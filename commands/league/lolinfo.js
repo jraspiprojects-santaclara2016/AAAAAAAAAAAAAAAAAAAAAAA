@@ -1,13 +1,14 @@
 const Discord = require('discord.js');
 const config = require('../../configuration/config');
 const lolApi = require('league-api-2.0');
+const apiKeys = require('../../configuration/apiKeyConfig');
 
 module.exports = {
     name: 'lolinfo',
     description: 'Display information about the specified summoner.',
     execute(client, message, args, logger) {
         lolApi.base.loadConfig('./configuration/lolConfig.json');
-        lolApi.base.setKey(process.env.LOL_TOKEN);
+        lolApi.base.setKey(apiKeys.leagueOfLegends);
         lolApi.base.setRegion('euw1');
 
         logger.debug('Trying to execute lol api getSummonerBySummonerName call');

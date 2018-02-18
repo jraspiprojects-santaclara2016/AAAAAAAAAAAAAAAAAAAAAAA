@@ -3,6 +3,7 @@ const config = require('../../configuration/config.json');
 const lolApi = require('league-api-2.0');
 const leagueBlameHandler = require('../../handler/leaguePostGameStatsHandler');
 const discordErrorEmbedHandler = require('../../handler/discordErrorEmbedHandler');
+const apiKeys = require('../../configuration/apiKeyConfig');
 const accountIdFaker = 3440481;
 
 module.exports = {
@@ -10,7 +11,7 @@ module.exports = {
     description: 'Compare the game data of a filthy casual to Faker',
     execute(client, message, args, logger) {
         lolApi.base.loadConfig('./configuration/lolConfig.json');
-        lolApi.base.setKey(process.env.LOL_TOKEN);
+        lolApi.base.setKey(apiKeys.leagueOfLegends);
         lolApi.base.setRegion("KR");
 
         lolApi.executeCall('Special', 'getLastGameOfSummoner', 'Hide on bush').then(matchDataFaker => {
