@@ -14,11 +14,13 @@ let discordUserIdObj;
 
 exports.run = (client, logger, discordUserId) => {
 
+    //Research Context and use maybe this.
     clientObj = client;
     discordUserIdObj = discordUserId;
 
     lolApi.base.loadConfig('./configuration/lolConfig.json');
     lolApi.base.setKey(process.env.LOL_TOKEN);
+    //TODO Region of User from DB
     lolApi.base.setRegion("EUW1");
 
     checkLiveGameFlag().then(() => {
@@ -108,6 +110,7 @@ async function callEachAccount(accountList) {
         } catch (error) {
             if (error.status === 404) {
                 logger.debug("leagueGameInformation: League Account: " + account.summonerName + " not in Game. Trying next...");
+                //TODO Remove and Test
                 tryOtherAccounts(accountList);
             } else {
                 logger.error("leagueGameInformation: Error requesting game information. Status: " + error.status + " Message: " + error.message);
@@ -127,6 +130,7 @@ function getAllWithoutMain(list) {
     });
 }
 
+//All Info in one single Embed 
 function buildEmbedForSummoner(summoner) {
     return new Promise(function (resolve) {
         let embed = new Discord.MessageEmbed();
