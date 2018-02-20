@@ -14,9 +14,6 @@ exports.run = (client, logger, discordUserId) => {
     lolApi.base.loadConfig('./configuration/lolConfig.json');
     lolApi.base.setKey(process.env.LOL_TOKEN);
 
-    //TODO Region of User from DB
-    lolApi.base.setRegion("EUW1");
-
     logger.info("leagueGameInformation: Requesting Data...");
     main(client, discordUserId).then(response => {
         if (response) {
@@ -55,58 +52,6 @@ async function main(client, discordUserId) {
     }
 }
 
-async function handleMainAccount(mainAccount, accounts) {
-    let result;
-    try {
-        result = await lolApi.executeCall('Special', 'getCurrentGameParticipantElo', mainAccount.summonerName);
-    } catch (error) {
-        if (error.status === 404) {
-            logger.debug("leagueGameInformation: League Account: " + mainAccount.summonerName + " not in Game. Trying next...");
-            result = await tryOtherAccounts(accounts);
-        } else {
-            logger.error("leagueGameInformation: Error requesting game information. Status: " + error.status + " Message: " + error.message);
-        }
-    }
-    return result;
-}
-
-async function buildEmbed(result) {
-    //TODO build embed
-    console.log(result);
-}
-
-async function sendResult(client, message) {
-    //TODO replace with actual UserId ( discordUserIdObj ). Current is debug channel on Monika Bot server
-    try {
-        await debugHook.send({message});
-    } catch (error) {
-        logger.error("leagueGameInformation: Error sending Embed to User. Error: " + error);
-    }
-}
-
-async function tryOtherAccounts(accountList) {
-    let otherAccounts = getAllWithoutMain(accountList);
-    let result = await callEachAccount(otherAccounts);
-    if (result !== "default") {
-        return result;
-    }
-}
-
-async function callEachAccount(accountList) {
-    for (let account of accountList) {
-        try {
-            return await lolApi.executeCall('Special', 'getCurrentGameParticipantElo', account.summonerName);
-        } catch (error) {
-            if (error.status === 404) {
-                logger.debug("leagueGameInformation: League Account: " + account.summonerName + " not in Game. Trying next...");
-            } else {
-                logger.error("leagueGameInformation: Error requesting game information. Status: " + error.status + " Message: " + error.message);
-            }
-        }
-    }
-    return "default";
-}
-
 async function isFlagEnabled(discordUserId) {
     let resultList = await mariadbHandler.functions.getEnableLiveGameStatsForDiscordId(discordUserId);
     for (let item of resultList) {
@@ -131,12 +76,69 @@ function getMain(list) {
     return list.find(summonerNames => summonerNames.isMain === 1);
 }
 
+async function handleMainAccount(mainAccount, accounts) {
+    let result;
+    lolApi.base.setRegion(mainAccount.region);
+    try {
+        result = await lolApi.executeCall('Special', 'getCurrentGameParticipantElo', mainAccount.summonerName);
+    } catch (error) {
+        if (error.status === 404) {
+            logger.debug("leagueGameInformation: League Account: " + mainAccount.summonerName + " not in Game. Trying next...");
+            result = await tryOtherAccounts(accounts);
+        } else {
+            logger.error("leagueGameInformation: Error requesting game information. Status: " + error.status + " Message: " + error.message);
+        }
+    }
+    return result;
+}
+
+async function tryOtherAccounts(accountList) {
+    let otherAccounts = getAllWithoutMain(accountList);
+    let result = await callEachAccount(otherAccounts);
+    if (result !== "default") {
+        return result;
+    }
+}
+
 function getAllWithoutMain(list) {
     return list.filter(function (user) {
         return user.isMain !== 1;
     });
 }
 
+async function callEachAccount(accountList) {
+    for (let account of accountList) {
+        lolApi.base.setRegion(account.region);
+        try {
+            return await lolApi.executeCall('Special', 'getCurrentGameParticipantElo', account.summonerName);
+        } catch (error) {
+            if (error.status === 404) {
+                logger.debug("leagueGameInformation: League Account: " + account.summonerName + " not in Game. Trying next...");
+            } else {
+                logger.error("leagueGameInformation: Error requesting game information. Status: " + error.status + " Message: " + error.message);
+            }
+        }
+    }
+    return "default";
+}
+
+
+async function buildEmbed(result) {
+    //TODO build embed
+    console.log(result);
+}
+
+
+async function sendResult(client, message) {
+    //TODO replace with actual UserId ( discordUserIdObj ). Current is debug channel on Monika Bot server
+    try {
+        await debugHook.send({message});
+    } catch (error) {
+        logger.error("leagueGameInformation: Error sending Embed to User. Error: " + error);
+    }
+}
+
+//TODO cleanup
 
 /*
 
