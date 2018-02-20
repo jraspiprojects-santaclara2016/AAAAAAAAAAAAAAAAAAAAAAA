@@ -1,0 +1,30 @@
+const Discord = require('discord.js');
+const config = require('../../configuration/config.json');
+
+module.exports = {
+    name: 'coinflip',
+    description: 'Flip a coin.',
+    execute(client, message, args, logger) {
+        const flip = Math.round(Math.random());
+        logger.silly(`[Coinflip] I flipped a ${flip}`);
+        if(flip === 0) {
+            const embed = new Discord.MessageEmbed()
+                .setTitle('Coinflip Command:')
+                .setColor('DARK_GREEN')
+                .setImage('https://www.random.org/coins/faces/60-eur/germany-1euro/obverse.jpg')
+                .setFooter('By ' + config.botName)
+                .setTimestamp()
+            ;
+            message.channel.send({ embed }).catch(console.error);
+        } else {
+            const embed = new Discord.MessageEmbed()
+                .setTitle('Coinflip Command:')
+                .setColor('DARK_GREEN')
+                .setImage('https://www.random.org/coins/faces/60-eur/germany-1euro/reverse.jpg')
+                .setFooter('By ' + config.botName)
+                .setTimestamp()
+            ;
+            message.channel.send({ embed }).catch(console.error);
+        }
+    },
+};

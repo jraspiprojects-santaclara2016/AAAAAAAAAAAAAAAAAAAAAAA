@@ -62,3 +62,4 @@ typings/
 
 #configs
 configuration/databaseConfig.json
+configuration/apiKeyConfig.json
