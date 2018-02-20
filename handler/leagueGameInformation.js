@@ -1,18 +1,21 @@
 const Discord = require('discord.js');
 const lolApi = require('league-api-2.0');
 
-const logger = winstonLogHandler.getLogger();
 const mariadbHandler = require('./mariadbHandler');
 const winstonLogHandler = require('./winstonLogHandler');
+const logger = winstonLogHandler.getLogger();
+const discordCustomEmbedHandler = require('./discordCustomEmbedHandler');
+const apiKeys = require('../configuration/apiKeyConfig');
 
 //TODO remove webhook if prod
-const debugHook = new Discord.WebhookClient(process.env.DEBUG_WEBHOOK_ID, process.env.DEBUG_WEBHOOK_TOKEN);
-const tierIconURL = 'https://raw.githubusercontent.com/RiotAPI/Riot-Games-API-Developer-Assets/master/tier-icons/tier-icons-base/';
+const debugHook = new Discord.WebhookClient(apiKeys.DEBUG_WEBHOOK_ID, apiKeys.DEBUG_WEBHOOK_TOKEN);
+//Might be needed in the future
+//const tierIconURL = 'https://raw.githubusercontent.com/RiotAPI/Riot-Games-API-Developer-Assets/master/tier-icons/tier-icons-base/';
 
 
 exports.run = (client, logger, discordUserId) => {
     lolApi.base.loadConfig('./configuration/lolConfig.json');
-    lolApi.base.setKey(process.env.LOL_TOKEN);
+    lolApi.base.setKey(apiKeys.leagueOfLegends);
 
     logger.info("leagueGameInformation: Requesting Data...");
     main(client, discordUserId).then(response => {
@@ -39,8 +42,7 @@ async function main(client, discordUserId) {
             result = await tryOtherAccounts(accounts);
         }
         if (result) {
-            let message = await buildEmbed(result);
-            await sendResult(client, message);
+            await sendResult(client, result);
             return true;
         } else {
             logger.info("leagueGameInformation: No Account for User with discordId: " + discordUserId + " in-game!")
@@ -80,7 +82,7 @@ async function handleMainAccount(mainAccount, accounts) {
     let result;
     lolApi.base.setRegion(mainAccount.region);
     try {
-        result = await lolApi.executeCall('Special', 'getCurrentGameParticipantElo', mainAccount.summonerName);
+        result = await lolApi.executeCall('Special', 'getCurrentGameParticipantElo', 'Gomar');
     } catch (error) {
         if (error.status === 404) {
             logger.debug("leagueGameInformation: League Account: " + mainAccount.summonerName + " not in Game. Trying next...");
@@ -122,127 +124,59 @@ async function callEachAccount(accountList) {
     return "default";
 }
 
-
-async function buildEmbed(result) {
-    //TODO build embed
-    console.log(result);
+async function sendResult(client, result) {
+    let fields = await buildEmbedFields(result);
+    discordCustomEmbedHandler.run(client, "Live Game Stats", fields, debugHook);
 }
 
-
-async function sendResult(client, message) {
-    //TODO replace with actual UserId ( discordUserIdObj ). Current is debug channel on Monika Bot server
-    try {
-        await debugHook.send({message});
-    } catch (error) {
-        logger.error("leagueGameInformation: Error sending Embed to User. Error: " + error);
-    }
-}
-
-//TODO cleanup
-
-/*
-
-checkLiveGameFlag().then(() => {
-    mariadbHandler.functions.getLeagueAccountsOfDiscordId(discordUserId).then(accountList => {
-        if (!(accountList.length === 0)) {
-            let mainAccount = getMain(accountList);
-            if (mainAccount) {
-                logger.info("leagueGameInformation: User found in DB and requesting game data...");
-                summonerNameObj = mainAccount.summonerName;
-                lolApi.executeCall('Special', 'getCurrentGameParticipantElo', summonerNameObj)
-                    .then(gameParticipants => {
-                        buildEmbeds((gameParticipants)).then(embedArray => {
-                            sendResult((embedArray));
-                        })
-                    })
-                    .catch(error => {
-                        if (error.status === 404) {
-                            logger.debug("leagueGameInformation: League Account: " + summonerNameObj + " not in Game. Trying next...")
-                            tryOtherAccounts(accountList);
-                        } else {
-                            logger.error("leagueGameInformation: Error requesting game information. Status: " + error.status + " Message: " + error.message);
-                        }
-                    })
+async function buildEmbedFields(result) {
+    let blueTeamValue = "";
+    let redTeamValue = "";
+    for (summoner of result) {
+        if (summoner.TeamId === 100) {
+            blueTeamValue = blueTeamValue.concat("__" + summoner.SummonerName + "__: \n");
+            if (summoner.SummonerElo.length === 0) {
+                blueTeamValue = redTeamValue.concat("*UNRANKED*");
+                blueTeamValue = redTeamValue.concat("\n");
             } else {
-                tryOtherAccounts(accountList);
-            }
-        }
-    })
-});
-
-
-function buildEmbeds(summoners) {
-    return new Promise(function (resolve) {
-        let promiseArray = [];
-        for (let summoner of summoners) {
-            promiseArray.push(buildEmbedForSummoner(summoner));
-        }
-        Promise.all(promiseArray).then(embeds => {
-            resolve(embeds);
-        })
-    })
-}
-
-
-//All Info in one single Embed
-function buildEmbedForSummoner(summoner) {
-    return new Promise(function (resolve) {
-        let embed = new Discord.MessageEmbed();
-        embed.setTitle(summoner.SummonerName);
-        embed.setColor('DARK_GREEN');
-        embed.setTimestamp();
-        embed.setURL('https://euw.op.gg/summoner/userName=' + encodeURI(summoner.SummonerName));
-
-        if (summoner.SummonerElo.length === 0) {
-            embed.setThumbnail(tierIconURL + 'provisional.png');
-            embed.addField('All Queues', 'unranked');
-            resolve(embed);
-        }
-
-        for (let elo of summoner.SummonerElo) {
-            if (elo.queueType === 'RANKED_FLEX_SR') {
-                embed.addField('Flex Q', elo.tier + ' ' + elo.rank);
-            } else if (elo.queueType === 'RANKED_SOLO_5x5') {
-                switch (elo.tier) {
-                    case 'BRONZE':
-                        embed.setThumbnail(tierIconURL + 'bronze.png');
-                        embed.addField('Solo Q', elo.tier + ' ' + elo.rank);
-                        break;
-                    case 'SILVER':
-                        embed.setThumbnail(tierIconURL + 'silver.png');
-                        embed.addField('Solo Q', elo.tier + ' ' + elo.rank);
-                        break;
-                    case 'GOLD':
-                        embed.setThumbnail(tierIconURL + 'gold.png');
-                        embed.addField('Solo Q', elo.tier + ' ' + elo.rank);
-                        break;
-                    case 'PLATINUM':
-                        embed.setThumbnail(tierIconURL + 'platinum.png');
-                        embed.addField('Solo Q', elo.tier + ' ' + elo.rank);
-                        break;
-                    case 'DIAMOND':
-                        embed.setThumbnail(tierIconURL + 'diamond.png');
-                        embed.addField('Solo Q', elo.tier + ' ' + elo.rank);
-                        break;
-                    case 'MASTER':
-                        embed.setThumbnail(tierIconURL + 'master.png');
-                        embed.addField('Solo Q', elo.tier + ' ' + elo.rank);
-                        break;
-                    case 'CHALLENGER':
-                        embed.setThumbnail(tierIconURL + 'challenger.png');
-                        embed.addField('Solo Q', elo.tier + ' ' + elo.rank);
-                        break;
-                    default:
-                        embed.setThumbnail(tierIconURL + 'provisional.png');
-                        embed.addField('Solo Q', 'unranked');
+                for (elo of summoner.SummonerElo) {
+                    blueTeamValue = blueTeamValue.concat("*" + elo.queueType + "*: **" + elo.tier + '** **' + elo.rank + "**");
+                    blueTeamValue = blueTeamValue.concat("\n");
                 }
             }
+            blueTeamValue = blueTeamValue.concat("\n");
+        } else {
+            redTeamValue = redTeamValue.concat("__" + summoner.SummonerName + "__: \n");
+            if (summoner.SummonerElo.length === 0) {
+                redTeamValue = redTeamValue.concat("*UNRANKED*");
+                redTeamValue = redTeamValue.concat("\n");
+            } else {
+                for (elo of summoner.SummonerElo) {
+                    redTeamValue = redTeamValue.concat("*" + elo.queueType + "*: **" + elo.tier + '** **' + elo.rank + "**");
+                    redTeamValue = redTeamValue.concat("\n");
+                }
+            }
+            redTeamValue = redTeamValue.concat("\n");
         }
-        resolve(embed);
-    });
+    }
+
+    let fields = [];
+    let redTeam = {};
+    redTeam.name = "__**Red Team**__";
+    redTeam.value = redTeamValue;
+
+    let blueTeam = {};
+    blueTeam.name = "__**Blue Team**__";
+    blueTeam.value = blueTeamValue;
+
+    fields.push(redTeam);
+    fields.push(blueTeam);
+
+    return fields;
 }
 
-*/
+
+
 
 
 
