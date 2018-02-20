@@ -16,7 +16,23 @@ pool.on('release', function (connection) {
 });
 
 functions = {
-    getLeagueAccounts: function(discordId) {
+
+    getEnableLiveGameStatsForDiscordId: function(discordId) {
+        return new Promise(function(resolve, reject) {
+            pool.getConnection(function (err, connection) {
+                let selectSummonerNames = `SELECT enableLiveGameStats FROM discordUser WHERE discordUser.discordId = ${connection.escape(discordId)}`;
+                connection.query(selectSummonerNames, function (error, results, fields) {
+                    if (error) {
+                        reject(error);
+                    }
+                    resolve(results);
+                    connection.release();
+                });
+            });
+        });
+    },
+
+    getLeagueAccountsOfDiscordId: function(discordId) {
         return new Promise(function(resolve, reject) {
             pool.getConnection(function (err, connection) {
                 let selectSummonerNames = `SELECT summonerName, region, isMain FROM summonerNames, discordUser WHERE summonerNames.discordId = discordUser.discordId AND discordUser.discordId = ${connection.escape(discordId)}`;
