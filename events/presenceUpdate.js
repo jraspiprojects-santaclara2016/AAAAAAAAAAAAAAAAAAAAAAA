@@ -10,7 +10,7 @@ exports.run = (client, logger, oldMember, newMember) => {
             cacheIdsForBug.push(memberId);
             logger.info("Added DiscordUserId: " + memberId + " to cache list");
             //TODO change game name
-            if(newMember.presence.activity.name === "JetBrains IDE") {
+            if(newMember.presence.activity.name === "League of Legends") {
                 let eventFunction = require('../handler/leagueGameInformation');
                 eventFunction.run(client, logger, memberId);
             }
