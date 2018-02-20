@@ -82,7 +82,7 @@ async function handleMainAccount(mainAccount, accounts) {
     let result;
     lolApi.base.setRegion(mainAccount.region);
     try {
-        result = await lolApi.executeCall('Special', 'getCurrentGameParticipantElo', 'Gomar');
+        result = await lolApi.executeCall('Special', 'getCurrentGameParticipantElo', mainAccount.SummonerName);
     } catch (error) {
         if (error.status === 404) {
             logger.debug("leagueGameInformation: League Account: " + mainAccount.summonerName + " not in Game. Trying next...");
