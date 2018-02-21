@@ -22,7 +22,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "eslint .",
+    "eslint": "eslint .",
+    "eslint-fix": "eslint . --fix",
     "run": "node index.js",
     "start": "forever start sharder.js",
     "stop": "forever stopall"

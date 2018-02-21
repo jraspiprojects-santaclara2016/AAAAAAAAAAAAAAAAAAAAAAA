@@ -17,6 +17,37 @@ pool.on('release', function(connection) {
 
 const functions = {
 
+    setGuildPrefix: function(prefix, guildId) {
+        return new Promise(function(resolve, reject) {
+            pool.getConnection(function(err, connection) {
+                const escapedPrefix = connection.escape(prefix);
+                const setGuildPrefix = `INSERT INTO guildConfiguration (guildId, prefix) VALUES(${guildId}, ${escapedPrefix}) ON DUPLICATE KEY UPDATE prefix = ${escapedPrefix}`;
+                connection.query(setGuildPrefix, function(error, results) {
+                    if (error) {
+                        reject(error);
+                    }
+                    resolve(results);
+                    connection.release();
+                });
+            });
+        });
+    },
+
+    getGuildPrefix: function(guildId) {
+        return new Promise(function(resolve, reject) {
+            pool.getConnection(function(err, connection) {
+                const getGuildPrefix = `SELECT prefix FROM guildConfiguration WHERE guildId = ${guildId}`;
+                connection.query(getGuildPrefix, function(error, results) {
+                    if (error) {
+                        reject(error);
+                    }
+                    resolve(results);
+                    connection.release();
+                });
+            });
+        });
+    },
+
     getEnableLiveGameStatsForDiscordId: function(discordId) {
         return new Promise(function(resolve, reject) {
             pool.getConnection(function(err, connection) {
@@ -67,7 +98,7 @@ const functions = {
             pool.getConnection(function(err, connection) {
                 const deleteSummonerName = `DELETE FROM summonerNames WHERE summonerName = ${connection.escape(summonerName)} AND discordId = ${connection.escape(discordId)}`;
                 connection.query(deleteSummonerName, function(error, results) {
-                    if(error) reject(error);
+                    if (error) reject(error);
                     resolve(results);
                 });
                 connection.release();
