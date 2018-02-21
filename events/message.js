@@ -1,22 +1,21 @@
 const config = require('../configuration/config.json');
 const errorEmbedHandler = require('../handler/discordErrorEmbedHandler');
+const winstonLogHandler = require('../handler/winstonLogHandler');
+const logger = winstonLogHandler.getLogger();
 
-exports.run = (client, logger, message) => {
-    if (message.author.bot) return;
+
+exports.run = async (client, message) => {
+    if(message.author.bot) return;
     if(message.content.indexOf(config.commandPrefix) !== 0) return;
-    //This is the best way to define args. Trust me.
     const args = message.content.slice(config.commandPrefix.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase();
     logger.info('Command received: ' + command);
-    //This matches an incoming command with right command prefix to a file located in /commands/.
+    if(!client.commands.has(command)) return errorEmbedHandler.run(client, message, `${command} doesn't exist.`);
     try {
-        logger.verbose('Try to require: ' + command + '.js');
-        let commandFile = require(`../commands/${command}.js`);
-        commandFile.run(client, message, args, logger);
-        logger.verbose(command + '.js has been required and executed!');
-    } catch (err) {
-        logger.verbose('The file: ' + command + '.js does not exist and therefore cannot be required!');
-        let errorMessage = 'The command "' + command + '" does not exist.';
-        errorEmbedHandler.run(client, message, errorMessage);
+        await client.commands.get(command).execute(client, message, args);
+        logger.info(`${command} executed successfully.`);
+    } catch (error) {
+        errorEmbedHandler.run(client, message, `I could not run the ${command} command. Please contact the bot Owner.`);
+        console.log(error);
     }
 };
