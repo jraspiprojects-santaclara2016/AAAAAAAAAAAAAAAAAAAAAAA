@@ -1,27 +1,13 @@
 const winstonLogHandler = require('../handler/winstonLogHandler');
-const logger = winstonLogHandler.createLogger();
-let cacheIdsForBug = [];
+const logger = winstonLogHandler.getLogger();
 
-exports.run = (client, logger, oldMember, newMember) => {
-
-    if(newMember) {
-        let memberId = newMember.user.id;
-        if(!cacheIdsForBug.includes(memberId)) {
-            cacheIdsForBug.push(memberId);
-            logger.info("Added DiscordUserId: " + memberId + " to cache list");
-            //TODO change game name
-            if(newMember.presence.activity.name === "League of Legends") {
-                let eventFunction = require('../handler/leagueGameInformation');
-                eventFunction.run(client, logger, memberId);
-            }
-            setTimeout(function(){
-                let index = cacheIdsForBug.indexOf(memberId);
-                cacheIdsForBug.splice(index, 1);
-                logger.info("Removed DiscordUserId: " + memberId + " from cache list");
-
-            }, 1000 * 2)
-        }
+exports.run = (client, oldMember, newMember) => {
+    if(!newMember) return;
+    const memberId = newMember.user.id;
+    if(newMember.presence) return;
+    if(newMember.presence.activity.name === 'League of Legends') {
+        logger.info('Executing leagueGameInformation');
+        const eventFunction = require('../handler/leagueGameInformation');
+        eventFunction.run(client, memberId);
     }
-
-
 };

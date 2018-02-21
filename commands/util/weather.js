@@ -1,13 +1,15 @@
 const Discord = require('discord.js');
 const request = require('request');
 const apiKeys = require('../../configuration/apiKeyConfig');
+const winstonLogHandler = require('../../handler/winstonLogHandler');
+const logger = winstonLogHandler.getLogger();
 
 const errorEmbedHandler = require('../../handler/discordErrorEmbedHandler');
 
 module.exports = {
     name: 'weather',
     description: 'Display the current weather of a specified location.',
-    execute(client, message, args, logger) {
+    execute(client, message, args) {
         if(args.length >= 1) {
             request.get('https://api.openweathermap.org/data/2.5/weather', {
                 qs: {
@@ -31,6 +33,7 @@ module.exports = {
                     ;
                     message.channel.send({ embed });
                 } else {
+                    if(!response.statusCode === 404) logger.error(`weather: Error: ${error}`);
                     errorEmbedHandler.run(client, message, 'I haven\'t found any city that matches your input.');
                 }
             });

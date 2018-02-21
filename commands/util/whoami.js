@@ -1,11 +1,13 @@
 const Discord = require('discord.js');
+const winstonLogHandler = require('../../handler/winstonLogHandler');
+const logger = winstonLogHandler.getLogger();
 
 const config = require('../../configuration/config');
 
 module.exports = {
     name: 'whoami',
     description: 'Display information either about you, or somebody you\'ve mentioned.',
-    execute(client, message, args, logger) {
+    execute(client, message, args) {
         let user;
         if(args.length === 1 && message.mentions.users.first() !== undefined) {
             user = message.mentions.users.first();
@@ -22,6 +24,6 @@ module.exports = {
             .setFooter('By ' + config.botName)
             .setTimestamp()
         ;
-        message.channel.send({ embed }).catch(console.error);
+        message.channel.send({ embed }).catch(error => {logger.error(`whoami: Error: ${error}`);});
     },
 };

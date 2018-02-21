@@ -3,16 +3,16 @@ const winston = require('winston');
 let logger;
 
 module.exports = {
-    getLogger : function () {
+    getLogger : function() {
         return logger;
     },
 
-    createLogger : function (client) {
-        //define directory where the logs are located
+    createLogger : function(client) {
+        // define directory where the logs are located
         const logDir = 'logs';
-        //define environment
+        // define environment
         const env = process.env.NODE_ENV || 'development';
-        //define timestamp format
+        // define timestamp format
         const tsFormat = () => (new Date()).toLocaleTimeString();
         // Create the log directory if it does not exist
         if (!fs.existsSync(logDir)) {
@@ -23,10 +23,10 @@ module.exports = {
         if(client !== undefined) {
             label = `Shard ${client.shard.client.options.shardId}`;
         } else {
-            label = 'Sharder'
+            label = 'Sharder';
         }
 
-        //winston configuration
+        // winston configuration
         logger = new (winston.Logger)({
             transports: [
                 // colorize the output to the console
@@ -34,7 +34,7 @@ module.exports = {
                     colorize: true,
                     timestamp: tsFormat,
                     level: env === 'development' ? 'silly' : 'info',
-                    label: label
+                    label: label,
                 }),
                 new (require('winston-daily-rotate-file'))({
                     filename: `${logDir}/-results.log`,
@@ -42,10 +42,10 @@ module.exports = {
                     datePattern: 'yyyy-MM-dd',
                     prepend: true,
                     level: env === 'development' ? 'debug' : 'info',
-                    label: label
-                })
-            ]
+                    label: label,
+                }),
+            ],
         });
         return logger;
-    }
+    },
 };

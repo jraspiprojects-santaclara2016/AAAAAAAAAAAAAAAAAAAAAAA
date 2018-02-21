@@ -1,10 +1,12 @@
 const Discord = require('discord.js');
 const config = require('../../configuration/config');
+const winstonLogHandler = require('../../handler/winstonLogHandler');
+const logger = winstonLogHandler.getLogger();
 
 module.exports = {
     name: 'serverinfo',
     description: 'Information about the server.',
-    execute(client, message, args, logger) {
+    execute(client, message) {
         const embed = new Discord.MessageEmbed()
             .setTitle('Serverinfo:')
             .setColor('DARK_GREEN')
@@ -15,6 +17,6 @@ module.exports = {
             .setFooter(`By ${config.botName}`)
             .setTimestamp()
         ;
-        message.channel.send({ embed });
+        message.channel.send({ embed }).catch(error => {logger.error(`serverinfo: Error: ${error}`);});
     },
 };

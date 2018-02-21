@@ -4,15 +4,17 @@ const lolApi = require('league-api-2.0');
 const leagueBlameHandler = require('../../handler/leaguePostGameStatsHandler');
 const discordErrorEmbedHandler = require('../../handler/discordErrorEmbedHandler');
 const apiKeys = require('../../configuration/apiKeyConfig');
+const winstonLogHandler = require('../../handler/winstonLogHandler');
+const logger = winstonLogHandler.getLogger();
 const accountIdFaker = 3440481;
 
 module.exports = {
     name: 'lolblame',
     description: 'Compare the game data of a filthy casual to Faker',
-    execute(client, message, args, logger) {
+    execute(client, message, args) {
         lolApi.base.loadConfig('./configuration/lolConfig.json');
         lolApi.base.setKey(apiKeys.leagueOfLegends);
-        lolApi.base.setRegion("KR");
+        lolApi.base.setRegion('KR');
 
         lolApi.executeCall('Special', 'getLastGameOfSummoner', 'Hide on bush').then(matchDataFaker => {
             const pgsFaker = leagueBlameHandler.run(accountIdFaker, matchDataFaker);
@@ -34,14 +36,17 @@ module.exports = {
                         .setFooter(`Data obtained by ${config.botName} from "RIOT" API`)
                         .setTimestamp()
                     ;
-                    message.channel.send({ embed }).catch(error => {console.log(error)});
+                    message.channel.send({ embed }).catch(error => {logger.log(`lolblame: Error while sending message: ${error}`);});
                 }).catch(error => {
+                    logger.error(`lolBlame: API Error: ${error}`);
                     discordErrorEmbedHandler.run(client, message, `Couldn't request the summoner profile of summoner: "${args.join(' ')}"`);
                 });
             }).catch(error => {
+                logger.error(`lolBlame: API Error: ${error}`);
                 discordErrorEmbedHandler.run(client, message, `Couldn't request the match history of summoner: "${args.join(' ')}"`);
             });
         }).catch(error => {
+            logger.error(`lolBlame: API Error: ${error}`);
             console.log(error);
         });
     },

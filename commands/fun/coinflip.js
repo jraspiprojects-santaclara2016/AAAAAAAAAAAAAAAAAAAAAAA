@@ -1,10 +1,12 @@
 const Discord = require('discord.js');
 const config = require('../../configuration/config.json');
+const winstonLogHandler = require('../../handler/winstonLogHandler');
+const logger = winstonLogHandler.getLogger();
 
 module.exports = {
     name: 'coinflip',
     description: 'Flip a coin.',
-    execute(client, message, args, logger) {
+    execute(client, message) {
         const flip = Math.round(Math.random());
         logger.silly(`[Coinflip] I flipped a ${flip}`);
         if(flip === 0) {

@@ -1,7 +1,5 @@
-
-exports.run = (accountId, matchData, ) => {
-    //League post game stats object!
-    let lpgs = {
+exports.run = (accountId, matchData) => {
+    const lpgs = {
         'general' : {
             'gameMode' : undefined,
             'gameType' : undefined,
@@ -65,7 +63,7 @@ exports.run = (accountId, matchData, ) => {
     };
     let participantID = 0;
     console.log(accountId);
-    for(let i = 0; i< matchData.participantIdentities.length ; i++) {
+    for(let i = 0; i < matchData.participantIdentities.length ; i++) {
         console.log(matchData.participantIdentities[i].player.accountId);
         if(matchData.participantIdentities[i].player.accountId === accountId) {
             participantID = i;

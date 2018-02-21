@@ -1,10 +1,12 @@
 const voiceHandler = require('../../handler/voiceHandler');
+const winstonLogHandler = require('../../handler/winstonLogHandler');
+const logger = winstonLogHandler.getLogger();
 const queue = voiceHandler.getQueue();
 
 module.exports = {
     name: 'skipto',
     description: 'Skip to a specified track in the queue.',
-    async execute(client, message, args, logger) {
+    async execute(client, message) {
         const serverQueue = queue.get(message.guild.id);
         let index = 1;
         message.channel.send(`
@@ -12,7 +14,7 @@ module.exports = {
 ${serverQueue.songs.map(song => `**${index++} -** ${song.title}`).join('\n')}
     
 ***Input the track number you want to skip to... (Timeout 10 sec)***
-    `);
+    `).catch(error => {logger.error(`skipto: Error: ${error}`);});
         let response;
         try {
             response = await message.channel.awaitMessages(msg2 => msg2.content > 0 && msg2.content < serverQueue.songs.length + 1, {

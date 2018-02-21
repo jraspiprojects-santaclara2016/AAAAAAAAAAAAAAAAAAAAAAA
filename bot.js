@@ -1,37 +1,18 @@
-/**
- * This is the main file from MonikaBot.
- * @author emdix
- **/
-
-/*
- *todo implement errorEmbedHandler everywhere
- *todo implement winston logger everywhere
- *todo implement docker
- */
-
-//Require needed npm modules.
 const Discord = require('discord.js');
-//Create a Discord client object.
 const client = new Discord.Client();
 
-//Require my own 'handlers'
-const discordEventHandler = require('./handler/discordEventHandler');
 const winstonLogHandler = require('./handler/winstonLogHandler');
+const logger = winstonLogHandler.createLogger(client);
+
+const discordEventHandler = require('./handler/discordEventHandler');
 const discordLoginHandler = require('./handler/discordLoginHandler');
 const discordMessageHandler = require('./handler/discordMessageHandler');
 
-//create logger
-const logger = winstonLogHandler.createLogger(client);
-
-//dynamic event caller
 discordEventHandler.run(client, logger);
 discordMessageHandler.run(client, logger);
 
-
-//connect the bot to the discord servers.
 discordLoginHandler.run(client, logger);
 
-//Catch unhandled promises
 process.on('unhandledRejection', err => logger.error(`Uncaught Promise Rejection: \n${err.stack}`));
 
 /*

@@ -1,9 +1,6 @@
-/**
- * This file is for the error event that gets emitted whenever the bot cannot connect to the discord web socket.
- * @author emdix
- **/
+const winstonLogHandler = require('../handler/winstonLogHandler');
+const logger = winstonLogHandler.getLogger();
 
-//This segment is executed whenever the bot receives a error event
-exports.run = (client, logger, args) => {
+exports.run = (client, args) => {
     logger.error(args.error.Error);
 };

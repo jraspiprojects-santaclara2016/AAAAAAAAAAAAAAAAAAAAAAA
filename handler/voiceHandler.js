@@ -1,7 +1,7 @@
 const queue = new Map();
 
 module.exports = {
-    getQueue : function () {
+    getQueue : function() {
         return queue;
-    }
+    },
 };

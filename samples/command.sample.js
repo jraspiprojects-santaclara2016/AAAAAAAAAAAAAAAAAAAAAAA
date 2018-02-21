@@ -1,7 +1,8 @@
 module.exports = {
     name: 'commandName',
     description: 'Description of the command.',
-    execute(client, message, args, logger) {
+    // eslint-disable-next-line no-unused-vars
+    execute(client, message, args) {
         // code here!
     },
 };
