@@ -3,7 +3,7 @@ const mariadbHandler = require('../../handler/mariadbHandler');
 const logger = winstonLogHandler.getLogger();
 
 module.exports = {
-    name: 'setGuildPrefix',
+    name: 'setguildprefix',
     description: 'Sets the Prefix for the Guild the author is in if he has the Permissions to do so.',
     async execute(client, message, args) {
         if (!message.guild) return;
@@ -15,7 +15,9 @@ module.exports = {
             } catch (error) {
                 logger.error(`${error.code} ${error.sqlMessage}`);
             }
-            message.channel.send(`Set the Prefix to ${guildId}`);
+            message.channel.send(`Set the Prefix to ${prefix}`);
+        } else {
+            message.channel.send(`You dont have the Permissions to set the Prefix for this Server!`);
         }
     },
 };
