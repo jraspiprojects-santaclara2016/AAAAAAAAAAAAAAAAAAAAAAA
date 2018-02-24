@@ -9,6 +9,6 @@ module.exports = {
         const commandCollection = client.commands;
         const text = `\n___**Commands:**___
 ${commandCollection.map(command => `**-${config.commandPrefix}${command.name}** - ${command.description}`).join('\n')}`;
-        message.author.send(text).catch(error => { logger.error(`help: Error: ${error}`);});
+        message.author.send(text, { split :true }).catch(error => { logger.error(`help: Error: ${error}`);});
     },
 };
