@@ -14,6 +14,6 @@ module.exports = {
     ___**Song queue:**___
 ${serverQueue.songs.map(song => `**${index++} -** ${song.title}`).join('\n')}
     
-***Now playing:*** ${serverQueue.songs[0].title}`).catch(error => {logger.error(`queue: Error: ${error}`);});
+***Now playing:*** ${serverQueue.songs[0].title}`, { split: true }).catch(error => {logger.error(`queue: Error: ${error}`);});
     },
 };

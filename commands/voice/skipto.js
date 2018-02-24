@@ -14,7 +14,7 @@ module.exports = {
 ${serverQueue.songs.map(song => `**${index++} -** ${song.title}`).join('\n')}
     
 ***Input the track number you want to skip to... (Timeout 10 sec)***
-    `).catch(error => {logger.error(`skipto: Error: ${error}`);});
+    `, { split: true }).catch(error => {logger.error(`skipto: Error: ${error}`);});
         let response;
         try {
             response = await message.channel.awaitMessages(msg2 => msg2.content > 0 && msg2.content < serverQueue.songs.length + 1, {
