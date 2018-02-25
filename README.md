@@ -1,5 +1,5 @@
 <h1 align="center">
-    <a href="https://discord.gg/JtFFkzk"><img src="http://lolisafe.monikabot.moe/7QSiVpxGnfzLDjoC5PDD4DO26KIva6WI.png" width="256px" alt="Monika"></a>
+    <a href="https://discord.gg/JtFFkzk"><img src="https://i.imgur.com/6hUjiER.png" width="256px" alt="Monika"></a>
   <br>
     MonikaBot
   <br>
