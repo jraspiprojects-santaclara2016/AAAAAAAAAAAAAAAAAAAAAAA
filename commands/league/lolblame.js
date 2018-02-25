@@ -1,10 +1,10 @@
 const Discord = require('discord.js');
 const config = require('../../configuration/config.json');
 const lolApi = require('league-api-2.0');
-const leagueBlameHandler = require('../../handler/leaguePostGameStatsHandler');
-const discordErrorEmbedHandler = require('../../handler/discordErrorEmbedHandler');
+const leagueBlameHandler = require('../../handler/command/leaguePostGameStatsHandler');
+const discordErrorEmbedHandler = require('../../handler/command/discordErrorEmbedHandler');
 const apiKeys = require('../../configuration/apiKeyConfig');
-const winstonLogHandler = require('../../handler/winstonLogHandler');
+const winstonLogHandler = require('../../handler/util/winstonLogHandler');
 const logger = winstonLogHandler.getLogger();
 const accountIdFaker = 3440481;
 

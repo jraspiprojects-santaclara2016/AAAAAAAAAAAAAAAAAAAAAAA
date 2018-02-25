@@ -1,12 +1,12 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 
-const winstonLogHandler = require('./handler/winstonLogHandler');
+const winstonLogHandler = require('./handler/util/winstonLogHandler');
 const logger = winstonLogHandler.createLogger(client);
 
-const discordEventHandler = require('./handler/discordEventHandler');
-const discordLoginHandler = require('./handler/discordLoginHandler');
-const discordMessageHandler = require('./handler/discordMessageHandler');
+const discordEventHandler = require('./handler/util/discordEventHandler');
+const discordLoginHandler = require('./handler/util/discordLoginHandler');
+const discordMessageHandler = require('./handler/util/discordMessageHandler');
 
 discordEventHandler.run(client, logger);
 discordMessageHandler.run(client, logger);

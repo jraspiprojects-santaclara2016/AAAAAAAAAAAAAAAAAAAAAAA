@@ -1,4 +1,4 @@
-const apiKeys = require('../configuration/apiKeyConfig');
+const apiKeys = require('../../configuration/apiKeyConfig');
 
 exports.run = (client, logger) => {
     client.login(apiKeys.discord).then(() => {

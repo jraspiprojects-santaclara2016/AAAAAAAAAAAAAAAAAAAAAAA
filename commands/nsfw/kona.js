@@ -1,4 +1,4 @@
-const danbooruHandler = require('../../handler/danbooruHelperJson');
+const danbooruHandler = require('../../handler/command/danbooruHelperJson');
 
 module.exports = {
     name: 'kona',

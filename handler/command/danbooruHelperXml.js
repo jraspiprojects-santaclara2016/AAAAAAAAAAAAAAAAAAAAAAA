@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const request = require('request');
 const xml2js = require('xml2js');
 
-const config = require('../configuration/config');
+const config = require('../../configuration/config');
 
 exports.run = (client, message, args, link, siteName, urlPrefix) => {
     /* Tags that cannot be requested:

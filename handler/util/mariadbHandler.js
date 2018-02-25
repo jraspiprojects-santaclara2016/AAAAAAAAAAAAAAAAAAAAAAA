@@ -1,6 +1,6 @@
 const mysql = require('mysql');
-const databaseConfig = require('../configuration/databaseConfig.json');
-const logHandler = require('../handler/winstonLogHandler');
+const databaseConfig = require('../../configuration/databaseConfig.json');
+const logHandler = require('./winstonLogHandler');
 const logger = logHandler.getLogger();
 
 const pool = mysql.createPool(databaseConfig);
