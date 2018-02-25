@@ -14,6 +14,7 @@ discordMessageHandler.run(client, logger);
 discordLoginHandler.run(client, logger);
 
 process.on('unhandledRejection', err => logger.error(`Uncaught Promise Rejection: \n${err.stack}`));
+process.on('SIGINT', () => client.destroy());
 
 /*
 Every day, I imagine a future where I can be with you
