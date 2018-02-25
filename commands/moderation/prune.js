@@ -6,7 +6,7 @@ module.exports = {
     description: 'Delete the specified amount of messages from the current channel.',
     execute(client, message, args) {
         if (message.member.hasPermission('MANAGE_MESSAGES')) {
-            message.channel.messages.fetch({limit: args}).then(data => {
+            message.channel.messages.fetch({ limit: args }).then(data => {
                 data.deleteAll();
                 message.channel.send(`deleted ${data.size} messages.`);
             }).catch(error => {

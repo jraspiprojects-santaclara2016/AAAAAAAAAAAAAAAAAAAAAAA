@@ -17,7 +17,7 @@ module.exports = {
                 logger.error(`setGuildPrefix: ${error}`);
             }
         } else {
-            message.channel.send(`You dont have the Permissions to set the Prefix for this Server!`);
+            message.channel.send('You dont have the Permissions to set the Prefix for this Server!');
         }
     },
 };

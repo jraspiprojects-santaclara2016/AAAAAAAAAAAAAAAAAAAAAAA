@@ -13,7 +13,7 @@ module.exports = {
                 if (result.length === 1) {
                     prefix = result[0].prefix;
                 } else {
-                    prefix = config.commandPrefix
+                    prefix = config.commandPrefix;
                 }
             });
         } else {
