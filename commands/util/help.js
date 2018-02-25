@@ -1,6 +1,6 @@
 const config = require('../../configuration/config');
-const winstonLogHandler = require('../../handler/winstonLogHandler');
-const mariadbHandler = require('../../handler/mariadbHandler');
+const winstonLogHandler = require('../../handler/util/winstonLogHandler');
+const mariadbHandler = require('../../handler/util/mariadbHandler');
 const logger = winstonLogHandler.getLogger();
 
 module.exports = {

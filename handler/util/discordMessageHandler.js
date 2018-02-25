@@ -8,7 +8,7 @@ exports.run = (client) => {
         folders.forEach(folder => {
             fs.readdir(`./commands/${folder}`, (err, files) => {
                 files.forEach(file => {
-                    const command = require(`./../commands/${folder}/${file}`);
+                    const command = require(`./../../commands/${folder}/${file}`);
                     client.commands.set(command.name, command);
                 });
             });

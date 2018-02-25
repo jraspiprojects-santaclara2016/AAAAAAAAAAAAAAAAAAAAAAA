@@ -1,9 +1,9 @@
 const ytdl = require('ytdl-core');
 const YouTube = require('simple-youtube-api');
-const winstonLogHandler = require('../../handler/winstonLogHandler');
+const winstonLogHandler = require('../../handler/util/winstonLogHandler');
 const logger = winstonLogHandler.getLogger();
 
-const voiceHandler = require('../../handler/voiceHandler');
+const voiceHandler = require('../../handler/command/voiceHandler');
 const apiKeyConfig = require('../../configuration/apiKeyConfig');
 
 const youtube = new YouTube(apiKeyConfig.youtube);

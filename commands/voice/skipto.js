@@ -1,5 +1,5 @@
-const voiceHandler = require('../../handler/voiceHandler');
-const winstonLogHandler = require('../../handler/winstonLogHandler');
+const voiceHandler = require('../../handler/command/voiceHandler');
+const winstonLogHandler = require('../../handler/util/winstonLogHandler');
 const logger = winstonLogHandler.getLogger();
 const queue = voiceHandler.getQueue();
 

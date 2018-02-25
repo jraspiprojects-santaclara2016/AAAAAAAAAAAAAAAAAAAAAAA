@@ -1,10 +1,10 @@
 const Discord = require('discord.js');
 const request = require('request');
 const apiKeys = require('../../configuration/apiKeyConfig');
-const winstonLogHandler = require('../../handler/winstonLogHandler');
+const winstonLogHandler = require('../../handler/util/winstonLogHandler');
 const logger = winstonLogHandler.getLogger();
 
-const errorEmbedHandler = require('../../handler/discordErrorEmbedHandler');
+const errorEmbedHandler = require('../../handler/command/discordErrorEmbedHandler');
 
 module.exports = {
     name: 'weather',

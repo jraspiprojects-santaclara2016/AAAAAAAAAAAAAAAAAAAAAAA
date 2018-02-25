@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const request = require('request');
-const winstonLogHandler = require('../../handler/winstonLogHandler');
+const winstonLogHandler = require('../../handler/util/winstonLogHandler');
 const logger = winstonLogHandler.getLogger();
 const apiEndpoint = 'http://api.urbandictionary.com/v0/define?term=';
 

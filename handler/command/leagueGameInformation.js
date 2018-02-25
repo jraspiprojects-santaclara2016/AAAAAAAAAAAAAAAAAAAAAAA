@@ -1,11 +1,11 @@
 const Discord = require('discord.js');
 const lolApi = require('league-api-2.0');
 
-const mariadbHandler = require('./mariadbHandler');
-const winstonLogHandler = require('./winstonLogHandler');
+const mariadbHandler = require('../util/mariadbHandler');
+const winstonLogHandler = require('../util/winstonLogHandler');
 const logger = winstonLogHandler.getLogger();
 const discordCustomEmbedHandler = require('./discordCustomEmbedHandler');
-const apiKeys = require('../configuration/apiKeyConfig');
+const apiKeys = require('../../configuration/apiKeyConfig');
 
 // TODO remove webhook if prod
 const debugHook = new Discord.WebhookClient(apiKeys.DEBUG_WEBHOOK_ID, apiKeys.DEBUG_WEBHOOK_TOKEN);

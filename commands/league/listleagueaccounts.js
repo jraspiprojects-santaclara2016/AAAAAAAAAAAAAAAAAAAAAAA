@@ -1,5 +1,5 @@
-const mariadbHandler = require('../../handler/mariadbHandler');
-const winstonLogHandler = require('../../handler/winstonLogHandler');
+const mariadbHandler = require('../../handler/util/mariadbHandler');
+const winstonLogHandler = require('../../handler/util/winstonLogHandler');
 const logger = winstonLogHandler.getLogger();
 
 module.exports = {

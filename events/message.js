@@ -1,7 +1,7 @@
 const config = require('../configuration/config.json');
-const errorEmbedHandler = require('../handler/discordErrorEmbedHandler');
-const winstonLogHandler = require('../handler/winstonLogHandler');
-const mariadbHandler = require('../handler/mariadbHandler');
+const errorEmbedHandler = require('../handler/command/discordErrorEmbedHandler');
+const winstonLogHandler = require('../handler/util/winstonLogHandler');
+const mariadbHandler = require('../handler/util/mariadbHandler');
 const logger = winstonLogHandler.getLogger();
 
 

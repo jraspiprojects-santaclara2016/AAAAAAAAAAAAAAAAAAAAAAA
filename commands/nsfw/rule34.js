@@ -1,4 +1,4 @@
-const danbooruHandler = require('../../handler/danbooruHelperXml');
+const danbooruHandler = require('../../handler/command/danbooruHelperXml');
 
 module.exports = {
     name: 'rule34',

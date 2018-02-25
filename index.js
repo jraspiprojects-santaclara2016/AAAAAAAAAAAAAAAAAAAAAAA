@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const apiKeys = require('./configuration/apiKeyConfig');
 
-const winstonLogHandler = require('./handler/winstonLogHandler');
+const winstonLogHandler = require('./handler/util/winstonLogHandler');
 const logger = winstonLogHandler.createLogger();
 
 const ShardManager = new Discord.ShardingManager('./bot.js', {

@@ -1,4 +1,4 @@
-const winstonLogHandler = require('../handler/winstonLogHandler');
+const winstonLogHandler = require('../handler/util/winstonLogHandler');
 const logger = winstonLogHandler.getLogger();
 
 exports.run = (client, oldMember, newMember) => {
@@ -8,7 +8,7 @@ exports.run = (client, oldMember, newMember) => {
     if(!newMember.presence.activity) return;
     if(newMember.presence.activity.name === 'League of Legends') {
         logger.info('Executing leagueGameInformation');
-        const eventFunction = require('../handler/leagueGameInformation');
+        const eventFunction = require('../handler/command/leagueGameInformation');
         eventFunction.run(client, memberId);
     }
 };

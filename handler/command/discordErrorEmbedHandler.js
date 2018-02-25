@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const config = require('../configuration/config.json');
+const config = require('../../configuration/config.json');
 
 exports.run = (client, message, errorMessage) => {
     const embed = new Discord.MessageEmbed()

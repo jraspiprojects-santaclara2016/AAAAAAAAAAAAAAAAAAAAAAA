@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
-const voiceHandler = require('../../handler/voiceHandler');
-const logHandler = require('../../handler/winstonLogHandler');
+const voiceHandler = require('../../handler/command/voiceHandler');
+const logHandler = require('../../handler/util/winstonLogHandler');
 const queue = voiceHandler.getQueue();
 const logger = logHandler.getLogger();
 
