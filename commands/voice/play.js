@@ -115,7 +115,6 @@ function play(guild, song) {
             console.log('song ended.');
             if(!serverQueue.loop) serverQueue.songs.shift();
             play(guild, serverQueue.songs[0]);
-            dispatcher.setVolume(serverQueue.volume);
         })
         .on('error', error => console.error(error))
         .on('debug', debug => console.debug(debug))
