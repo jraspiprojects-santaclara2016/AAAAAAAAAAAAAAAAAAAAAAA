@@ -8,7 +8,7 @@ module.exports = {
     description: 'Display the music queue.',
     execute(client, message) {
         const serverQueue = queue.get(message.guild.id);
-        if(!serverQueue) return message.channel.join('There is nothing playing.');
+        if(!serverQueue) return message.channel.send('There is nothing playing.');
         let index = 1;
         message.channel.send(`
     ___**Song queue:**___

@@ -8,7 +8,7 @@ module.exports = {
     description: 'Stop the current queue and leave the voice channel.',
     execute(client, message) {
         const serverQueue = queue.get(message.guild.id);
-        if(!serverQueue) return message.channel.join('There is nothing playing I could stop for you.');
+        if(!serverQueue) return message.channel.send('There is nothing playing I could stop for you.');
         serverQueue.songs = [];
         serverQueue.connection.dispatcher.end();
         logger.debug('stop: dispatcher end event called.');

@@ -8,7 +8,7 @@ module.exports = {
     description: 'Now playing command for the voice integration.',
     execute(client, message) {
         const serverQueue = queue.get(message.guild.id);
-        if(!serverQueue) return message.channel.join('There is nothing playing.');
+        if(!serverQueue) return message.channel.send('There is nothing playing.');
         message.channel.send(`Now playing: **${serverQueue.songs[0].title}**`).catch(error => {logger.error(`np: Error: ${error}`);});
     },
 };
