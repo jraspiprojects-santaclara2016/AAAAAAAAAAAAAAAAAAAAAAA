@@ -9,18 +9,23 @@ module.exports = {
     async execute(client, message) {
         if (!message.guild) return;
         const guildId = message.guild.id;
-        const result = await mariadbHandler.functions.getGuildPrefix(guildId);
         let prefix;
-        if (result.length === 1) {
-            prefix = result[0].prefix;
-        } else {
-            prefix = config.commandPrefix
+        try {
+            const result = await mariadbHandler.functions.getGuildPrefix(guildId);
+            if (result.length === 1) {
+                prefix = result[0].prefix;
+            } else {
+                prefix = config.commandPrefix;
+                logger.verbose(`Use default Prefix ${prefix}`);
+            }
+        } catch (error) {
+            logger.error(`showGuildPrefix: ${error.code} ${error.sqlMessage}`);
+            prefix = config.commandPrefix;
         }
         try {
             await message.channel.send(`The Prefix is ${prefix}`);
         } catch (error) {
             logger.error(`showGuildPrefix: Error while trying to send Prefix: ${error}`);
         }
-
     },
 };

@@ -12,10 +12,10 @@ module.exports = {
             const prefix = args.join(' ');
             try {
                 await mariadbHandler.functions.setGuildPrefix(prefix, guildId);
+                message.channel.send(`Set the Prefix to ${prefix}`);
             } catch (error) {
-                logger.error(`${error.code} ${error.sqlMessage}`);
+                logger.error(`setGuildPrefix: ${error}`);
             }
-            message.channel.send(`Set the Prefix to ${prefix}`);
         } else {
             message.channel.send(`You dont have the Permissions to set the Prefix for this Server!`);
         }
