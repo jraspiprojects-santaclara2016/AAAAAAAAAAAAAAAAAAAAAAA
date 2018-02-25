@@ -28,9 +28,9 @@ Feel free to open new issues as soon as you are experiencing a bug or want somet
 * Run 'npm run run' in the cmd/terminal
 * The bot should be online now. If you encounter errors, please open an issue if the same error does not already exists in the issues.
 
-### Environment variables
-* NODE_ENV => environment (development or production).
-
-###Config files
+### Config files
 Config files will be added into the samples folder but at the moment we are working on a efficient solution to save
 stuff like the keys and the database connection.
+
+### Environment variables
+* NODE_ENV => environment (development or production).
