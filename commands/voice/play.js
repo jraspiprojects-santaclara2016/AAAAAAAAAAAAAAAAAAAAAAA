@@ -26,7 +26,7 @@ module.exports = {
             return message.channel.send('I cannot speak in your voice channel, make sure I have the proper permissions!');
         }
         logger.debug('Bot can join Channel.');
-        if (args[0].match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
+        if (args[0].match(/^https?:\/\/(www.youtube.com|youtube.com)\/.*list(.*)$/)) {
             logger.debug('Indexing playlist');
             const playlist = await youtube.getPlaylist(args[0]);
             const videos = await playlist.getVideos();
