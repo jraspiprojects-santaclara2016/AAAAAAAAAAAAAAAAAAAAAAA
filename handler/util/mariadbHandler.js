@@ -6,13 +6,13 @@ const logger = logHandler.getLogger();
 const pool = mysql.createPool(databaseConfig);
 
 pool.on('acquire', function(connection) {
-    logger.verbose('Connection %d acquired', connection.threadId);
+    logger.verbose('mariadbHandler: Connection %d acquired', connection.threadId);
 });
 pool.on('enqueue', function() {
-    logger.verbose('Waiting for available connection slot');
+    logger.verbose('mariadbHandler: Waiting for available connection slot');
 });
 pool.on('release', function(connection) {
-    logger.verbose('Connection %d released', connection.threadId);
+    logger.verbose('mariadbHandler: Connection %d released', connection.threadId);
 });
 
 const functions = {

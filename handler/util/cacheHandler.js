@@ -1,11 +1,8 @@
 const cache = new Map();
 
 module.exports = {
-    createPrefixCache: function(guildId) {
-        cache.get(guildId).prefix = {
-            'prefix': '!m.',
-            'cached': false,
-        };
+    createPrefixCache: function(guildId, prefix) {
+        cache.set(guildId, { 'prefix': `${prefix}` });
     },
     createMusicQueueCache: function(guildId) {
         cache.get(guildId).musicQueue = {
