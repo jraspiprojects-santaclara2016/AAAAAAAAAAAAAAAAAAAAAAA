@@ -2,6 +2,8 @@ const config = require('../configuration/config.json');
 const errorEmbedHandler = require('../handler/command/discordErrorEmbedHandler');
 const winstonLogHandler = require('../handler/util/winstonLogHandler');
 const mariadbHandler = require('../handler/util/mariadbHandler');
+const cacheHandler = require('../handler/util/cacheHandler');
+
 const logger = winstonLogHandler.getLogger();
 
 
@@ -11,20 +13,32 @@ exports.run = async (client, message) => {
     if (message.mentions.has(client.user.id)) {
         await handleMentionMessage(message, client);
     } else if (message.guild) {
+        prefix = await checkCacheAndGetPrefix(message);
+    } else {
+        prefix = config.commandPrefix;
+    }
+    await handlePrefixMessage(message, prefix, client);
+};
+
+async function checkCacheAndGetPrefix(message) {
+    const guildId = message.guild.id;
+    let prefix;
+    if (!cacheHandler.getCache().has(guildId)) {
         try {
-            const result = await mariadbHandler.functions.getGuildPrefix(message.guild.id);
+            const result = await mariadbHandler.functions.getGuildPrefix(guildId);
             if (result.length === 1) {
                 prefix = result[0].prefix;
+                cacheHandler.createPrefixCache(guildId);
             }
         } catch (error) {
             logger.warn('Message: Warning DB error: ' + error);
             prefix = config.commandPrefix;
         }
     } else {
-        prefix = config.commandPrefix;
+        prefix = cacheHandler.getCache().get(guildId).prefix;
     }
-    await handlePrefixMessage(message, prefix, client);
-};
+    return prefix;
+}
 
 async function handlePrefixMessage(message, prefix, client) {
     if (message.content.indexOf(prefix) !== 0) return;
