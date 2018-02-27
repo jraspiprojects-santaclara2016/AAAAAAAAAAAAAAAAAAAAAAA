@@ -10,6 +10,7 @@ const logger = winstonLogHandler.getLogger();
 exports.run = async (client, message) => {
     if (message.author.bot) return;
     let prefix;
+    if (message.mentions.everyone) return;
     if (message.mentions.has(client.user.id)) {
         await handleMentionMessage(message, client);
     } else if (message.guild) {
