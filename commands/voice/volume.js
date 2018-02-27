@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
-const voiceHandler = require('../../handler/command/voiceHandler');
+const cacheHandler = require('../../handler/util/cacheHandler');
+const musicCache = cacheHandler.getMusicCache();
 const logHandler = require('../../handler/util/winstonLogHandler');
-const queue = voiceHandler.getQueue();
 const logger = logHandler.getLogger();
 
 
@@ -10,7 +10,7 @@ module.exports = {
     description: 'Either display the volume ot set it to the specified value.',
     async execute(client, message, args) {
         let embed;
-        const serverQueue = queue.get(message.guild.id);
+        const serverQueue = musicCache.get(message.guild.id);
         if(!serverQueue) return message.channel.send('There is nothing playing.');
         if(!(serverQueue.voiceChannel === message.member.voiceChannel)) return message.channel.send('You are not in the channel where the music is playing...');
         if(!args[0]) return message.channel.send(`The current volume is: **${serverQueue.volume * 100}%**`);
