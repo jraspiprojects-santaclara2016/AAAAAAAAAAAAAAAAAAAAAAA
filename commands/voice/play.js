@@ -39,7 +39,7 @@ async function checkPermissions(client, message, voiceChannel) {
 }
 
 async function isYoutubeLink(link) {
-    if(link.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
+    if(link.match(/^https?:\/\/(www.youtube.com|youtube.com)\/(.*)$/)) {
         return true;
     } else {
         return false;
@@ -100,7 +100,7 @@ ${videos.map(searchVideo => `**${index++} -** ${searchVideo.title}`).join('\n')}
 }
 
 async function handleYoutubeVideo(video, message, voiceChannel, playlist = false) {
-    let musicQueue = cacheHandler.getMusicQueueCache(message.guild.id);
+    let musicQueue = musicCache.get(message.guild.id);
     const song = {
         id: video.id,
         title: video.title,
@@ -108,7 +108,7 @@ async function handleYoutubeVideo(video, message, voiceChannel, playlist = false
     };
     if(!musicQueue) {
         cacheHandler.createMusicQueueCache(message.guild.id);
-        musicQueue = await cacheHandler.getMusicQueueCache(message.guild.id);
+        musicQueue = await musicCache.get(message.guild.id);
         musicQueue.textChannel = message.channel;
         musicQueue.voiceChannel = message.member.voiceChannel;
         console.log(musicQueue);

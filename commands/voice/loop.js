@@ -1,13 +1,13 @@
-const voiceHandler = require('../../handler/command/voiceHandler');
+const cacheHandler = require('../../handler/util/cacheHandler');
 const winstonLogHandler = require('../../handler/util/winstonLogHandler');
 const logger = winstonLogHandler.getLogger();
-const queue = voiceHandler.getQueue();
+const musicCache = cacheHandler.getMusicCache();
 
 module.exports = {
     name: 'loop',
     description: 'loop/unloop the current playing music.',
     execute(client, message) {
-        const serverQueue = queue.get(message.guild.id);
+        const serverQueue = musicCache.get(message.guild.id);
         if(serverQueue) {
             serverQueue.loop = !serverQueue.loop;
             message.channel.send(`Toggled loop to: ${serverQueue.loop}`);

@@ -16,9 +16,6 @@ module.exports = {
             'loop': false,
         });
     },
-    getMusicQueueCache: function(guildId) {
-        return musicQueueCache.get(guildId);
-    },
     getMusicCache: function() {
         return musicQueueCache;
     },
