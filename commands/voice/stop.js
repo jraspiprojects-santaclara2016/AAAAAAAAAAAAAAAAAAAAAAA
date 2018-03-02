@@ -1,13 +1,13 @@
-const voiceHandler = require('../../handler/command/voiceHandler');
+const cacheHandler = require('../../handler/util/cacheHandler');
 const winstonLogHandler = require('../../handler/util/winstonLogHandler');
 const logger = winstonLogHandler.getLogger();
-const queue = voiceHandler.getQueue();
+const musicCache = cacheHandler.getMusicCache();
 
 module.exports = {
     name: 'stop',
     description: 'Stop the current queue and leave the voice channel.',
     execute(client, message) {
-        const serverQueue = queue.get(message.guild.id);
+        const serverQueue = musicCache.get(message.guild.id);
         if(!serverQueue) return message.channel.send('There is nothing playing I could stop for you.');
         serverQueue.songs = [];
         serverQueue.connection.dispatcher.end();

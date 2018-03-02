@@ -1,11 +1,11 @@
-const voiceHandler = require('../handler/command/voiceHandler');
+const cacheHandler = require('../handler/util/cacheHandler');
+const musicCache = cacheHandler.getMusicCache();
 const winstonLogHandler = require('../handler/util/winstonLogHandler');
 const logger = winstonLogHandler.getLogger();
-const queue = voiceHandler.getQueue();
 
 exports.run = async (client, oldMember, newMember) => {
     if(!oldMember.voiceChannel) return;
-    const serverQueue = queue.get(oldMember.guild.id);
+    const serverQueue = musicCache.get(oldMember.guild.id);
     if(!serverQueue) return;
     if(serverQueue.voiceChannel === oldMember.voiceChannel) {
         if(oldMember.id === client.user.id) {
@@ -19,13 +19,13 @@ exports.run = async (client, oldMember, newMember) => {
 
 async function updateVoiceChannel(serverQueue, oldMember, newMember) {
     if(newMember.voiceChannel !== oldMember.voiceChannel) {
-        logger.debug('I was moved. Updating voice channel information now!');
+        logger.debug('voiceStateUpdate: I was moved. Updating voice channel information now!');
         serverQueue.voiceChannel = newMember.voiceChannel;
     }
 }
 
 async function leaveVoiceChannel(serverQueue) {
-    logger.debug('voiceStateUpdate: Voicechannel now empty... I\'m leaving now.');
+    logger.debug('voiceStateUpdate: Voice channel empty now... I\'m leaving.');
     serverQueue.songs = [];
     serverQueue.connection.dispatcher.end();
 }

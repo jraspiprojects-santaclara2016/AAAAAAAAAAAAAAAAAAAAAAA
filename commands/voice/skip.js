@@ -1,16 +1,16 @@
-const voiceHandler = require('../../handler/command/voiceHandler');
+const cacheHandler = require('../../handler/util/cacheHandler');
 const winstonLogHandler = require('../../handler/util/winstonLogHandler');
 const logger = winstonLogHandler.getLogger();
-const queue = voiceHandler.getQueue();
+const musicCache = cacheHandler.getMusicCache();
 
 module.exports = {
     name: 'skip',
     description: 'Skip to the next song.',
     execute(client, message) {
-        const serverQueue = queue.get(message.guild.id);
-        if(!serverQueue) return message.channel.send('There is nothing playing I could skip for you.');
-        if(serverQueue.loop) serverQueue.loop = !serverQueue.loop;
-        serverQueue.connection.dispatcher.end();
+        const musicQueue = musicCache.get(message.guild.id);
+        if(!musicQueue) return message.channel.send('There is nothing playing I could skip for you.');
+        if(musicQueue.loop) musicQueue.loop = !musicQueue.loop;
+        musicQueue.connection.dispatcher.end();
         logger.debug('skip: dispatcher end executed.');
     },
 };

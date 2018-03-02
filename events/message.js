@@ -24,19 +24,19 @@ exports.run = async (client, message) => {
 async function checkCacheAndGetPrefix(message) {
     const guildId = message.guild.id;
     let prefix;
-    if (!cacheHandler.getCache().has(guildId)) {
+    if (!cacheHandler.getPrefixCache().has(guildId)) {
         try {
             const result = await mariadbHandler.functions.getGuildPrefix(guildId);
             if (result.length === 1) {
                 prefix = result[0].prefix;
-                cacheHandler.createPrefixCache(guildId);
+                cacheHandler.createPrefixCache(guildId, prefix);
             }
         } catch (error) {
             logger.warn('Message: Warning DB error: ' + error);
             prefix = config.commandPrefix;
         }
     } else {
-        prefix = cacheHandler.getCache().get(guildId).prefix;
+        prefix = cacheHandler.getPrefixCache().get(guildId).prefix;
     }
     return prefix;
 }

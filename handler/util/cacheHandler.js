@@ -1,11 +1,12 @@
-const cache = new Map();
+const prefixCache = new Map();
+const musicQueueCache = new Map();
 
 module.exports = {
     createPrefixCache: function(guildId, prefix) {
-        cache.set(guildId, { 'prefix': `${prefix}` });
+        prefixCache.set(guildId, { 'prefix': `${prefix}` });
     },
     createMusicQueueCache: function(guildId) {
-        cache.get(guildId).musicQueue = {
+        musicQueueCache.set(guildId, {
             'textChannel': null,
             'voiceChannel': null,
             'connection': null,
@@ -13,9 +14,12 @@ module.exports = {
             'volume': 0.1,
             'playing': false,
             'loop': false,
-        };
+        });
     },
-    getCache: function() {
-        return cache;
+    getMusicCache: function() {
+        return musicQueueCache;
+    },
+    getPrefixCache: function() {
+        return prefixCache;
     },
 };

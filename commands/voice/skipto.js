@@ -1,13 +1,13 @@
-const voiceHandler = require('../../handler/command/voiceHandler');
+const cacheHandler = require('../../handler/util/cacheHandler');
 const winstonLogHandler = require('../../handler/util/winstonLogHandler');
 const logger = winstonLogHandler.getLogger();
-const queue = voiceHandler.getQueue();
+const musicCache = cacheHandler.getMusicCache();
 
 module.exports = {
     name: 'skipto',
     description: 'Skip to a specified track in the queue.',
     async execute(client, message) {
-        const serverQueue = queue.get(message.guild.id);
+        const serverQueue = musicCache.get(message.guild.id);
         let index = 1;
         message.channel.send(`
     ___**Song queue:**___
@@ -26,8 +26,8 @@ ${serverQueue.songs.map(song => `**${index++} -** ${song.title}`).join('\n')}
             console.error(err);
             return message.channel.send('No or invalid value entered, cancelling video selection.');
         }
-        const playlistIndex = parseInt(response.first().content) - 1;
-        for(let i = 0; i < playlistIndex - 1; i++) {
+        const playlistIndex = parseInt(response.first().content);
+        for(let i = 0; i < playlistIndex - 2; i++) {
             serverQueue.songs.shift();
         }
         message.channel.send('Skipping...');
