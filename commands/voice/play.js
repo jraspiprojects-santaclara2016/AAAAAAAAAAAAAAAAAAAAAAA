@@ -137,7 +137,7 @@ function play(guild, song) {
         musicCache.delete(guild.id);
         return;
     }
-    const dispatcher = musicQueue.connection.play(ytdl(song.url, { filter: 'audioonly' }))
+    const dispatcher = musicQueue.connection.play(ytdl(song.url, { filter: 'audio' }))
         .on('end', () => {
             logger.debug('play: Dispatcher.end() triggered.');
             if(!musicQueue.loop) musicQueue.songs.shift();
