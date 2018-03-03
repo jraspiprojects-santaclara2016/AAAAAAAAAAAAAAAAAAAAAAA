@@ -16,7 +16,7 @@ module.exports = {
         }
         const embed = new Discord.MessageEmbed()
             .setTitle('Whoami command:')
-            .setThumbnail(user.avatarURL)
+            .setThumbnail(user.avatarURL())
             .setColor('DARK_GREEN')
             .addField('Name:', user.tag)
             .addField('UserID:', user.id)
