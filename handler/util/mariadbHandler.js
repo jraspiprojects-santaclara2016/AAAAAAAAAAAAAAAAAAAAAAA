@@ -16,7 +16,35 @@ pool.on('release', function(connection) {
 });
 
 const functions = {
-
+    setFavPlaylist: function(favPlaylist, userId) {
+        return new Promise(function(resolve, reject) {
+            pool.getConnection(function(err, connection) {
+                const escapedPlaylist = connection.escape(favPlaylist);
+                const setFavPlaylist = `INSERT INTO discordUser (favPlaylist, discordId) VALUES(${escapedPlaylist}, ${userId}) ON DUPLICATE KEY UPDATE favPlaylist = ${escapedPlaylist}`;
+                connection.query(setFavPlaylist, function(error, results) {
+                    if (error) {
+                        reject(error);
+                    }
+                    resolve(results);
+                    connection.release();
+                });
+            });
+        });
+    },
+    getFavPlaylist: function(userId) {
+        return new Promise(function(resolve, reject) {
+            pool.getConnection(function(err, connection) {
+                const getFavPlaylist = `SELECT favPlaylist FROM discordUser WHERE discordId = ${userId}`;
+                connection.query(getFavPlaylist, function(error, results) {
+                    if (error) {
+                        reject(error);
+                    }
+                    resolve(results);
+                    connection.release();
+                });
+            });
+        });
+    },
     setGuildPrefix: function(prefix, guildId) {
         return new Promise(function(resolve, reject) {
             pool.getConnection(function(err, connection) {
@@ -32,7 +60,6 @@ const functions = {
             });
         });
     },
-
     getGuildPrefix: function(guildId) {
         return new Promise(function(resolve, reject) {
             pool.getConnection(function(err, connection) {
@@ -47,7 +74,6 @@ const functions = {
             });
         });
     },
-
     getEnableLiveGameStatsForDiscordId: function(discordId) {
         return new Promise(function(resolve, reject) {
             pool.getConnection(function(err, connection) {
@@ -62,7 +88,6 @@ const functions = {
             });
         });
     },
-
     getLeagueAccountsOfDiscordId: function(discordId) {
         return new Promise(function(resolve, reject) {
             pool.getConnection(function(err, connection) {
@@ -77,7 +102,6 @@ const functions = {
             });
         });
     },
-
     addLeagueAccount: function(summonerName, region, discordId, isMain) {
         return new Promise(function(resolve, reject) {
             pool.getConnection(function(err, connection) {
@@ -92,7 +116,6 @@ const functions = {
             });
         });
     },
-
     deleteLeagueAccount: function(summonerName, discordId) {
         return new Promise(function(resolve, reject) {
             pool.getConnection(function(err, connection) {

@@ -111,7 +111,6 @@ async function handleYoutubeVideo(video, message, voiceChannel, playlist = false
         musicQueue = await musicCache.get(message.guild.id);
         musicQueue.textChannel = message.channel;
         musicQueue.voiceChannel = message.member.voiceChannel;
-        console.log(musicQueue);
         musicQueue.songs.push(song);
 
         try {
