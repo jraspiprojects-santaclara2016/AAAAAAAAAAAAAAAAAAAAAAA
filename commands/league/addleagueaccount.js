@@ -50,9 +50,9 @@ async function waitingMessage(client, message, embed, filter) {
             time: 30000,
             errors: ['time'],
         });
-    } catch (err) {
+    } catch (error) {
         logger.error(`AddLeagueAccount: Error: ${error}`);
-        return message.channel.send('No or invalid value entered, cancelling volume selection.').catch(error => logger.error(`AddLeagueAccount: Error sending message: ${error}`));
+        return message.channel.send('No or invalid value entered, cancelling volume selection.').catch(messageError => logger.error(`AddLeagueAccount: Error sending message: ${messageError}`));
     }
     logger.info(`AddLeagueAccount: Response: ${response.first().content}`);
     return response;
@@ -79,6 +79,6 @@ async function insertAccountIntoDatabase(message, summonerName, region, type, di
         message.channel.send(`I added ${summonerName.toUpperCase()} [${region.toUpperCase()}] to the database`).catch(error => logger.error(`AddLeagueAccount: Error sending message: ${error}`));
     }).catch(error => {
         logger.error(`AddLeagueAccount: Error adding LeagueAccount: ${error.code} ${error.sqlMessage}`);
-        message.channel.send(`An error occurred while inserting the values to the database! ${error.sqlMessage}`).catch(error => logger.error(`AddLeagueAccount: Error sending message: ${error}`));
+        message.channel.send(`An error occurred while inserting the values to the database! ${error.sqlMessage}`).catch(messageError => logger.error(`AddLeagueAccount: Error sending message: ${messageError}`));
     });
 }

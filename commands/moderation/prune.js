@@ -40,6 +40,6 @@ async function deleteMessages(message, messages) {
         message.channel.send(`Deleted ${messages.size} messages.`).catch(error => logger.error(`Prune: error sending message: ${error}`));
     }).catch(error => {
         logger.error(`Prune: Error deleting messages: ${error}`);
-        message.channel.send('There was an error while deleting the messages.').catch(error => logger.error(`Prune: error sending message: ${error}`));
+        message.channel.send('There was an error while deleting the messages.').catch(messageError => logger.error(`Prune: error sending message: ${messageError}`));
     });
 }

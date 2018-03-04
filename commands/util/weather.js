@@ -31,7 +31,7 @@ module.exports = {
                         .setTimestamp()
                         .setFooter('Data from OpenWeatherMap')
                     ;
-                    message.channel.send({ embed }).catch(error => logger.error(`Weather: Error sending message: ${error}`));
+                    message.channel.send({ embed }).catch(messageError => logger.error(`Weather: Error sending message: ${messageError}`));
                 } else {
                     if (!response.statusCode === 404) logger.error(`weather: Error: ${error}`);
                     errorEmbedHandler.run(client, message, 'I haven\'t found any city that matches your input.');
