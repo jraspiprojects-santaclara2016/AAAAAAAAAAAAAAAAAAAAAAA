@@ -1,7 +1,9 @@
 const Discord = require('discord.js');
 const request = require('request');
-
+const winstonLogHandler = require('../util/winstonLogHandler');
 const config = require('../../configuration/config');
+
+const logger = winstonLogHandler.getLogger();
 
 exports.run = (client, message, args, link, sitename) => {
     /* Tags that cannot be requested:
@@ -12,19 +14,19 @@ exports.run = (client, message, args, link, sitename) => {
      * monika -> don't look me up you weirdo!
      */
     const bannedTags = ['loli', 'shota', 'child', 'furry', 'monika'];
-    if(message.channel.nsfw) {
+    if (message.channel.nsfw) {
         // Check if banned tags were requested
-        const argContainsBannedTags = bannedTags.some(r=> args.indexOf(r) >= 0);
-        if(!argContainsBannedTags) {
+        const argContainsBannedTags = bannedTags.some(r => args.indexOf(r) >= 0);
+        if (!argContainsBannedTags) {
             // Making a request to konachan.com.
             request.get(link + 'post.json/', {
                 qs: {
-                    limit : config.danbooruImageLimit,
-                    tags :'order:score rating:questionableplus' + args.join(' '),
+                    limit: config.danbooruImageLimit,
+                    tags: 'order:score rating:questionableplus' + args.join(' '),
                 },
             }, function(error, response, body) {
                 // If there are no errors proceed with this segment.
-                if(!error && response.statusCode === 200) {
+                if (!error && response.statusCode === 200) {
                     // Building and sending an embedded message.
                     const index = Math.floor(Math.random() * config.danbooruImageLimit);
                     const json = JSON.parse(body);
@@ -39,7 +41,7 @@ exports.run = (client, message, args, link, sitename) => {
                         .setImage(json[index].file_url)
                         .setFooter('Upload by: ' + json[index].author)
                     ;
-                    message.channel.send({ embed }).catch(console.error);
+                    message.channel.send({ embed }).catch(error => logger.error(`danboruHelperJson: Error sending message: ${error}`));
                 } else {
                     // Building and sending an embedded message.
                     const embed = new Discord.MessageEmbed()
@@ -51,8 +53,10 @@ exports.run = (client, message, args, link, sitename) => {
                         .setFooter('By ' + config.botName)
                         .setTimestamp()
                     ;
-                    message.channel.send({ embed });
-                    client.fetchUser(config.ownerID).then(user => { user.send({ embed });}).catch(console.error);
+                    message.channel.send({ embed }).catch(error => logger.error(`danboruHelperJson: Error sending message: ${error}`));
+                    client.fetchUser(config.ownerID).then(user => {
+                        user.send({ embed });
+                    }).catch(error => logger.error(`danboruHelperJson: Error: ${error}`));
                 }
             });
         } else {
@@ -65,7 +69,7 @@ exports.run = (client, message, args, link, sitename) => {
                 .setFooter('By ' + config.botName)
                 .setTimestamp()
             ;
-            message.channel.send({ embed }).catch(console.error);
+            message.channel.send({ embed }).catch(error => logger.error(`danboruHelperJson: Error sending message: ${error}`));
         }
     } else {
         // Building and sending an embedded message.
@@ -77,6 +81,6 @@ exports.run = (client, message, args, link, sitename) => {
             .setFooter('By ' + config.botName)
             .setTimestamp()
         ;
-        message.channel.send({ embed }).catch(console.error);
+        message.channel.send({ embed }).catch(error => logger.error(`danboruHelperJson: Error sending message: ${error}`));
     }
 };

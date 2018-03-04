@@ -9,6 +9,8 @@ module.exports = {
             .then(results => {
                 message.channel.send(`${results.reduce((prev, val) => prev + val, 0)} total guilds`);
             })
-            .catch(error => {logger.error(`stats: Error: ${error}`);});
+            .catch(error => {
+                logger.error(`Stats: Error: ${error}`);
+            });
     },
 };

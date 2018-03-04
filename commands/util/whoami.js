@@ -9,7 +9,7 @@ module.exports = {
     description: 'Display information either about you, or somebody you\'ve mentioned.',
     execute(client, message, args) {
         let user;
-        if(args.length === 1 && message.mentions.users.first() !== undefined) {
+        if (args.length === 1 && message.mentions.users.first() !== undefined) {
             user = message.mentions.users.first();
         } else {
             user = message.author;
@@ -24,6 +24,8 @@ module.exports = {
             .setFooter('By ' + config.botName)
             .setTimestamp()
         ;
-        message.channel.send({ embed }).catch(error => {logger.error(`whoami: Error: ${error}`);});
+        message.channel.send({ embed }).catch(error => {
+            logger.error(`WhoAmI: Error: ${error}`);
+        });
     },
 };

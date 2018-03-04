@@ -1,8 +1,10 @@
 const Discord = require('discord.js');
 const request = require('request');
 const xml2js = require('xml2js');
-
 const config = require('../../configuration/config');
+const winstonLogHandler = require('../util/winstonLogHandler');
+
+const logger = winstonLogHandler.getLogger();
 
 exports.run = (client, message, args, link, siteName, urlPrefix) => {
     /* Tags that cannot be requested:
@@ -16,24 +18,24 @@ exports.run = (client, message, args, link, siteName, urlPrefix) => {
      */
     const bannedTags = ['loli', 'shota', 'child', 'children', 'kid', 'furry', 'monika'];
     // Check if the request comes from a nsfw channel
-    if(message.channel.nsfw) {
+    if (message.channel.nsfw) {
         // Check if banned tags were requested
-        const argContainsBannedTags = bannedTags.some(r=> args.indexOf(r) >= 0);
-        if(!argContainsBannedTags) {
+        const argContainsBannedTags = bannedTags.some(r => args.indexOf(r) >= 0);
+        if (!argContainsBannedTags) {
             request.get(link + 'index.php', {
                 qs: {
-                    page : 'dapi',
-                    s : 'post',
-                    q : 'index',
-                    tags : args.join(' '),
-                    pid : 0,
-                    limit : config.danbooruImageLimit,
+                    page: 'dapi',
+                    s: 'post',
+                    q: 'index',
+                    tags: args.join(' '),
+                    pid: 0,
+                    limit: config.danbooruImageLimit,
                 },
             }, function(error, response, body) {
                 // If there are no errors proceed with this segment.
-                if(!error && response.statusCode === 200) {
+                if (!error && response.statusCode === 200) {
                     xml2js.parseString(body, function(err, result) {
-                        if(result.posts.post !== undefined) {
+                        if (result.posts.post !== undefined) {
                             const index = Math.floor(Math.random() * result.posts.post.length);
                             let timestamp = result.posts.post[index].$.created_at;
                             timestamp = new Date(timestamp * 1000);
@@ -46,7 +48,9 @@ exports.run = (client, message, args, link, siteName, urlPrefix) => {
                                 .setImage(urlPrefix + result.posts.post[index].$.file_url)
                                 .setFooter('Upload by: ' + result.posts.post[index].$.creator_id)
                             ;
-                            message.channel.send({ embed }).catch(console.error);
+                            message.channel.send({ embed }).catch(error => {
+                                logger.error(`danboruHelperXml: Error sending message: ${error}`);
+                            });
                         } else {
                             // Building and sending an embedded message.
                             const embed = new Discord.MessageEmbed()
@@ -56,7 +60,9 @@ exports.run = (client, message, args, link, siteName, urlPrefix) => {
                                 .setFooter('By ' + config.botName)
                                 .setTimestamp()
                             ;
-                            message.channel.send({ embed });
+                            message.channel.send({ embed }).catch(error => {
+                                logger.error(`danboruHelperXml: Error sending message: ${error}`);
+                            });
                         }
                     });
                 } else {
@@ -70,8 +76,14 @@ exports.run = (client, message, args, link, siteName, urlPrefix) => {
                         .setFooter('By ' + config.botName)
                         .setTimestamp()
                     ;
-                    message.channel.send({ embed });
-                    client.fetchUser(config.ownerID).then(user => {user.send({ embed });}).catch(console.error);
+                    message.channel.send({ embed }).catch(error => {
+                        logger.error(`danboruHelperXml: Error sending message: ${error}`);
+                    });
+                    client.fetchUser(config.ownerID).then(user => {
+                        user.send({ embed });
+                    }).catch(error => {
+                        logger.error(`danboruHelperXml: Error: ${error}`);
+                    });
                 }
             });
         } else {
@@ -84,7 +96,9 @@ exports.run = (client, message, args, link, siteName, urlPrefix) => {
                 .setFooter('By ' + config.botName)
                 .setTimestamp()
             ;
-            message.channel.send({ embed }).catch(console.error);
+            message.channel.send({ embed }).catch(error => {
+                logger.error(`danboruHelperXml: Error sending message: ${error}`);
+            });
         }
     } else {
         // Building and sending an embedded message.
@@ -96,6 +110,8 @@ exports.run = (client, message, args, link, siteName, urlPrefix) => {
             .setFooter('By ' + config.botName)
             .setTimestamp()
         ;
-        message.channel.send({ embed }).catch(console.error);
+        message.channel.send({ embed }).catch(error => {
+            logger.error(`danboruHelperXml: Error sending message: ${error}`);
+        });
     }
 };

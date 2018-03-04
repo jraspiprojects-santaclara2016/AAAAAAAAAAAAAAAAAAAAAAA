@@ -17,14 +17,14 @@ module.exports = {
         let response;
         response = await waitingMessage(client, message, embed, filter);
         const summonerName = response.first().content;
-        logger.debug(`Summonername: ${summonerName}`);
+        logger.debug(`AddLeagueAccount: Summonername: ${summonerName}`);
         embed = new Discord.MessageEmbed()
             .setTitle('Add a league account:')
             .addField('Respond with your region the account is in!', 'This message timeouts in 30 seconds.')
         ;
         response = await waitingMessage(client, message, embed, filter);
         const region = response.first().content;
-        logger.debug(`Region: ${region}`);
+        logger.debug(`AddLeagueAccount: Region: ${region}`);
         embed = new Discord.MessageEmbed()
             .setTitle('Add a league account:')
             .addField('Is this your main? __y__es or __n__o?', 'This message timeouts in 30 seconds.')
@@ -32,17 +32,17 @@ module.exports = {
         filter = m => m.author === message.author && (m.content === 'y' || m.content === 'n');
         response = await waitingMessage(client, message, embed, filter);
         const isMain = response.first().content === 'y';
-        logger.debug(`Main: ${isMain}`);
-        if(await checkForValidLeagueAccount(summonerName, region)) {
+        logger.debug(`AddLeagueAccount: Main: ${isMain}`);
+        if (await checkForValidLeagueAccount(summonerName, region)) {
             await insertAccountIntoDatabase(message, summonerName, region, isMain, message.author.id);
         } else {
-            message.channel.send('I could not find your league account. Try again!');
+            message.channel.send('I could not find your league account. Try again!').catch(error => logger.error(`AddLeagueAccount: Error sending message: ${error}`));
         }
     },
 };
 
 async function waitingMessage(client, message, embed, filter) {
-    message.channel.send({ embed });
+    message.channel.send({ embed }).catch(error => logger.error(`AddLeagueAccount: Error: ${error}`));
     let response;
     try {
         response = await message.channel.awaitMessages(filter, {
@@ -51,10 +51,10 @@ async function waitingMessage(client, message, embed, filter) {
             errors: ['time'],
         });
     } catch (err) {
-        console.error(err);
-        return message.channel.send('No or invalid value entered, cancelling volume selection.');
+        logger.error(`AddLeagueAccount: Error: ${error}`);
+        return message.channel.send('No or invalid value entered, cancelling volume selection.').catch(error => logger.error(`AddLeagueAccount: Error sending message: ${error}`));
     }
-    logger.info(response.first().content);
+    logger.info(`AddLeagueAccount: Response: ${response.first().content}`);
     return response;
 }
 
@@ -63,10 +63,10 @@ async function checkForValidLeagueAccount(summonerName, region) {
     lolApi.base.setKey(apiKeys.leagueOfLegends);
     lolApi.base.setRegion(region);
     lolApi.executeCall('Summoner', 'getSummonerBySummonerName', summonerName, region).then(data => {
-        logger.verbose(data);
+        logger.verbose(`AddLeagueAccount: Response for SummonerName: ${data}`);
         return true;
     }).catch(error => {
-        logger.error(error);
+        logger.error(`AddLeagueAccount: Error retrieving SummonerName Response: ${error}`);
         return false;
     });
 }
@@ -75,10 +75,10 @@ async function insertAccountIntoDatabase(message, summonerName, region, type, di
     summonerName = summonerName.toUpperCase();
     region = region.toUpperCase();
     mariadbHandler.functions.addLeagueAccount(summonerName, region, discordId, type).then(data => {
-        logger.verbose(data);
-        message.channel.send(`I added ${summonerName.toUpperCase()} [${region.toUpperCase()}] to the database`);
+        logger.verbose(`AddLeagueAccount: LeagueAccount added ${data}`);
+        message.channel.send(`I added ${summonerName.toUpperCase()} [${region.toUpperCase()}] to the database`).catch(error => logger.error(`AddLeagueAccount: Error sending message: ${error}`));
     }).catch(error => {
-        logger.error(`${error.code} ${error.sqlMessage}`);
-        message.channel.send(`An error occurred while inserting the values to the database! ${error.sqlMessage}`);
+        logger.error(`AddLeagueAccount: Error adding LeagueAccount: ${error.code} ${error.sqlMessage}`);
+        message.channel.send(`An error occurred while inserting the values to the database! ${error.sqlMessage}`).catch(error => logger.error(`AddLeagueAccount: Error sending message: ${error}`));
     });
 }

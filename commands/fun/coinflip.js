@@ -8,8 +8,8 @@ module.exports = {
     description: 'Flip a coin.',
     execute(client, message) {
         const flip = Math.round(Math.random());
-        logger.silly(`[Coinflip] I flipped a ${flip}`);
-        if(flip === 0) {
+        logger.silly(`Coinflip: I flipped a ${flip}`);
+        if (flip === 0) {
             const embed = new Discord.MessageEmbed()
                 .setTitle('Coinflip Command:')
                 .setColor('DARK_GREEN')
@@ -17,7 +17,7 @@ module.exports = {
                 .setFooter('By ' + config.botName)
                 .setTimestamp()
             ;
-            message.channel.send({ embed }).catch(console.error);
+            message.channel.send({ embed }).catch(error => logger.error(`Coinflip: Error: ${error}`));
         } else {
             const embed = new Discord.MessageEmbed()
                 .setTitle('Coinflip Command:')
@@ -26,7 +26,7 @@ module.exports = {
                 .setFooter('By ' + config.botName)
                 .setTimestamp()
             ;
-            message.channel.send({ embed }).catch(console.error);
+            message.channel.send({ embed }).catch(error => logger.error(`Coinflip: Error: ${error}`));
         }
     },
 };

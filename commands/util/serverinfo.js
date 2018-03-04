@@ -17,6 +17,8 @@ module.exports = {
             .setFooter(`By ${config.botName}`)
             .setTimestamp()
         ;
-        message.channel.send({ embed }).catch(error => {logger.error(`serverinfo: Error: ${error}`);});
+        message.channel.send({ embed }).catch(error => {
+            logger.error(`ServerInfo: Error: ${error}`);
+        });
     },
 };

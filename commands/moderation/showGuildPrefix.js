@@ -20,17 +20,17 @@ module.exports = {
                     prefix = result[0].prefix;
                 } else {
                     prefix = config.commandPrefix;
-                    logger.verbose(`Use default Prefix ${prefix}`);
+                    logger.verbose(`ShowGuildPrefix: Use default Prefix ${prefix}`);
                 }
             } catch (error) {
-                logger.error(`showGuildPrefix: ${error.code} ${error.sqlMessage}`);
+                logger.error(`ShowGuildPrefix: ${error.code} ${error.sqlMessage}`);
                 prefix = config.commandPrefix;
             }
         }
         try {
             await message.channel.send(`The Prefix is ${prefix}`);
         } catch (error) {
-            logger.error(`showGuildPrefix: Error while trying to send Prefix: ${error}`);
+            logger.error(`ShowGuildPrefix: Error while trying to send Prefix: ${error}`);
         }
     },
 };
