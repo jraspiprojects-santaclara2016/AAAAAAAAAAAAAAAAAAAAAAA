@@ -1,3 +1,4 @@
+const Discord = require('discord.js');
 const ytdl = require('ytdl-core');
 const YouTube = require('simple-youtube-api');
 const winstonLogHandler = require('../../handler/util/winstonLogHandler');
@@ -105,6 +106,11 @@ async function handleYoutubeVideo(video, message, voiceChannel, playlist = false
         id: video.id,
         title: video.title,
         url: `https://youtube.com/watch?v=${video.id}`,
+        requested_by: message.author,
+        type: video.kind,
+        thumbnail: video.thumbnails.maxres.url,
+        publishedAt: video.publishedAt,
+        uploader: video.channel.title,
     };
     if(!musicQueue) {
         cacheHandler.createMusicQueueCache(message.guild.id);
@@ -123,7 +129,6 @@ async function handleYoutubeVideo(video, message, voiceChannel, playlist = false
             message.channel.send('I could not join the voice channel!');
         }
     } else {
-        console.log(musicQueue);
         musicQueue.songs.push(song);
         if(!playlist) return message.channel.send(`**${song.title}** has been added to the queue!`);
     }
@@ -146,5 +151,14 @@ function play(guild, song) {
         .on('debug', debug => console.debug(debug))
     ;
     dispatcher.setVolume(musicQueue.volume);
-    musicQueue.textChannel.send(`Start playing: **${song.title}**`);
+    const startPlayingEmbed = new Discord.MessageEmbed()
+        .setTitle('🎵 Start Playing:')
+        .setColor('DARK_RED')
+        .setTimestamp(song.publishedAt)
+        .setFooter(`By ${song.uploader}`)
+        .setThumbnail(song.thumbnail)
+        .addField('Title', `[${song.title}](${song.url})`)
+        .addField('Requested by:', song.requested_by)
+    ;
+    musicQueue.textChannel.send(startPlayingEmbed);
 }

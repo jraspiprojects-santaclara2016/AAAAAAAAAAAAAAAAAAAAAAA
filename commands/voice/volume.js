@@ -55,5 +55,10 @@ module.exports = {
 function setVolume(serverQueue, volume) {
     serverQueue.volume = parseFloat(volume / 100);
     serverQueue.connection.dispatcher.setVolume(serverQueue.volume);
-    logger.debug(`Volume set to: ${serverQueue.volume}%`);
+    logger.debug(`Volume set to: ${serverQueue.volume * 100}%`);
 }
+/*
+ * H- Hey?
+ * Can you hear me?
+ * - Monika
+ */
