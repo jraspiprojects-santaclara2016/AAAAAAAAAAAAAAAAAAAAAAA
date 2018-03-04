@@ -56,13 +56,13 @@ async function handleMentionMessage(message, client) {
 
 async function executeCommand(args, client, message) {
     const command = args.shift().toLowerCase();
-    logger.info('Command received: ' + command);
+    logger.info('Message: Command received: ' + command);
     if (!client.commands.has(command)) return errorEmbedHandler.run(client, message, `${command} doesn't exist.`);
     try {
         await client.commands.get(command).execute(client, message, args);
-        logger.info(`${command} executed successfully.`);
+        logger.info(`Message: ${command} executed successfully.`);
     } catch (error) {
         errorEmbedHandler.run(client, message, `I could not run the ${command} command. Please contact the bot Owner.`);
-        console.log(error);
+        logger.error(`Message: Error: ${error}`);
     }
 }

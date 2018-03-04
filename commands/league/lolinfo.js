@@ -13,10 +13,10 @@ module.exports = {
         lolApi.base.setKey(apiKeys.leagueOfLegends);
         lolApi.base.setRegion('euw1');
 
-        logger.debug('Trying to execute lol api getSummonerBySummonerName call');
+        logger.debug('Lolinfo: Trying to execute lol api getSummonerBySummonerName call');
         lolApi.executeCall('Summoner', 'getSummonerBySummonerName', args.join(' ')).then((responseSummoner) => {
-            logger.debug('lol api getSummonerBySummonerName call executed successfully');
-            logger.silly(responseSummoner);
+            logger.debug('Lolinfo: Api getSummonerBySummonerName call executed successfully');
+            logger.silly(`Lolinfo: Result: ${responseSummoner}`);
             const embed = new Discord.MessageEmbed()
                 .setTitle('Lolinfo command:')
                 .setColor('DARK_GREEN')
@@ -27,21 +27,21 @@ module.exports = {
                 .setFooter('By ' + config.botName)
                 .setTimestamp()
             ;
-            logger.debug('Trying to execute lol api getEloOfSummonerName call');
+            logger.debug('Lolinfo: Trying to execute lol api getEloOfSummonerName call');
             lolApi.executeCall('Special', 'getEloOfSummonerName', args.join(' ')).then((response) => {
-                logger.debug('lol api getEloOfSummonerName call executed successfully');
-                logger.silly(response);
-                for(let i = 0; i < response.length;i++) {
+                logger.debug('Lolinfo: Api getEloOfSummonerName call executed successfully');
+                logger.silly(`Lolinfo: Response: ${response}`);
+                for (let i = 0; i < response.length; i++) {
                     embed.addField(response[i].queueType, response[i].leagueName + ' ' + response[i].tier + ' ' +
                         response[i].rank + ' | ' + response[i].leaguePoints + 'LP | Wins:' +
                         response[i].wins + ' | Losses: ' + response[i].losses);
                 }
                 message.channel.send({ embed });
             }).catch((error) => {
-                console.error(error);
+                logger.error(`Lolinfo: Error ${error}`);
             });
         }).catch((error) => {
-            console.error(error);
+            logger.error(`Lolinfo: Error ${error}`);
         });
     },
 };

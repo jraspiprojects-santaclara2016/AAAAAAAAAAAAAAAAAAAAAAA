@@ -10,16 +10,16 @@ module.exports = {
     name: 'weather',
     description: 'Display the current weather of a specified location.',
     execute(client, message, args) {
-        if(args.length >= 1) {
+        if (args.length >= 1) {
             request.get('https://api.openweathermap.org/data/2.5/weather', {
                 qs: {
-                    q :args.join(' '),
-                    appid : apiKeys.openWeatherMap,
-                    units : 'metric',
-                    lang : 'en',
+                    q: args.join(' '),
+                    appid: apiKeys.openWeatherMap,
+                    units: 'metric',
+                    lang: 'en',
                 },
             }, function(error, response, body) {
-                if(!error && response.statusCode === 200) {
+                if (!error && response.statusCode === 200) {
                     const jsonResponse = JSON.parse(body);
                     const embed = new Discord.MessageEmbed()
                         .setTitle('Weather command:')
@@ -31,9 +31,9 @@ module.exports = {
                         .setTimestamp()
                         .setFooter('Data from OpenWeatherMap')
                     ;
-                    message.channel.send({ embed });
+                    message.channel.send({ embed }).catch(messageError => logger.error(`Weather: Error sending message: ${messageError}`));
                 } else {
-                    if(!response.statusCode === 404) logger.error(`weather: Error: ${error}`);
+                    if (!response.statusCode === 404) logger.error(`weather: Error: ${error}`);
                     errorEmbedHandler.run(client, message, 'I haven\'t found any city that matches your input.');
                 }
             });

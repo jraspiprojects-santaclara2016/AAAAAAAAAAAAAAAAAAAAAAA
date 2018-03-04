@@ -13,7 +13,7 @@ module.exports = {
             'Yes definitely', 'Yes', 'Cannot predict now', 'Outlook not so good', 'You may rely on it',
             'Signs point to yes', 'Concentrate and ask again', 'Very doubtful'];
         const index = Math.floor(Math.random() * answers.length);
-        logger.silly(`8ball prints out the index ${index} of the array.`);
+        logger.silly(`8ball: 8ball prints out the index ${index} of the array.`);
         const embed = new Discord.MessageEmbed()
             .setTitle('8ball Command:')
             .setColor('DARK_GREEN')
@@ -21,6 +21,6 @@ module.exports = {
             .setFooter('By ' + config.botName)
             .setTimestamp()
         ;
-        message.channel.send({ embed }).catch(error => logger.error(error));
+        message.channel.send({ embed }).catch(error => logger.error(`8ball: Error: ${error}`));
     },
 };

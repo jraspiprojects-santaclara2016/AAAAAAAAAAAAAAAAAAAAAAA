@@ -22,6 +22,8 @@ module.exports = {
         const commandCollection = client.commands;
         const text = `\n___**Commands:**___
 ${commandCollection.map(command => `**-${prefix}${command.name}** - ${command.description}`).join('\n')}`;
-        message.author.send(text, { split :true }).catch(error => { logger.error(`help: Error: ${error}`);});
+        message.author.send(text, { split: true }).catch(error => {
+            logger.error(`Help: Error: ${error}`);
+        });
     },
 };

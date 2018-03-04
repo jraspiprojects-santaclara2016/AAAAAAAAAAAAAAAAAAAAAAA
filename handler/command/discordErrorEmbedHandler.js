@@ -1,5 +1,8 @@
 const Discord = require('discord.js');
 const config = require('../../configuration/config.json');
+const winstonLogHandler = require('../util/winstonLogHandler');
+
+const logger = winstonLogHandler.getLogger();
 
 exports.run = (client, message, errorMessage) => {
     const embed = new Discord.MessageEmbed()
@@ -9,5 +12,5 @@ exports.run = (client, message, errorMessage) => {
         .setTimestamp()
         .setFooter('By ' + config.botName)
     ;
-    message.channel.send({ embed }).catch(console.error);
+    message.channel.send({ embed }).catch(error => logger.error(`discordErrorEmbedHandler: Error sending message: ${error}`));
 };

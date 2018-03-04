@@ -19,15 +19,15 @@ module.exports = {
                 .setFooter('By ' + config.botName)
                 .setTimestamp()
             ;
-            logger.silly(response);
-            for(let i = 0; i < response.services.length; i++) {
-                for(let j = 0; j < response.services[i].incidents.length; j++) {
+            logger.silly(`Lolstatus: Response: ${response}`);
+            for (let i = 0; i < response.services.length; i++) {
+                for (let j = 0; j < response.services[i].incidents.length; j++) {
                     embed.addField(response.services[i].name, response.services[i].incidents[j].updates[0].content);
                 }
             }
-            message.channel.send({ embed });
+            message.channel.send({ embed }).catch(error => logger.error(`Lolstatus: Error sending message: ${error}`));
         }).catch((error) => {
-            logger.error(error);
+            logger.error(`Lolstatus: Error retrieving Api response: ${error}`);
         });
     },
 };
