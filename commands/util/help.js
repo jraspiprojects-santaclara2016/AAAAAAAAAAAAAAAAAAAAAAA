@@ -1,6 +1,7 @@
 const config = require('../../configuration/config');
 const winstonLogHandler = require('../../handler/util/winstonLogHandler');
-const mariadbHandler = require('../../handler/util/mariadbHandler');
+const cacheHandler = require('../../handler/util/cacheHandler');
+const prefixCache = cacheHandler.getPrefixCache();
 const logger = winstonLogHandler.getLogger();
 
 module.exports = {
@@ -9,13 +10,11 @@ module.exports = {
     execute(client, message) {
         let prefix;
         if (message.guild) {
-            mariadbHandler.functions.getGuildPrefix(message.guild.id).then(result => {
-                if (result.length === 1) {
-                    prefix = result[0].prefix;
-                } else {
-                    prefix = config.commandPrefix;
-                }
-            });
+            if (prefixCache.has(message.guild.id)) {
+                prefix = prefixCache.get(message.guild.id).prefix;
+            } else {
+                prefix = config.commandPrefix;
+            }
         } else {
             prefix = config.commandPrefix;
         }
