@@ -22,7 +22,7 @@ exports.run = (client, message, args, link, sitename) => {
             request.get(link + 'post.json/', {
                 qs: {
                     limit: config.danbooruImageLimit,
-                    tags: 'order:score rating:questionableplus' + args.join(' '),
+                    tags: 'order:score rating:questionableplus ' + args.join(' '),
                 },
             }, function(error, response, body) {
                 // If there are no errors proceed with this segment.
