@@ -1,26 +1,18 @@
 <h1 align="center">
     <a href="https://discord.gg/JtFFkzk"><img src="https://i.imgur.com/6hUjiER.png" width="256px" alt="Monika"></a>
   <br>
-    MonikaBot
+    Monika
   <br>
  </h1>
-<h4 align="center">The friendly Monikabot greets you <3</h4>
+<h4 align="center">Monika greets you <3</h4>
 <h5 align="center">This Code is provided as is, there will be no support for getting it to run.</h5>
   <p align="center">
       <a href="https://discord.gg/JtFFkzk" target="_blank"><img src="https://discordapp.com/assets/fc0b01fe10a0b8c602fb0106d8189d9b.png" width="256px" alt="Discord"></a>
   </p>
   <p align="center">
-  <a href="https://travis-ci.org/Emdix/MonikaBot" target="_blank"><img src="https://travis-ci.org/Emdix/MonikaBot.svg?branch=master" alt="Build"></a>
-  <a href="https://david-dm.org/emdix/monikabot" target="_blank"><img src="https://david-dm.org/emdix/monikabot/status.png" alt="Dependencies"></a>
+  <a href="https://travis-ci.org/weebs-online/Monika" target="_blank"><img src="https://travis-ci.org/weebs-online/Monika.svg?branch=master" alt="Build"></a>
+  <a href="https://david-dm.org/weebs-online/monika" target="_blank"><img src="https://david-dm.org/weebs-online/monika/status.svg" alt="Dependencies"></a>
   </p>
-
-### Intentions
-My intention behind this bot was to build knowledge in other programming 
-languages. The bot might get better as soon as I learn something new in JavaScript.
-If there is no new commits or updates to this bot consider it either finished
-or abandoned. Feel free to fork the bot.
-Or get involved by making new contributions to the bot as it gets developed.
-Feel free to open new issues as soon as you are experiencing a bug or want something specific added to the project.
 
 ### Installation
 * Clone this git repository.
@@ -29,8 +21,10 @@ Feel free to open new issues as soon as you are experiencing a bug or want somet
 * The bot should be online now. If you encounter errors, please open an issue if the same error does not already exists in the issues.
 
 ### Config files
-Config files will be added into the samples folder but at the moment we are working on a efficient solution to save
-stuff like the keys and the database connection.
+Copy "apiKeyConfigSample.json" and "databaseConfigSample.json" to the configuration folder and remove ".sample" from the name and put in everything that's missing.
 
 ### Environment variables
-* NODE_ENV => environment (development or production).
+We use the environment variable "NODE_ENV" to determine whether we are running Monika in a development or production environment.
+If set to production, the bot will only send important logs. If you leave it blank or use development then Monika will give you detailed information
+on everything she is doing.
+* NODE_ENV => (development or production).
