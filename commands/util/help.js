@@ -22,7 +22,7 @@ module.exports = {
         const text = `\n___**Commands:**___
 ${commandCollection.map(command => `**-${prefix}${command.name}** - ${command.description}`).join('\n')}`;
         message.author.send(text, { split: true }).catch(error => {
-            logger.error(`Help: Error: ${error}`);
+            logger.error(`Help: Error sending message: ${error}`);
         });
     },
 };

@@ -25,7 +25,7 @@ module.exports = {
             .setTimestamp()
         ;
         message.channel.send({ embed }).catch(error => {
-            logger.error(`WhoAmI: Error: ${error}`);
+            logger.error(`WhoAmI: Error sending message: ${error}`);
         });
     },
 };

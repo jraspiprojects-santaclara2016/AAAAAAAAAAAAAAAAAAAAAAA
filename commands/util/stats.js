@@ -10,7 +10,7 @@ module.exports = {
                 message.channel.send(`${results.reduce((prev, val) => prev + val, 0)} total guilds`);
             })
             .catch(error => {
-                logger.error(`Stats: Error: ${error}`);
+                logger.error(`Stats: Error sending message: ${error}`);
             });
     },
 };

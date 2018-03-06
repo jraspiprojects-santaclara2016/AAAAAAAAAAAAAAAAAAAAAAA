@@ -18,7 +18,7 @@ module.exports = {
             .setTimestamp()
         ;
         message.channel.send({ embed }).catch(error => {
-            logger.error(`ServerInfo: Error: ${error}`);
+            logger.error(`ServerInfo: Error sending message: ${error}`);
         });
     },
 };

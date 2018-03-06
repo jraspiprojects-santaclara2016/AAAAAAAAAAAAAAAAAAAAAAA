@@ -6,7 +6,7 @@ module.exports = {
     description: 'pong!',
     execute(client, message) {
         message.channel.send('pong!').catch(error => {
-            logger.error(`Ping: Error: ${error}`);
+            logger.error(`Ping: Error sending message: ${error}`);
         });
     },
 };
