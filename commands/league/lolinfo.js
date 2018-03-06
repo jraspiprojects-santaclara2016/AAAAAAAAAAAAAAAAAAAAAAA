@@ -38,10 +38,10 @@ module.exports = {
                 }
                 message.channel.send({ embed });
             }).catch((error) => {
-                logger.error(`Lolinfo: Error ${error}`);
+                logger.error(`Lolinfo: Error executing API call Error: ${error}`);
             });
         }).catch((error) => {
-            logger.error(`Lolinfo: Error ${error}`);
+            logger.error(`Lolinfo: Error executing API call Error: ${error}`);
         });
     },
 };

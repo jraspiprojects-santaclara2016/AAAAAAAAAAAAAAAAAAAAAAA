@@ -17,7 +17,7 @@ module.exports = {
                 .setFooter('By ' + config.botName)
                 .setTimestamp()
             ;
-            message.channel.send({ embed }).catch(error => logger.error(`Coinflip: Error: ${error}`));
+            message.channel.send({ embed }).catch(error => logger.error(`Coinflip: Error sending mesage: ${error}`));
         } else {
             const embed = new Discord.MessageEmbed()
                 .setTitle('Coinflip Command:')
@@ -26,7 +26,7 @@ module.exports = {
                 .setFooter('By ' + config.botName)
                 .setTimestamp()
             ;
-            message.channel.send({ embed }).catch(error => logger.error(`Coinflip: Error: ${error}`));
+            message.channel.send({ embed }).catch(error => logger.error(`Coinflip: Error sending message: ${error}`));
         }
     },
 };

@@ -42,7 +42,7 @@ module.exports = {
 };
 
 async function waitingMessage(client, message, embed, filter) {
-    message.channel.send({ embed }).catch(error => logger.error(`AddLeagueAccount: Error: ${error}`));
+    message.channel.send({ embed }).catch(error => logger.error(`AddLeagueAccount: Error sending message: ${error}`));
     let response;
     try {
         response = await message.channel.awaitMessages(filter, {

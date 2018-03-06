@@ -22,7 +22,7 @@ module.exports = {
                     .addField('Link:', jsonResponse.list[0].permalink)
                     .setFooter(`By ${jsonResponse.list[0].author}`)
                 ;
-                message.channel.send({ embed }).catch(messageError => logger.error(`Urban: Error: ${messageError}`));
+                message.channel.send({ embed }).catch(messageError => logger.error(`Urban: Error sending message: ${messageError}`));
             } else {
                 logger.error(`Urban: API call failed. Error: ${error} \n Status code: ${response.statusCode}`);
             }

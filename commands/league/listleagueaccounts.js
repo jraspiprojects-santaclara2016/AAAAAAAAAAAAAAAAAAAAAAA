@@ -12,7 +12,7 @@ module.exports = {
                 message.channel.send(`${data[i].summonerName} ${data[i].region} ${data[i].isMain}`).catch(error => logger.error(`ListLeagueAccount: Error sending message: ${error}`));
             }
         }).catch(error => {
-            logger.error(`ListLeagueAccounts: Error: ${error}`);
+            logger.error(`ListLeagueAccounts: Error retrieving Data from DB: ${error}`);
         });
     },
 };

@@ -21,6 +21,6 @@ module.exports = {
             .setFooter('By ' + config.botName)
             .setTimestamp()
         ;
-        message.channel.send({ embed }).catch(error => logger.error(`8ball: Error: ${error}`));
+        message.channel.send({ embed }).catch(error => logger.error(`8ball: Error sending message: ${error}`));
     },
 };
