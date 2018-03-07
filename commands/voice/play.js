@@ -108,7 +108,7 @@ async function handleYoutubeVideo(video, message, voiceChannel, playlist = false
         url: `https://youtube.com/watch?v=${video.id}`,
         requested_by: message.author,
         type: video.kind,
-        thumbnail: video.thumbnails.maxres.url,
+        thumbnail: video.thumbnails.default.url,
         publishedAt: video.publishedAt,
         uploader: video.channel.title,
     };
