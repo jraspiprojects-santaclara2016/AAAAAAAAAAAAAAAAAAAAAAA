@@ -11,8 +11,8 @@ module.exports = {
         if (!message.guild) return;
         const guildId = message.guild.id;
         let prefix;
-        if (cacheHandler.getCache().has(guildId)) {
-            prefix = cacheHandler.getCache().get(guildId).prefix;
+        if (cacheHandler.getPrefixCache().has(guildId)) {
+            prefix = cacheHandler.getPrefixCache().get(guildId).prefix;
         } else {
             try {
                 const result = await mariadbHandler.functions.getGuildPrefix(guildId);
