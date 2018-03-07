@@ -28,7 +28,7 @@ module.exports = {
             }
         }
         try {
-            await message.channel.send(`The Prefix is ${prefix}`);
+            await message.channel.send(`The Prefix is: **${prefix}**`);
         } catch (error) {
             logger.error(`ShowGuildPrefix: Error while trying to send Prefix: ${error}`);
         }

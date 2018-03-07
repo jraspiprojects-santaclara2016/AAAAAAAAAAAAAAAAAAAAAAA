@@ -30,18 +30,31 @@ exports.run = (client, message, args, link, sitename) => {
                     // Building and sending an embedded message.
                     const index = Math.floor(Math.random() * config.danbooruImageLimit);
                     const json = JSON.parse(body);
-                    let timestamp = json[index].created_at;
-                    timestamp = new Date(timestamp * 1000);
-                    const embed = new Discord.MessageEmbed()
-                        .setTitle(sitename + ' random image')
-                        .addField('ID:', json[index].id)
-                        .addField('Tags:', json[index].tags)
-                        .addField('Link:', link + 'post/show/' + json[index].id)
-                        .setTimestamp(timestamp)
-                        .setImage(json[index].file_url)
-                        .setFooter('Upload by: ' + json[index].author)
-                    ;
-                    message.channel.send({ embed }).catch(messageError => logger.error(`danboruHelperJson: Error sending message: ${messageError}`));
+                    if(json[index] !== undefined) {
+                        let timestamp = json[index].created_at;
+                        timestamp = new Date(timestamp * 1000);
+                        const embed = new Discord.MessageEmbed()
+                            .setTitle(sitename + ' random image')
+                            .addField('ID:', json[index].id)
+                            .addField('Tags:', json[index].tags)
+                            .addField('Link:', link + 'post/show/' + json[index].id)
+                            .setTimestamp(timestamp)
+                            .setImage(json[index].file_url)
+                            .setFooter('Upload by: ' + json[index].author)
+                        ;
+                        message.channel.send({ embed }).catch(messageError => logger.error(`danboruHelperJson: Error sending message: ${messageError}`));
+                    } else {
+                        const embed = new Discord.MessageEmbed()
+                            .setTitle(sitename + ' command:')
+                            .setColor('DARK_RED')
+                            .addField('Error:', 'Tag does not exist!')
+                            .addField('HTTP Code:', response.statusCode)
+                            .addField('error', error)
+                            .setFooter('By ' + config.botName)
+                            .setTimestamp()
+                        ;
+                        message.channel.send({ embed }).catch(messageError => logger.error(`danboruHelperJson: Error sending message: ${messageError}`));
+                    }
                 } else {
                     // Building and sending an embedded message.
                     const embed = new Discord.MessageEmbed()
