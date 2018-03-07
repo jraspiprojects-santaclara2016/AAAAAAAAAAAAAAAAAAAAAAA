@@ -24,8 +24,8 @@
   "scripts": {
     "eslint": "eslint .",
     "eslint-fix": "eslint . --fix",
-    "run": "node index.js",
-    "start": "forever start sharder.js",
+    "run": "",
+    "start": "node index.js",
     "stop": "forever stopall"
   },
   "author": "emdix",
