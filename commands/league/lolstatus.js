@@ -14,7 +14,7 @@ module.exports = {
         lolApi.base.setKey(apiKeys.leagueOfLegends);
         if (args[0] === undefined) {
             logger.verbose('Lolstatus: No Region from input.');
-            let fields = [{
+            const fields = [{
                 name: 'Invalid Input',
                 value: 'This command needs a valid Region',
             }];
@@ -32,7 +32,7 @@ module.exports = {
             logger.silly(`Lolstatus: Response: ${response}`);
             if (response.status) {
                 logger.verbose('Lolstatus: Invalid Region Error.');
-                let fields = [{
+                const fields = [{
                     name: 'Invalid Input',
                     value: `${lolApi.base.region} is not a valid Region!`,
                 }];
@@ -40,15 +40,15 @@ module.exports = {
                 return;
             } else {
                 for (let i = 0; i < response.services.length; i++) {
-                    let field = {};
-                    field.name = response.services[i].name;
+                    const fields = {};
+                    fields.name = response.services[i].name;
                     if (response.services[i].incidents.length === 0) {
-                        field.value = 'No Incidents Occured!';
-                        embed.addField(field.name, field.value);
+                        fields.value = 'No Incidents Occured!';
+                        embed.addField(fields.name, fields.value);
                     } else {
                         for (let j = 0; j < response.services[i].incidents.length; j++) {
-                            field.value = response.services[i].incidents[j].updates[0].content;
-                            embed.addField(field.name, field.value);
+                            fields.value = response.services[i].incidents[j].updates[0].content;
+                            embed.addField(fields.name, fields.value);
                         }
                     }
                 }
