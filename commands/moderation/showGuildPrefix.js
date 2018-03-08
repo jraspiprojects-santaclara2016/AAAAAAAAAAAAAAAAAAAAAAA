@@ -11,8 +11,8 @@ module.exports = {
         if (!message.guild) return;
         const guildId = message.guild.id;
         let prefix;
-        if (cacheHandler.getCache().has(guildId)) {
-            prefix = cacheHandler.getCache().get(guildId).prefix;
+        if (cacheHandler.getPrefixCache().has(guildId)) {
+            prefix = cacheHandler.getPrefixCache().get(guildId).prefix;
         } else {
             try {
                 const result = await mariadbHandler.functions.getGuildPrefix(guildId);
@@ -28,7 +28,7 @@ module.exports = {
             }
         }
         try {
-            await message.channel.send(`The Prefix is ${prefix}`);
+            await message.channel.send(`The Prefix is: **${prefix}**`);
         } catch (error) {
             logger.error(`ShowGuildPrefix: Error while trying to send Prefix: ${error}`);
         }

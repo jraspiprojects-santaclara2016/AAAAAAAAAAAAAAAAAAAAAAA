@@ -63,6 +63,6 @@ async function executeCommand(args, client, message) {
         logger.info(`Message: ${command} executed successfully.`);
     } catch (error) {
         errorEmbedHandler.run(client, message, `I could not run the ${command} command. Please contact the bot Owner.`);
-        logger.error(`Message: Error: ${error}`);
+        logger.error(`Message: Error executing ${command}: ${error}`);
     }
 }
