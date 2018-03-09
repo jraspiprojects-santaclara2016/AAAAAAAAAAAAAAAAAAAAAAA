@@ -6,6 +6,7 @@ const logger = winstonLogHandler.getLogger();
 module.exports = {
     name: 'setguildprefix',
     description: 'Sets the Prefix for the Guild the author is in if he has the Permissions to do so.',
+    disabled: false,
     async execute(client, message, args) {
         if (!message.guild) return;
         if (message.member.hasPermission('MANAGE_GUILD')) {

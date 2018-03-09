@@ -6,6 +6,7 @@ const musicCache = cacheHandler.getMusicCache();
 module.exports = {
     name: 'skip',
     description: 'Skip to the next song.',
+    disabled: false,
     execute(client, message) {
         const musicQueue = musicCache.get(message.guild.id);
         if(!musicQueue) return message.channel.send('There is nothing playing I could skip for you.');

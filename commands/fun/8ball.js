@@ -6,6 +6,7 @@ const logger = winstonLogHandler.getLogger();
 module.exports = {
     name: '8ball',
     description: 'Ask the magic 8ball for TRUE answers!',
+    disabled: false,
     execute(client, message) {
         const answers = ['It is certain', 'As I see it, yes', 'Reply hazy try again', 'Don\'t count on it',
             'It is decidedly so', 'Most likely', 'Ask again later', 'My reply is no',

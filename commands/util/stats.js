@@ -4,6 +4,7 @@ const logger = winstonLogHandler.getLogger();
 module.exports = {
     name: 'stats',
     description: 'Show stats about the bot.',
+    disabled: false,
     execute(client, message) {
         client.shard.fetchClientValues('guilds.size')
             .then(results => {

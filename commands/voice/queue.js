@@ -6,6 +6,7 @@ const musicCache = cacheHandler.getMusicCache();
 module.exports = {
     name: 'queue',
     description: 'Display the music queue.',
+    disabled: false,
     execute(client, message) {
         const serverQueue = musicCache.get(message.guild.id);
         if(!serverQueue) return message.channel.send('There is nothing playing.');

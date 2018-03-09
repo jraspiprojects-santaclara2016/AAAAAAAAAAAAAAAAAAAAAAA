@@ -6,6 +6,7 @@ const musicCache = cacheHandler.getMusicCache();
 module.exports = {
     name: 'pause',
     description: 'Pause the music.',
+    disabled: false,
     execute(client, message) {
         const serverQueue = musicCache.get(message.guild.id);
         if(serverQueue && serverQueue.playing) {

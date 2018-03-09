@@ -6,6 +6,7 @@ const logger = winstonLogHandler.getLogger();
 module.exports = {
     name: 'coinflip',
     description: 'Flip a coin.',
+    disabled: false,
     execute(client, message) {
         const flip = Math.round(Math.random());
         logger.silly(`Coinflip: I flipped a ${flip}`);

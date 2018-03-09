@@ -7,6 +7,7 @@ const apiEndpoint = 'http://api.urbandictionary.com/v0/define?term=';
 module.exports = {
     name: 'urban',
     description: 'Look something up on Urban Dictionary.',
+    disabled: false,
     execute(client, message, args) {
         request(apiEndpoint + args.join(' '), function(error, response, body) {
             if (!error || !response.statusCode === 200) {

@@ -58,6 +58,7 @@ async function executeCommand(args, client, message) {
     const command = args.shift().toLowerCase();
     logger.info('Message: Command received: ' + command);
     if (!client.commands.has(command)) return errorEmbedHandler.run(client, message, `${command} doesn't exist.`);
+    if (client.commands.get(command).disabled) return errorEmbedHandler.run(client, message, `The command ${command} has been DISABLED temporarily!`);
     try {
         await client.commands.get(command).execute(client, message, args);
         logger.info(`Message: ${command} executed successfully.`);

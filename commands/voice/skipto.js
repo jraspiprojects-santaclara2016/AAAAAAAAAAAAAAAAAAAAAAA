@@ -6,6 +6,7 @@ const musicCache = cacheHandler.getMusicCache();
 module.exports = {
     name: 'skipto',
     description: 'Skip to a specified track in the queue.',
+    disabled: false,
     async execute(client, message) {
         const serverQueue = musicCache.get(message.guild.id);
         let index = 1;
