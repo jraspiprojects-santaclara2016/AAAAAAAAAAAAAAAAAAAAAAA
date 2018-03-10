@@ -8,6 +8,7 @@ const logger = logHandler.getLogger();
 module.exports = {
     name: 'volume',
     description: 'Either display the volume ot set it to the specified value.',
+    disabled: false,
     async execute(client, message, args) {
         let embed;
         const serverQueue = musicCache.get(message.guild.id);

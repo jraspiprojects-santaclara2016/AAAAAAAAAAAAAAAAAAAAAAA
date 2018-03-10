@@ -7,6 +7,7 @@ const logger = winstonLogHandler.getLogger();
 module.exports = {
     name: 'help',
     description: 'Display the help page.',
+    disabled: false,
     execute(client, message) {
         let prefix;
         if (message.guild) {

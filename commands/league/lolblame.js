@@ -11,6 +11,7 @@ const accountIdFaker = 3440481;
 module.exports = {
     name: 'lolblame',
     description: 'Compare the game data of a filthy casual to Faker',
+    disabled: false,
     execute(client, message, args) {
         lolApi.base.loadConfig('./configuration/lolConfig.json');
         lolApi.base.setKey(apiKeys.leagueOfLegends);

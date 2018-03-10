@@ -6,6 +6,7 @@ const musicCache = cacheHandler.getMusicCache();
 module.exports = {
     name: 'resume',
     description: 'Resume the music.',
+    disabled: false,
     execute(client, message) {
         const serverQueue = musicCache.get(message.guild.id);
         if(serverQueue && !serverQueue.playing) {

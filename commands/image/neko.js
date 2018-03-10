@@ -7,6 +7,7 @@ const logger = winstonLogHandler.createLogger();
 module.exports = {
     name: 'neko',
     description: 'Display a random neko image.',
+    disabled: false,
     execute(client, message) {
         request.get('https://nekos.brussell.me/api/v1/random/image', {
             qs: {

@@ -6,6 +6,7 @@ const logger = logHandler.getLogger();
 module.exports = {
     name: 'playfav',
     description: 'Play your favorite playlist.',
+    disabled: false,
     execute(client, message, args) {
         if(args.length === 0) {
             dbHandler.functions.getFavPlaylist(message.author.id).then(data => {

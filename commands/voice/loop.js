@@ -6,6 +6,7 @@ const musicCache = cacheHandler.getMusicCache();
 module.exports = {
     name: 'loop',
     description: 'loop/unloop the current playing music.',
+    disabled: false,
     execute(client, message) {
         const serverQueue = musicCache.get(message.guild.id);
         if(serverQueue) {

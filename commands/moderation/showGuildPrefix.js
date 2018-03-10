@@ -7,6 +7,7 @@ const cacheHandler = require('../../handler/util/cacheHandler');
 module.exports = {
     name: 'showguildprefix',
     description: 'Shows the Prefix for the Guild the message author is in.',
+    disabled: false,
     async execute(client, message) {
         if (!message.guild) return;
         const guildId = message.guild.id;

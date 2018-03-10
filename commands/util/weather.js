@@ -9,6 +9,7 @@ const errorEmbedHandler = require('../../handler/command/discordErrorEmbedHandle
 module.exports = {
     name: 'weather',
     description: 'Display the current weather of a specified location.',
+    disabled: false,
     execute(client, message, args) {
         if (args.length >= 1) {
             request.get('https://api.openweathermap.org/data/2.5/weather', {

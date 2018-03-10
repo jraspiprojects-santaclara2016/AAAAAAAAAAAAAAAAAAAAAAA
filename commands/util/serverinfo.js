@@ -6,6 +6,7 @@ const logger = winstonLogHandler.getLogger();
 module.exports = {
     name: 'serverinfo',
     description: 'Information about the server.',
+    disabled: false,
     execute(client, message) {
         const embed = new Discord.MessageEmbed()
             .setTitle('Serverinfo:')
