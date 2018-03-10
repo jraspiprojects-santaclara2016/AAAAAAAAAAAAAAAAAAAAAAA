@@ -43,20 +43,21 @@ module.exports = {
                     ;
                     return message.channel.send({ embed });
                 }
-                setVolume(serverQueue, args[0]);
+                setVolume(message, serverQueue, args[0]);
             } else {
                 message.channel.send('Aborted.');
             }
         } else {
-            setVolume(serverQueue, args[0]);
+            setVolume(message, serverQueue, args[0]);
         }
     },
 };
 
-function setVolume(serverQueue, volume) {
+function setVolume(message, serverQueue, volume) {
+    if(isNaN(parseFloat(volume / 100))) return message.channel.send('Invalid value entered, cancelling volume selection.');
     serverQueue.volume = parseFloat(volume / 100);
     serverQueue.connection.dispatcher.setVolume(serverQueue.volume);
-    logger.debug(`Volume set to: ${serverQueue.volume * 100}%`);
+    logger.debug(`Volume: Volume set to: ${serverQueue.volume * 100}%`);
 }
 /*
  * H- Hey?
