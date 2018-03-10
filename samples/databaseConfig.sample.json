@@ -1,0 +1,7 @@
+{
+  "host": "<database ip/url here>",
+  "user": "<database user here>",
+  "password": "<password here>",
+  "database": "<database name here>",
+  "connectionLimit": 10
+}
