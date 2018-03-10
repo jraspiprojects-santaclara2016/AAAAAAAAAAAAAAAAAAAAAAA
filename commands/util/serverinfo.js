@@ -11,7 +11,7 @@ module.exports = {
         const embed = new Discord.MessageEmbed()
             .setTitle('Serverinfo:')
             .setColor('DARK_GREEN')
-            .setThumbnail(message.guild.iconURL)
+            .setThumbnail(message.guild.iconURL())
             .addField('Name:', message.guild.name)
             .addField('ID:', message.guild.id)
             .addField('Created at:', message.guild.createdAt)

@@ -1,7 +1,7 @@
 {
-  "botName" : "MonikaBot",
+  "botName" : "Monika",
   "commandPrefix" : "!m.",
-  "presenceGame" : "!m.help for help",
+  "presenceGame" : "@Monika help",
   "ownerID" : "127938763535024128",
   "maxPermission" : 0,
   "minPermission" : 1,
