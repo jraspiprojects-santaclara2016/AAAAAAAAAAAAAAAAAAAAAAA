@@ -17,5 +17,5 @@ exports.run = (client, title, fields, destination) => {
         embed.addField(field.name, field.value);
     }
 
-    destination.send({ embed }).catch(error => logger.error(`discordCustomEmbedHandler: Error sending message: ${error}`));
+    destination.send(embed).catch(error => logger.error(`discordCustomEmbedHandler: Error sending message: ${error}`));
 };

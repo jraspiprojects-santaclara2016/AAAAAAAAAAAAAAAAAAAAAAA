@@ -8,7 +8,7 @@ const logger = winstonLogHandler.getLogger();
 module.exports = {
     name: 'addleagueaccount',
     description: 'Link a LeagueOfLegends account to your Discord account',
-    disabled: false,
+    disabled: true,
     async execute(client, message) {
         let filter = m => m.author === message.author && m.content !== '';
         let embed = new Discord.MessageEmbed()

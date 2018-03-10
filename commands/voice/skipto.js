@@ -24,7 +24,7 @@ ${serverQueue.songs.map(song => `**${index++} -** ${song.title}`).join('\n')}
                 errors: ['time'],
             });
         } catch (err) {
-            console.error(err);
+            logger.error(`skipto: Error: ${err}`);
             return message.channel.send('No or invalid value entered, cancelling video selection.');
         }
         const playlistIndex = parseInt(response.first().content);

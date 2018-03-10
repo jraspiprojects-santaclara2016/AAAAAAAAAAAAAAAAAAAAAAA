@@ -6,7 +6,7 @@ const discordCustomEmbedHandler = require('../../handler/command/discordCustomEm
 module.exports = {
     name: 'listleagueaccounts',
     description: 'List all LeagueOfLegends accounts that are linked with your Discord account.',
-    disabled: false,
+    disabled: true,
     execute(client, message) {
         mariadbHandler.functions.getLeagueAccountsOfDiscordId(message.author.id).then(data => {
             logger.silly(`ListLeagueAccounts: Data: \n ${data}`);

@@ -21,7 +21,7 @@ module.exports = {
             .addField('❯Version', `v${package.version}`, true)
             .addField('❯Source', '[Click here!](https://github.com/weebs-online/Monika)', true)
         ;
-        message.channel.send(embed);
+        message.channel.send(embed).catch(error => {logger.error(`stats: Error: ${error}`);});
     },
 };
 

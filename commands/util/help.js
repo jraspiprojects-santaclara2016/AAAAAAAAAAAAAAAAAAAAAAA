@@ -19,10 +19,9 @@ module.exports = {
         } else {
             prefix = config.commandPrefix;
         }
-        const commandCollection =
-            client.commands.filter(function(command) {
-                return !command.disabled;
-            });
+        const commandCollection = client.commands.filter(function(command) {
+            return !command.disabled;
+        });
         const text = `\n___**Commands:**___
 ${commandCollection.map(command => `**-${prefix}${command.name}** - ${command.description}`).join('\n')}`;
         message.author.send(text, { split: true }).catch(error => {

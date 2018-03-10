@@ -42,7 +42,7 @@ exports.run = (client, message, args, link, sitename) => {
                             .setImage(json[index].file_url)
                             .setFooter('Upload by: ' + json[index].author)
                         ;
-                        message.channel.send({ embed }).catch(messageError => logger.error(`danboruHelperJson: Error sending message: ${messageError}`));
+                        message.channel.send(embed).catch(messageError => logger.error(`danbooruHelperJson: Error sending message: ${messageError}`));
                     } else {
                         const embed = new Discord.MessageEmbed()
                             .setTitle(sitename + ' command:')
@@ -53,7 +53,7 @@ exports.run = (client, message, args, link, sitename) => {
                             .setFooter('By ' + config.botName)
                             .setTimestamp()
                         ;
-                        message.channel.send({ embed }).catch(messageError => logger.error(`danboruHelperJson: Error sending message: ${messageError}`));
+                        message.channel.send(embed).catch(messageError => logger.error(`danbooruHelperJson: Error sending message: ${messageError}`));
                     }
                 } else {
                     // Building and sending an embedded message.
@@ -66,10 +66,10 @@ exports.run = (client, message, args, link, sitename) => {
                         .setFooter('By ' + config.botName)
                         .setTimestamp()
                     ;
-                    message.channel.send({ embed }).catch(messageError => logger.error(`danboruHelperJson: Error sending message: ${messageError}`));
+                    message.channel.send(embed).catch(messageError => logger.error(`danbooruHelperJson: Error sending message: ${messageError}`));
                     client.fetchUser(config.ownerID).then(user => {
                         user.send({ embed });
-                    }).catch(messageError => logger.error(`danboruHelperJson: Error: ${messageError}`));
+                    }).catch(messageError => logger.error(`danbooruHelperJson: Error: ${messageError}`));
                 }
             });
         } else {
@@ -82,7 +82,7 @@ exports.run = (client, message, args, link, sitename) => {
                 .setFooter('By ' + config.botName)
                 .setTimestamp()
             ;
-            message.channel.send({ embed }).catch(messageError => logger.error(`danboruHelperJson: Error sending message: ${messageError}`));
+            message.channel.send(embed).catch(messageError => logger.error(`danbooruHelperJson: Error sending message: ${messageError}`));
         }
     } else {
         // Building and sending an embedded message.
@@ -94,6 +94,6 @@ exports.run = (client, message, args, link, sitename) => {
             .setFooter('By ' + config.botName)
             .setTimestamp()
         ;
-        message.channel.send({ embed }).catch(error => logger.error(`danboruHelperJson: Error sending message: ${error}`));
+        message.channel.send(embed).catch(error => logger.error(`danbooruHelperJson: Error sending message: ${error}`));
     }
 };

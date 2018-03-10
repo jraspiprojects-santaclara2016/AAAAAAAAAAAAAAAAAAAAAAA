@@ -4,7 +4,7 @@ Description=MonikaBot (Discord)
 After=network.target
 
 [Service]
-Environment=NODE_ENV=production DISCORD_TOKEN=<DISCORD TOKEN HERE> OPENWEATHERMAP_TOKEN=<OPENWEATHERMAP TOKEN HERE> LOL_TOKEN=<LOL TOKEN HERE>
+Environment=NODE_ENV=production
 ExecStart=/usr/bin/node /path/to/index.js
 WorkingDirectory=/path/to/monikabot
 StandardOutput=syslog

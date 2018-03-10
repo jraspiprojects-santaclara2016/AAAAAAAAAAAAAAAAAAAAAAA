@@ -15,12 +15,12 @@ module.exports = {
             try {
                 await mariadbHandler.functions.setGuildPrefix(prefix, guildId);
                 cacheHandler.createPrefixCache(guildId, prefix);
-                message.channel.send(`Set the Prefix to ${prefix}`).catch(error => logger.error(`SetGuildPrefix: error sending message: ${error}`));
+                message.channel.send(`Set the Prefix to **${prefix}**`).catch(error => logger.error(`SetGuildPrefix: error sending message: ${error}`));
             } catch (error) {
                 logger.error(`SetGuildPrefix: ${error}`);
             }
         } else {
-            message.channel.send('You dont have the Permissions to set the Prefix for this Server!').catch(error => logger.error(`SetGuildPrefix: error sending message: ${error}`));
+            message.channel.send('You don\'t have the Permission (MANAGE_GUILD) to set the Prefix for this Server!').catch(error => logger.error(`SetGuildPrefix: error sending message: ${error}`));
         }
     },
 };

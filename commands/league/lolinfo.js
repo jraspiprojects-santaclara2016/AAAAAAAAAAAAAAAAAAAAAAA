@@ -8,7 +8,7 @@ const logger = winstonLogHandler.getLogger();
 module.exports = {
     name: 'lolinfo',
     description: 'Display information about the specified summoner.',
-    disabled: false,
+    disabled: true,
     execute(client, message, args) {
         lolApi.base.loadConfig('./configuration/lolConfig.json');
         lolApi.base.setKey(apiKeys.leagueOfLegends);

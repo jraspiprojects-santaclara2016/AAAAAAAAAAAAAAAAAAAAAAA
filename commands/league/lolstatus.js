@@ -9,7 +9,7 @@ const discordCustomEmbedHandler = require('../../handler/command/discordCustomEm
 module.exports = {
     name: 'lolstatus',
     description: 'Display the current status of the LeagueOfLegends server.',
-    disabled: false,
+    disabled: true,
     execute(client, message, args) {
         lolApi.base.loadConfig('./configuration/lolConfig.json');
         lolApi.base.setKey(apiKeys.leagueOfLegends);

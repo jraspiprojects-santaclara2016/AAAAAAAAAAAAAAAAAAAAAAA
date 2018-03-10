@@ -4,7 +4,7 @@ const logger = winstonLogHandler.getLogger();
 
 exports.run = (client) => {
     fs.readdir('./events/', (err, files) => {
-        if (err) return console.error(err);
+        if (err) return logger.error(`discordEventHandler: Error: ${err}`);
         files.forEach(file => {
             const eventFunction = require(`./../../events/${file}`);
             const eventName = file.split('.')[0];

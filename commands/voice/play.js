@@ -16,7 +16,7 @@ module.exports = {
     disabled: false,
     async execute(client, message, args) {
         const voiceChannel = message.member.voiceChannel;
-        if (!voiceChannel) return message.channel.send('You need to be in a voice channel!');
+        if(!voiceChannel) return message.channel.send('You need to be in a voice channel!');
         if(!await checkPermissions(client, message, voiceChannel)) return;
         if(await isYoutubeLink(args[0])) return await handleYoutubeLink(args[0], message, voiceChannel);
         // start search
@@ -26,13 +26,13 @@ module.exports = {
 
 async function checkPermissions(client, message, voiceChannel) {
     const permissions = voiceChannel.permissionsFor(client.user);
-    if (!permissions.has('CONNECT')) {
-        logger.debug('Bot can not join Channel (MISSING_CONNECT_PERMISSION).');
+    if(!permissions.has('CONNECT')) {
+        logger.debug('play: Bot can not join Channel (MISSING_CONNECT_PERMISSION).');
         message.channel.send('I cannot connect to your voice channel, make sure I have the proper permissions!');
         return false;
     }
-    if (!permissions.has('SPEAK')) {
-        logger.debug('Bot can not join Channel (MISSING_SPEAK_PERMISSION).');
+    if(!permissions.has('SPEAK')) {
+        logger.debug('play: Bot can not join Channel (MISSING_SPEAK_PERMISSION).');
         message.channel.send('I cannot speak in your voice channel, make sure I have the proper permissions!');
         return false;
     }
@@ -49,7 +49,7 @@ async function isYoutubeLink(link) {
 }
 
 async function isYoutubePlaylist(link) {
-    if (link.match((/^https?:\/\/(www.youtube.com|youtube.com)\/.*list(.*)$/))) {
+    if(link.match((/^https?:\/\/(www.youtube.com|youtube.com)\/.*list(.*)$/))) {
         return true;
     } else {
         return false;
@@ -91,11 +91,11 @@ ${videos.map(searchVideo => `**${index++} -** ${searchVideo.title}`).join('\n')}
             const videoIndex = parseInt(response.first().content);
             video = await youtube.getVideoByID(videos[videoIndex - 1].id);
         } catch (err) {
-            logger.error(err);
+            logger.error(`play: Error: ${err}`);
             return message.channel.send('No or invalid value entered, cancelling video selection.');
         }
     } catch (err) {
-        logger.error(err);
+        logger.error(`play: Error: ${err}`);
         return message.channel.send('I could not obtain any search results.');
     }
     await handleYoutubeVideo(video, message, voiceChannel);
@@ -148,8 +148,8 @@ function play(guild, song) {
             if(!musicQueue.loop) musicQueue.songs.shift();
             play(guild, musicQueue.songs[0]);
         })
-        .on('error', error => console.error(error))
-        .on('debug', debug => console.debug(debug))
+        .on('error', error => logger.error(`play: Error: ${error}`))
+        .on('debug', debug => logger.debug(`play: Error: ${debug}`))
     ;
     dispatcher.setVolume(musicQueue.volume);
     const startPlayingEmbed = new Discord.MessageEmbed()

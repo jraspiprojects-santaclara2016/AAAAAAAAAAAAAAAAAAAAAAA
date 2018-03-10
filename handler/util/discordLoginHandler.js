@@ -1,6 +1,8 @@
+const winstonLogHandler = require('./winstonLogHandler');
+const logger = winstonLogHandler.getLogger();
 const apiKeys = require('../../configuration/apiKeyConfig');
 
-exports.run = (client, logger) => {
+exports.run = (client) => {
     client.login(apiKeys.discord).then(() => {
         logger.info('discordLoginHandler: I connected to the Discord server!');
     }).catch((error) => {

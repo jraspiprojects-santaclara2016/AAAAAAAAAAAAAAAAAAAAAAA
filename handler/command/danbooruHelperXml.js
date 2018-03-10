@@ -48,8 +48,8 @@ exports.run = (client, message, args, link, siteName, urlPrefix) => {
                                 .setImage(urlPrefix + result.posts.post[index].$.file_url)
                                 .setFooter('Upload by: ' + result.posts.post[index].$.creator_id)
                             ;
-                            message.channel.send({ embed }).catch(messageError => {
-                                logger.error(`danboruHelperXml: Error sending message: ${messageError}`);
+                            message.channel.send(embed).catch(messageError => {
+                                logger.error(`danbooruHelperXml: Error sending message: ${messageError}`);
                             });
                         } else {
                             // Building and sending an embedded message.
@@ -60,8 +60,8 @@ exports.run = (client, message, args, link, siteName, urlPrefix) => {
                                 .setFooter('By ' + config.botName)
                                 .setTimestamp()
                             ;
-                            message.channel.send({ embed }).catch(messageError => {
-                                logger.error(`danboruHelperXml: Error sending message: ${messageError}`);
+                            message.channel.send(embed).catch(messageError => {
+                                logger.error(`danbooruHelperXml: Error sending message: ${messageError}`);
                             });
                         }
                     });
@@ -76,13 +76,13 @@ exports.run = (client, message, args, link, siteName, urlPrefix) => {
                         .setFooter('By ' + config.botName)
                         .setTimestamp()
                     ;
-                    message.channel.send({ embed }).catch(messageError => {
-                        logger.error(`danboruHelperXml: Error sending message: ${messageError}`);
+                    message.channel.send(embed).catch(messageError => {
+                        logger.error(`danbooruHelperXml: Error sending message: ${messageError}`);
                     });
                     client.fetchUser(config.ownerID).then(user => {
-                        user.send({ embed });
+                        user.send(embed);
                     }).catch(messageError => {
-                        logger.error(`danboruHelperXml: Error: ${messageError}`);
+                        logger.error(`danbooruHelperXml: Error: ${messageError}`);
                     });
                 }
             });
@@ -96,8 +96,8 @@ exports.run = (client, message, args, link, siteName, urlPrefix) => {
                 .setFooter('By ' + config.botName)
                 .setTimestamp()
             ;
-            message.channel.send({ embed }).catch(error => {
-                logger.error(`danboruHelperXml: Error sending message: ${error}`);
+            message.channel.send(embed).catch(error => {
+                logger.error(`danbooruHelperXml: Error sending message: ${error}`);
             });
         }
     } else {
@@ -110,8 +110,8 @@ exports.run = (client, message, args, link, siteName, urlPrefix) => {
             .setFooter('By ' + config.botName)
             .setTimestamp()
         ;
-        message.channel.send({ embed }).catch(error => {
-            logger.error(`danboruHelperXml: Error sending message: ${error}`);
+        message.channel.send(embed).catch(error => {
+            logger.error(`danbooruHelperXml: Error sending message: ${error}`);
         });
     }
 };

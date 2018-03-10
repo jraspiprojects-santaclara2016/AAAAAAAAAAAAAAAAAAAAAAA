@@ -17,7 +17,7 @@
 ### Installation
 * Clone this git repository.
 * Copy the sample config files into the configuration folder and edit them to your liking.
-* Run 'npm run run' in the cmd/terminal
+* Run 'npm start' in the cmd/terminal
 * The bot should be online now. If you encounter errors, please open an issue if the same error does not already exists in the issues.
 
 ### Config files

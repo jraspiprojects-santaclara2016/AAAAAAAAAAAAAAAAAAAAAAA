@@ -12,5 +12,5 @@ exports.run = (client, message, errorMessage) => {
         .setTimestamp()
         .setFooter('By ' + config.botName)
     ;
-    message.channel.send({ embed }).catch(error => logger.error(`discordErrorEmbedHandler: Error sending message: ${error}`));
+    message.channel.send(embed).catch(error => logger.error(`discordErrorEmbedHandler: Error sending message: ${error}`));
 };
