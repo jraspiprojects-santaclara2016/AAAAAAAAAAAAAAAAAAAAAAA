@@ -3,6 +3,7 @@ const cacheHandler = require('../../handler/util/cacheHandler');
 const musicCache = cacheHandler.getMusicCache();
 const logHandler = require('../../handler/util/winstonLogHandler');
 const logger = logHandler.getLogger();
+const discordCustomEmbedHandler = require('../../handler/command/discordCustomEmbedHandler');
 
 
 module.exports = {
@@ -12,9 +13,9 @@ module.exports = {
     async execute(client, message, args) {
         let embed;
         const serverQueue = musicCache.get(message.guild.id);
-        if(!serverQueue) return message.channel.send('There is nothing playing.');
+        if(!serverQueue) return discordCustomEmbedHandler.run(client,'Volume',[{name:'There is nothing playing', value:'-'}],message.channel);
         if(!(serverQueue.voiceChannel === message.member.voiceChannel)) return message.channel.send('You are not in the channel where the music is playing...');
-        if(!args[0]) return message.channel.send(`The current volume is: **${serverQueue.volume * 100}%**`);
+        if(!args[0]) return discordCustomEmbedHandler.run(client,'Volume',[{name:'The current volume is:', value:`**${serverQueue.volume * 100}%**`}],message.channel);
         if(args[0] > 100) {
             embed = new Discord.MessageEmbed()
                 .setTitle('Volume selection:')

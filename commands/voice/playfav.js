@@ -14,7 +14,7 @@ module.exports = {
                     play.execute(client, message, [data[0].favPlaylist]);
                 }
             }).catch(error => {
-                logger.error(error);
+                logger.error(`Error: ${error}`);
             });
         }
     },
