@@ -13,10 +13,20 @@ module.exports = {
     async execute(client, message, args) {
         let embed;
         const serverQueue = musicCache.get(message.guild.id);
-        if(!serverQueue) return discordCustomEmbedHandler.run(client,'Volume',[{name:'There is nothing playing', value:'-'}],message.channel);
-        if(!(serverQueue.voiceChannel === message.member.voiceChannel)) return message.channel.send('You are not in the channel where the music is playing...');
-        if(!args[0]) return discordCustomEmbedHandler.run(client,'Volume',[{name:'The current volume is:', value:`**${serverQueue.volume * 100}%**`}],message.channel);
-        if(args[0] > 100) {
+        if (!serverQueue) {
+            return discordCustomEmbedHandler.run(client, 'Volume', [{
+                name: 'There is nothing playing',
+                value: '-',
+            }], message.channel);
+        }
+        if (!(serverQueue.voiceChannel === message.member.voiceChannel)) return message.channel.send('You are not in the channel where the music is playing...');
+        if (!args[0]) {
+            return discordCustomEmbedHandler.run(client, 'Volume', [{
+                name: 'The current volume is:',
+                value: `**${serverQueue.volume * 100}%**`,
+            }], message.channel);
+        }
+        if (args[0] > 100) {
             embed = new Discord.MessageEmbed()
                 .setTitle('Volume selection:')
                 .setColor('ORANGE')
@@ -35,8 +45,8 @@ module.exports = {
                 console.error(err);
                 return message.channel.send('No or invalid value entered, cancelling volume selection.');
             }
-            if(response.first().content === 'y') {
-                if(args[0] > 9000) {
+            if (response.first().content === 'y') {
+                if (args[0] > 9000) {
                     embed = new Discord.MessageEmbed()
                         .setTitle('OVER 9000:')
                         .setColor('DARK_RED')
@@ -55,11 +65,12 @@ module.exports = {
 };
 
 function setVolume(message, serverQueue, volume) {
-    if(isNaN(parseFloat(volume / 100))) return message.channel.send('Invalid value entered, cancelling volume selection.');
+    if (isNaN(parseFloat(volume / 100))) return message.channel.send('Invalid value entered, cancelling volume selection.');
     serverQueue.volume = parseFloat(volume / 100);
     serverQueue.connection.dispatcher.setVolume(serverQueue.volume);
     logger.debug(`Volume: Volume set to: ${serverQueue.volume * 100}%`);
 }
+
 /*
  * H- Hey?
  * Can you hear me?

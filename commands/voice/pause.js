@@ -1,6 +1,4 @@
 const cacheHandler = require('../../handler/util/cacheHandler');
-const winstonLogHandler = require('../../handler/util/winstonLogHandler');
-const logger = winstonLogHandler.getLogger();
 const musicCache = cacheHandler.getMusicCache();
 const discordCustomEmbedHandler = require('../../handler/command/discordCustomEmbedHandler');
 
