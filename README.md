@@ -5,7 +5,7 @@
   <br>
  </h1>
 <h4 align="center">Monika greets you <3</h4>
-<h5 align="center">This Code is provided as is, there will be no support for getting it to run.</h5>
+<h5 align="center">This Code is provided as is, there will be no support for getting it to run. We only fix bugs.</h5>
   <p align="center">
       <a href="https://discord.gg/JtFFkzk" target="_blank"><img src="https://discordapp.com/assets/fc0b01fe10a0b8c602fb0106d8189d9b.png" width="256px" alt="Discord"></a>
   </p>
