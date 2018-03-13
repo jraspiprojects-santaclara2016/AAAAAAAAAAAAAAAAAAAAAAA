@@ -1,11 +1,8 @@
 FROM node:9
 
-RUN git clone https://github.com/weebs-online/Monika.git
+COPY . /Monika
 
 WORKDIR ./Monika
-
-VOLUME ./configuration
-VOLUME ./logs
 
 RUN npm install
 
