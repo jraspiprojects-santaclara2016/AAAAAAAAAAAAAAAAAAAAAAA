@@ -142,7 +142,7 @@ function play(guild, song) {
         musicCache.delete(guild.id);
         return;
     }
-    const dispatcher = musicQueue.connection.play(ytdl(song.url, { filter: 'audio' }))
+    const dispatcher = musicQueue.connection.play(ytdl(song.url, { type: 'opus', seek: 0, quality: 'highestaudio', retries: 10 }))
         .on('end', () => {
             logger.debug('play: Dispatcher.end() triggered.');
             if(!musicQueue.loop) musicQueue.songs.shift();
