@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
-const config = require('../../configuration/config.json');
+const configHandler = require('../util/configHandler')
+const generalConfig = configHandler.getGeneralConfig();
 const winstonLogHandler = require('../util/winstonLogHandler');
 
 const logger = winstonLogHandler.getLogger();
@@ -10,7 +11,7 @@ exports.run = (client, message, errorMessage) => {
         .setColor('DARK_RED')
         .addField('Error', errorMessage)
         .setTimestamp()
-        .setFooter('By ' + config.botName)
+        .setFooter('By ' + generalConfig.botName)
     ;
     message.channel.send(embed).catch(error => logger.error(`discordErrorEmbedHandler: Error sending message: ${error}`));
 };

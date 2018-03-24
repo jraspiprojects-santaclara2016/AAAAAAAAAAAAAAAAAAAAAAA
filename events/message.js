@@ -1,8 +1,9 @@
-const config = require('../configuration/config.json');
 const errorEmbedHandler = require('../handler/command/discordErrorEmbedHandler');
 const winstonLogHandler = require('../handler/util/winstonLogHandler');
 const mariadbHandler = require('../handler/util/mariadbHandler');
 const cacheHandler = require('../handler/util/cacheHandler');
+const configHandler = require('../handler/util/configHandler');
+const generalConfig = configHandler.getGeneralConfig();
 
 const logger = winstonLogHandler.getLogger();
 
@@ -16,7 +17,7 @@ exports.run = async (client, message) => {
     } else if (message.guild) {
         prefix = await checkCacheAndGetPrefix(message);
     } else {
-        prefix = config.commandPrefix;
+        prefix = generalConfig.commandPrefix;
     }
     await handlePrefixMessage(message, prefix, client);
 };
@@ -33,7 +34,7 @@ async function checkCacheAndGetPrefix(message) {
             }
         } catch (error) {
             logger.warn('Message: Warning DB error: ' + error);
-            prefix = config.commandPrefix;
+            prefix = generalConfig.commandPrefix;
         }
     } else {
         prefix = cacheHandler.getPrefixCache().get(guildId).prefix;

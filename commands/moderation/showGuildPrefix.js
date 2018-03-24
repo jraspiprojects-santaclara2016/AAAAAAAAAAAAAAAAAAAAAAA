@@ -1,6 +1,7 @@
 const winstonLogHandler = require('../../handler/util/winstonLogHandler');
 const mariadbHandler = require('../../handler/util/mariadbHandler');
-const config = require('../../configuration/config');
+const configHandler = require('../handler/util/configHandler');
+const generalConfig = configHandler.getGeneralConfig();
 const logger = winstonLogHandler.getLogger();
 const cacheHandler = require('../../handler/util/cacheHandler');
 
@@ -20,12 +21,12 @@ module.exports = {
                 if (result.length === 1) {
                     prefix = result[0].prefix;
                 } else {
-                    prefix = config.commandPrefix;
+                    prefix = generalConfig.commandPrefix;
                     logger.verbose(`ShowGuildPrefix: Use default Prefix ${prefix}`);
                 }
             } catch (error) {
                 logger.error(`ShowGuildPrefix: ${error.code} ${error.sqlMessage}`);
-                prefix = config.commandPrefix;
+                prefix = generalConfig.commandPrefix;
             }
         }
         try {

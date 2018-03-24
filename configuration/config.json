@@ -1,7 +1,15 @@
 {
-  "botName" : "Monika",
-  "commandPrefix" : "!m.",
-  "presenceGame" : "@Monika help",
-  "ownerID" : "127938763535024128",
-  "danbooruImageLimit" : 100
+  "general": {
+    "botName": "Monika",
+    "commandPrefix": "!m.",
+    "presenceGame": "@Monika help",
+    "ownerID": "127938763535024128"
+  },
+  "league": {
+    "rateLimit": 20,
+    "baseURL": ".api.riotgames.com"
+  },
+  "danbooru": {
+    "imageLimit": 100
+  }
 }
