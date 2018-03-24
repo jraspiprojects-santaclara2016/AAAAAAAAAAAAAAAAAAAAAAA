@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const configHandler = require('../util/configHandler')
+const configHandler = require('../util/configHandler');
 const generalConfig = configHandler.getGeneralConfig();
 const winstonLogHandler = require('../util/winstonLogHandler');
 

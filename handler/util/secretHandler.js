@@ -23,7 +23,7 @@ function getKeyFromFile(keyName) {
     try {
         return secrets.apiKeys[keyName];
     } catch (error) {
-        logger.debug(`secretHandler: Key ${keyName} not found in secrets.json!`)
+        logger.debug(`secretHandler: Key ${keyName} not found in secrets.json!`);
     }
 }
 
@@ -31,6 +31,6 @@ function getKeyFromEnvironment(keyName) {
     try {
         return process.env[keyName];
     } catch (error) {
-        logger.debug(`secretHandler: Key ${keyName} is not a environment variable!`)
+        logger.debug(`secretHandler: Key ${keyName} is not a environment variable!`);
     }
 }

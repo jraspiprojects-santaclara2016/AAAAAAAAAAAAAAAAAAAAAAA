@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const request = require('request');
-const apiKeys = require('../../configuration/apiKeyConfig');
+const secretHandler = require('../../handler/util/secretHandler');
 const winstonLogHandler = require('../../handler/util/winstonLogHandler');
 const logger = winstonLogHandler.getLogger();
 
@@ -15,7 +15,7 @@ module.exports = {
             request.get('https://api.openweathermap.org/data/2.5/weather', {
                 qs: {
                     q: args.join(' '),
-                    appid: apiKeys.openWeatherMap,
+                    appid: secretHandler.getApiKey('OPENWEATHERMAP_KEY'),
                     units: 'metric',
                     lang: 'en',
                 },

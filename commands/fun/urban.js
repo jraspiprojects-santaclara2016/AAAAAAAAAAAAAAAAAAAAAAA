@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const request = require('request');
-const configHandler = require('../../handler/util/configHandler')
+const configHandler = require('../../handler/util/configHandler');
 const generalConfig = configHandler.getGeneralConfig();
 const winstonLogHandler = require('../../handler/util/winstonLogHandler');
 const logger = winstonLogHandler.getLogger();

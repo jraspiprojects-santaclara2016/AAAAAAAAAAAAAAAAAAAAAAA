@@ -1,6 +1,6 @@
 const winstonLogHandler = require('../../handler/util/winstonLogHandler');
 const mariadbHandler = require('../../handler/util/mariadbHandler');
-const configHandler = require('../handler/util/configHandler');
+const configHandler = require('../../handler/util/configHandler');
 const generalConfig = configHandler.getGeneralConfig();
 const logger = winstonLogHandler.getLogger();
 const cacheHandler = require('../../handler/util/cacheHandler');

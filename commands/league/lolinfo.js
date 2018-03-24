@@ -1,7 +1,8 @@
 const Discord = require('discord.js');
 const config = require('../../configuration/config');
 const lolApi = require('league-api-2.0');
-const apiKeys = require('../../configuration/apiKeyConfig');
+const secretHandler = require('../../handler/util/secretHandler');
+const configHandler = require('../../handler/util/configHandler');
 const winstonLogHandler = require('../../handler/util/winstonLogHandler');
 const logger = winstonLogHandler.getLogger();
 
@@ -10,8 +11,10 @@ module.exports = {
     description: 'Display information about the specified summoner.',
     disabled: true,
     execute(client, message, args) {
-        lolApi.base.loadConfig('./configuration/lolConfig.json');
-        lolApi.base.setKey(apiKeys.leagueOfLegends);
+        const leagueConfig = configHandler.getLeagueConfig();
+        lolApi.base.setBaseURL(leagueConfig.baseURL);
+        lolApi.base.setRateLimit(leagueConfig.rateLimit);
+        lolApi.base.setKey(secretHandler.getApiKey('LOL_KEY'));
         lolApi.base.setRegion('euw1');
 
         logger.debug('Lolinfo: Trying to execute lol api getSummonerBySummonerName call');

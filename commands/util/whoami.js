@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const winstonLogHandler = require('../../handler/util/winstonLogHandler');
 const logger = winstonLogHandler.getLogger();
-const configHandler = require('../../handler/util/configHandler')
+const configHandler = require('../../handler/util/configHandler');
 
 module.exports = {
     name: 'whoami',

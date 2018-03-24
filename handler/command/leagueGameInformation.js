@@ -1,10 +1,10 @@
-const Discord = require('discord.js');
+/*
+//TODO I know. Reuse this stuff later
 const lolApi = require('league-api-2.0');
 
 const mariadbHandler = require('../util/mariadbHandler');
 const winstonLogHandler = require('../util/winstonLogHandler');
 const logger = winstonLogHandler.getLogger();
-const discordCustomEmbedHandler = require('./discordCustomEmbedHandler');
 const secretHandler = require('../util/secretHandler');
 const configHandler = require('../util/configHandler');
 
@@ -128,8 +128,8 @@ async function callEachAccount(accountList) {
 }
 
 async function sendResult(client, result) {
-    const fields = await buildEmbedFields(result);
-    discordCustomEmbedHandler.run(client, 'Live Game Stats', fields, debugHook);
+    // const fields = await buildEmbedFields(result);
+    // discordCustomEmbedHandler.run(client, 'Live Game Stats', fields, debugHook);
 }
 
 async function buildEmbedFields(result) {
@@ -176,4 +176,4 @@ async function buildEmbedFields(result) {
     fields.push(blueTeam);
 
     return fields;
-}
+}*/

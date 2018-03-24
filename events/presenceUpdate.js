@@ -1,9 +1,4 @@
-const winstonLogHandler = require('../handler/util/winstonLogHandler');
-const logger = winstonLogHandler.getLogger();
-
-exports.run = (client, oldMember, newMember) => {
-    //logger.silly(`Presence update: OldMember: ${oldMember} ## NewMember: ${newMember}`);
-    // TODO currently disabled. Will be enabled at a later version
+// TODO currently disabled. Will be enabled at a later version
 /*    if (!newMember) return;
     const memberId = newMember.user.id;
     if (!newMember.presence) return;
@@ -13,4 +8,3 @@ exports.run = (client, oldMember, newMember) => {
         const eventFunction = require('../handler/command/leagueGameInformation');
         eventFunction.run(client, memberId);
     }*/
-};

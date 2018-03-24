@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const request = require('request');
 const winstonLogHandler = require('../util/winstonLogHandler');
-const configHandler = require('../handler/util/configHandler');
+const configHandler = require('../util/configHandler');
 const generalConfig = configHandler.getGeneralConfig();
 const danbooruConfig = configHandler.getDanbooruConfig();
 

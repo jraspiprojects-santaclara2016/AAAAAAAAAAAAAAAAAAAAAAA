@@ -6,9 +6,8 @@ const logger = winstonLogHandler.getLogger();
 
 const cacheHandler = require('../../handler/util/cacheHandler');
 const musicCache = cacheHandler.getMusicCache();
-const apiKeyConfig = require('../../configuration/apiKeyConfig');
-
-const youtube = new YouTube(apiKeyConfig.youtube);
+const secretHandler = require('../../handler/util/secretHandler');
+const youtube = new YouTube(secretHandler.getApiKey('YOUTUBE_KEY'));
 
 module.exports = {
     name: 'play',
