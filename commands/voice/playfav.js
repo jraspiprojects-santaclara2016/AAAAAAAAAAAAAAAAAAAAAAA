@@ -7,15 +7,17 @@ module.exports = {
     name: 'playfav',
     description: 'Play your favorite playlist.',
     disabled: false,
-    execute(client, message, args) {
-        if(args.length === 0) {
-            dbHandler.functions.getFavPlaylist(message.author.id).then(data => {
-                if(data[0].favPlaylist) {
-                    play.execute(client, message, [data[0].favPlaylist]);
-                }
-            }).catch(error => {
-                logger.error(`Error: ${error}`);
-            });
-        }
+    async execute(client, message, args) {
+        if (args.length === 0) return await playFavorite(client, message);
     },
 };
+
+async function playFavorite(client, message) {
+    dbHandler.functions.getFavPlaylist(message.author.id).then(data => {
+        if(data[0].favPlaylist) {
+            play.execute(client, message, [data[0].favPlaylist]);
+        }
+    }).catch(error => {
+        logger.error(`Error: ${error}`);
+    });
+}
