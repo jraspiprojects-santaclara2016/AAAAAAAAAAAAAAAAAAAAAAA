@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const winstonLogHandler = require('../../handler/util/winstonLogHandler');
-const config = require('../../configuration/config.json');
+const configHandler = require('../../handler/util/configHandler');
+const generalConfig = configHandler.getGeneralConfig();
 const package = require('../../package.json');
 const logger = winstonLogHandler.getLogger();
 
@@ -13,7 +14,7 @@ module.exports = {
         const usedRAM = Math.floor(process.memoryUsage().rss / 1000000);
         logger.silly('status: sending message...');
         const embed = new Discord.MessageEmbed()
-            .setTitle(`${config.botName} Statistics`)
+            .setTitle(`${generalConfig.botName} Statistics`)
             .setThumbnail(client.user.avatarURL())
             .setColor('DARK_GREEN')
             .addField('❯Uptime', uptime, true)

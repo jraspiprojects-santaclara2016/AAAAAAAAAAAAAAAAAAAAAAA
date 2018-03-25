@@ -1,8 +1,7 @@
 const Discord = require('discord.js');
 const winstonLogHandler = require('../../handler/util/winstonLogHandler');
 const logger = winstonLogHandler.getLogger();
-
-const config = require('../../configuration/config');
+const configHandler = require('../../handler/util/configHandler');
 
 module.exports = {
     name: 'whoami',
@@ -22,7 +21,7 @@ module.exports = {
             .addField('Name:', user.tag)
             .addField('UserID:', user.id)
             .addField('Created at:', user.createdAt)
-            .setFooter('By ' + config.botName)
+            .setFooter('By ' + configHandler.getGeneralConfig().botName)
             .setTimestamp()
         ;
         message.channel.send({ embed }).catch(error => {

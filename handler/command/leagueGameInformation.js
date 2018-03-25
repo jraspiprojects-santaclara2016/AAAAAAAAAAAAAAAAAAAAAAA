@@ -1,21 +1,24 @@
-const Discord = require('discord.js');
+/*
+//TODO I know. Reuse this stuff later
 const lolApi = require('league-api-2.0');
 
 const mariadbHandler = require('../util/mariadbHandler');
 const winstonLogHandler = require('../util/winstonLogHandler');
 const logger = winstonLogHandler.getLogger();
-const discordCustomEmbedHandler = require('./discordCustomEmbedHandler');
-const apiKeys = require('../../configuration/apiKeyConfig');
+const secretHandler = require('../util/secretHandler');
+const configHandler = require('../util/configHandler');
+
 
 // TODO remove webhook if prod
-const debugHook = new Discord.WebhookClient(apiKeys.DEBUG_WEBHOOK_ID, apiKeys.DEBUG_WEBHOOK_TOKEN);
 // Might be needed in the future
 // const tierIconURL = 'https://raw.githubusercontent.com/RiotAPI/Riot-Games-API-Developer-Assets/master/tier-icons/tier-icons-base/';
 
 
 exports.run = (client, discordUserId) => {
-    lolApi.base.loadConfig('./configuration/lolConfig.json');
-    lolApi.base.setKey(apiKeys.leagueOfLegends);
+    const leagueConfig = configHandler.getLeagueConfig();
+    lolApi.base.setBaseURL(leagueConfig.baseURL);
+    lolApi.base.setRateLimit(leagueConfig.rateLimit);
+    lolApi.base.setKey(secretHandler.getApiKey('LOL_KEY'));
 
     logger.info('leagueGameInformation: Requesting Data...');
     main(client, discordUserId).then(response => {
@@ -125,8 +128,8 @@ async function callEachAccount(accountList) {
 }
 
 async function sendResult(client, result) {
-    const fields = await buildEmbedFields(result);
-    discordCustomEmbedHandler.run(client, 'Live Game Stats', fields, debugHook);
+    // const fields = await buildEmbedFields(result);
+    // discordCustomEmbedHandler.run(client, 'Live Game Stats', fields, debugHook);
 }
 
 async function buildEmbedFields(result) {
@@ -173,4 +176,4 @@ async function buildEmbedFields(result) {
     fields.push(blueTeam);
 
     return fields;
-}
+}*/

@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
-const config = require('../../configuration/config.json');
+const configHandler = require('../util/configHandler');
+const generalConfig = configHandler.getGeneralConfig();
 const winstonLogHandler = require('../util/winstonLogHandler');
 
 const logger = winstonLogHandler.getLogger();
@@ -10,7 +11,7 @@ exports.run = (client, title, fields, destination) => {
         .setTitle(title)
         .setColor('DARK_GREEN')
         .setTimestamp()
-        .setFooter('By ' + config.botName)
+        .setFooter('By ' + generalConfig.botName)
     ;
 
     for (const field of fields) {

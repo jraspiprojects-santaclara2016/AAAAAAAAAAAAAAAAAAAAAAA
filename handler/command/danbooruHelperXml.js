@@ -1,9 +1,10 @@
 const Discord = require('discord.js');
 const request = require('request');
 const xml2js = require('xml2js');
-const config = require('../../configuration/config');
 const winstonLogHandler = require('../util/winstonLogHandler');
-
+const configHandler = require('../util/configHandler');
+const generalConfig = configHandler.getGeneralConfig();
+const danbooruConfig = configHandler.getDanbooruConfig();
 const logger = winstonLogHandler.getLogger();
 
 exports.run = (client, message, args, link, siteName, urlPrefix) => {
@@ -29,7 +30,7 @@ exports.run = (client, message, args, link, siteName, urlPrefix) => {
                     q: 'index',
                     tags: args.join(' '),
                     pid: 0,
-                    limit: config.danbooruImageLimit,
+                    limit: danbooruConfig.imageLimit,
                 },
             }, function(error, response, body) {
                 // If there are no errors proceed with this segment.
@@ -57,7 +58,7 @@ exports.run = (client, message, args, link, siteName, urlPrefix) => {
                                 .setTitle(siteName + ' command:')
                                 .setColor('DARK_RED')
                                 .addField('Error:', 'Could\'t find any pictures with the tags you have given me!')
-                                .setFooter('By ' + config.botName)
+                                .setFooter('By ' + generalConfig.botName)
                                 .setTimestamp()
                             ;
                             message.channel.send(embed).catch(messageError => {
@@ -73,13 +74,13 @@ exports.run = (client, message, args, link, siteName, urlPrefix) => {
                         .addField('Error:', 'Could\'t connect to ' + siteName + '!')
                         .addField('HTTP Code:', response.statusCode)
                         .addField('error', error)
-                        .setFooter('By ' + config.botName)
+                        .setFooter('By ' + generalConfig.botName)
                         .setTimestamp()
                     ;
                     message.channel.send(embed).catch(messageError => {
                         logger.error(`danbooruHelperXml: Error sending message: ${messageError}`);
                     });
-                    client.fetchUser(config.ownerID).then(user => {
+                    client.fetchUser(generalConfig.ownerID).then(user => {
                         user.send(embed);
                     }).catch(messageError => {
                         logger.error(`danbooruHelperXml: Error: ${messageError}`);
@@ -93,7 +94,7 @@ exports.run = (client, message, args, link, siteName, urlPrefix) => {
                 .setColor('DARK_RED')
                 .addField('Error:', 'This request to ' + siteName + ' contains banned tags!')
                 .addField('Banned tags:', bannedTags.join(', '))
-                .setFooter('By ' + config.botName)
+                .setFooter('By ' + generalConfig.botName)
                 .setTimestamp()
             ;
             message.channel.send(embed).catch(error => {
@@ -107,7 +108,7 @@ exports.run = (client, message, args, link, siteName, urlPrefix) => {
             .setColor('DARK_RED')
             .addField('Error:', 'This is a SFW channel. ' +
                 'Explicit content that comes with the ' + siteName + ' command needs to be posted into NSFW channels')
-            .setFooter('By ' + config.botName)
+            .setFooter('By ' + generalConfig.botName)
             .setTimestamp()
         ;
         message.channel.send(embed).catch(error => {

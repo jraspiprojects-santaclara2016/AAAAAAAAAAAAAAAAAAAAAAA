@@ -1,9 +1,9 @@
 const mysql = require('mysql');
-const databaseConfig = require('../../configuration/databaseConfig.json');
+const secretHandler = require('./secretHandler');
 const logHandler = require('./winstonLogHandler');
 const logger = logHandler.getLogger();
 
-const pool = mysql.createPool(databaseConfig);
+const pool = mysql.createPool(secretHandler.getDatabaseSecrets());
 
 pool.on('acquire', function(connection) {
     logger.verbose('mariadbHandler: Connection %d acquired', connection.threadId);

@@ -3,7 +3,8 @@ const config = require('../../configuration/config.json');
 const lolApi = require('league-api-2.0');
 const leagueBlameHandler = require('../../handler/command/leaguePostGameStatsHandler');
 const discordErrorEmbedHandler = require('../../handler/command/discordErrorEmbedHandler');
-const apiKeys = require('../../configuration/apiKeyConfig');
+const secretHandler = require('../../handler/util/secretHandler');
+const configHandler = require('../../handler/util/configHandler');
 const winstonLogHandler = require('../../handler/util/winstonLogHandler');
 const logger = winstonLogHandler.getLogger();
 const accountIdFaker = 3440481;
@@ -13,8 +14,10 @@ module.exports = {
     description: 'Compare the game data of a filthy casual to Faker',
     disabled: true,
     execute(client, message, args) {
-        lolApi.base.loadConfig('./configuration/lolConfig.json');
-        lolApi.base.setKey(apiKeys.leagueOfLegends);
+        const leagueConfig = configHandler.getLeagueConfig();
+        lolApi.base.setBaseURL(leagueConfig.baseURL);
+        lolApi.base.setRateLimit(leagueConfig.rateLimit);
+        lolApi.base.setKey(secretHandler.getApiKey('LOL_KEY'));
         lolApi.base.setRegion('KR');
 
         lolApi.executeCall('Special', 'getLastGameOfSummoner', 'Hide on bush').then(matchDataFaker => {
