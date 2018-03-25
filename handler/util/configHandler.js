@@ -13,7 +13,7 @@ try {
 }
 
 function writeSampleConfig() {
-    let sampleConfig = {
+    const sampleConfig = {
         'general': {
             'botName': 'Monika',
             'commandPrefix': '!m.',

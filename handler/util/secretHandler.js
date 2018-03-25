@@ -13,7 +13,7 @@ try {
 }
 
 function writeSampleConfig() {
-    let sampleSecrets = {
+    const sampleSecrets = {
         'database': {
             'host': 'YOUR DATABASE HOSTNAME',
             'user': 'THE USER TO ACCES THE DB',
