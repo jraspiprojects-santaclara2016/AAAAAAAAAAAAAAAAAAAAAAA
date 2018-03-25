@@ -1,8 +1,7 @@
 const Discord = require('discord.js');
-const secretHandler = require('./handler/util/secretHandler');
-
 const winstonLogHandler = require('./handler/util/winstonLogHandler');
 const logger = winstonLogHandler.createLogger();
+const secretHandler = require('./handler/util/secretHandler');
 
 const ShardManager = new Discord.ShardingManager('./bot.js', {
     totalShards: 'auto',
