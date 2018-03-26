@@ -1,5 +1,4 @@
 const Discord = require('discord.js');
-const config = require('../../configuration/config.json');
 const lolApi = require('league-api-2.0');
 const leagueBlameHandler = require('../../handler/command/leaguePostGameStatsHandler');
 const discordErrorEmbedHandler = require('../../handler/command/discordErrorEmbedHandler');

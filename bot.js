@@ -8,14 +8,11 @@ const discordEventHandler = require('./handler/util/discordEventHandler');
 const discordLoginHandler = require('./handler/util/discordLoginHandler');
 const discordMessageHandler = require('./handler/util/discordMessageHandler');
 
-const discordConfigHandler = require('./handler/util/configHandler');
-
 initialize();
 
 async function initialize() {
 
     await discordLoginHandler.run(client);
-    await discordConfigHandler.initialize();
 
     await discordEventHandler.run(client);
     await discordMessageHandler.run(client);

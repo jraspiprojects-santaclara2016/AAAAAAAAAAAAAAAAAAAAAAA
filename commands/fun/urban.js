@@ -1,16 +1,18 @@
 const Discord = require('discord.js');
 const request = require('request');
 const configHandler = require('../../handler/util/configHandler');
-const generalConfig = configHandler.getGeneralConfig();
 const winstonLogHandler = require('../../handler/util/winstonLogHandler');
 const logger = winstonLogHandler.getLogger();
 const apiEndpoint = 'http://api.urbandictionary.com/v0/define?term=';
+
+let generalConfig;
 
 module.exports = {
     name: 'urban',
     description: 'Look something up on Urban Dictionary.',
     disabled: false,
     execute(client, message, args) {
+        generalConfig = configHandler.getGeneralConfig();
         request(apiEndpoint + args.join(' '), function(error, response) {
             if(error) return requestError(error, response, message);
             if(response.toJSON().statusCode !== 200) return apiError(error, response, message);

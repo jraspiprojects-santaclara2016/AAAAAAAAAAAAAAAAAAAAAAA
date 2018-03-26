@@ -5,9 +5,10 @@ const cacheHandler = require('../handler/util/cacheHandler');
 const configHandler = require('../handler/util/configHandler');
 
 const logger = winstonLogHandler.getLogger();
-let generalConfig = configHandler.getGeneralConfig();
+let generalConfig;
 
 exports.run = async (client, message) => {
+    generalConfig = configHandler.getGeneralConfig();
     if (message.author.bot) return;
     let prefix;
     if (message.mentions.everyone) return;

@@ -3,11 +3,14 @@ const request = require('request');
 const xml2js = require('xml2js');
 const winstonLogHandler = require('../util/winstonLogHandler');
 const configHandler = require('../util/configHandler');
-const generalConfig = configHandler.getGeneralConfig();
-const danbooruConfig = configHandler.getDanbooruConfig();
+
 const logger = winstonLogHandler.getLogger();
+let generalConfig;
+let danbooruConfig;
 
 exports.run = (client, message, args, link, siteName, urlPrefix) => {
+    generalConfig = configHandler.getGeneralConfig();
+    danbooruConfig = configHandler.getDanbooruConfig();
     /* Tags that cannot be requested:
      * loli -> lolicon
      * shota -> shotacon

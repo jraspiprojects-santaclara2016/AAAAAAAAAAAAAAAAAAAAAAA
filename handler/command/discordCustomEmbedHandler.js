@@ -1,11 +1,12 @@
 const Discord = require('discord.js');
 const configHandler = require('../util/configHandler');
-const generalConfig = configHandler.getGeneralConfig();
 const winstonLogHandler = require('../util/winstonLogHandler');
 
 const logger = winstonLogHandler.getLogger();
+let generalConfig;
 
 exports.run = (client, title, fields, destination) => {
+    generalConfig = configHandler.getGeneralConfig();
     logger.debug(`discordCustomEmbedHandler: ${fields}`);
     const embed = new Discord.MessageEmbed()
         .setTitle(title)
