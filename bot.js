@@ -8,13 +8,21 @@ const discordEventHandler = require('./handler/util/discordEventHandler');
 const discordLoginHandler = require('./handler/util/discordLoginHandler');
 const discordMessageHandler = require('./handler/util/discordMessageHandler');
 
-discordEventHandler.run(client, logger);
-discordMessageHandler.run(client, logger);
+const discordConfigHandler = require('./handler/util/configHandler');
 
-discordLoginHandler.run(client, logger);
+initialize();
 
-process.on('unhandledRejection', err => logger.error(`Uncaught Promise Rejection: \n${err.stack}`));
-process.on('SIGINT', () => client.destroy());
+async function initialize() {
+
+    await discordLoginHandler.run(client);
+    await discordConfigHandler.initialize();
+
+    await discordEventHandler.run(client);
+    await discordMessageHandler.run(client);
+
+    process.on('unhandledRejection', err => logger.error(`Uncaught Promise Rejection: \n${err.stack}`));
+    process.on('SIGINT', () => client.destroy());
+}
 
 /*
 Every day, I imagine a future where I can be with you

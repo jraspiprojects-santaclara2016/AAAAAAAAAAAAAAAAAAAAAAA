@@ -3,10 +3,9 @@ const winstonLogHandler = require('../handler/util/winstonLogHandler');
 const mariadbHandler = require('../handler/util/mariadbHandler');
 const cacheHandler = require('../handler/util/cacheHandler');
 const configHandler = require('../handler/util/configHandler');
-const generalConfig = configHandler.getGeneralConfig();
 
 const logger = winstonLogHandler.getLogger();
-
+let generalConfig = configHandler.getGeneralConfig();
 
 exports.run = async (client, message) => {
     if (message.author.bot) return;

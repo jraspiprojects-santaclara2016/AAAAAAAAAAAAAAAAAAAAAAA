@@ -3,21 +3,21 @@ const winstonLogHandler = require('./winstonLogHandler');
 const logger = winstonLogHandler.getLogger();
 
 let config;
+let sampleConfig;
 
-try {
-    config = require('../../configuration/config');
-    logger.debug('configHandler: Success! Configuration loaded successfully!');
-} catch (error) {
-    logger.warn('configHandler: No Configuration File found. Writing sample ...');
-    writeSampleConfig();
-}
-
-function writeSampleConfig() {
-    const sampleConfig = {
+async function generateSampleConfig(client) {
+    let botName = client.user.username;
+    let botPrefix;
+    if (isCharLetter(botName.charAt(0))) {
+        botPrefix = botName.charAt(0);
+    } else {
+        botPrefix = 'b';
+    }
+    sampleConfig = {
         'general': {
-            'botName': 'Monika',
-            'commandPrefix': '!m.',
-            'presenceGame': '@Monika help',
+            'botName': `${botName}`,
+            'commandPrefix': `!${botPrefix}.`,
+            'presenceGame': `@${botName} help`,
             'ownerID': '127938763535024128',
         },
         'league': {
@@ -28,6 +28,9 @@ function writeSampleConfig() {
             'imageLimit': 100,
         },
     };
+}
+
+function writeSampleConfig() {
     try {
         fs.writeFileSync('./configuration/config.json', JSON.stringify(sampleConfig));
         logger.debug('configHandler: Writing sampleConfig succesfull!');
@@ -37,7 +40,22 @@ function writeSampleConfig() {
     }
 }
 
+function isCharLetter(c) {
+    return c.toLowerCase() != c.toUpperCase();
+}
+
+
 module.exports = {
+    initialize: async function(client) {
+        try {
+            config = require('../../configuration/config');
+            logger.debug('configHandler: Success! Configuration loaded successfully!');
+        } catch (error) {
+            logger.warn('configHandler: No Configuration File found. Writing sample ...');
+            await generateSampleConfig(client);
+            writeSampleConfig();
+        }
+    },
     getGeneralConfig: function() {
         return config.general;
     },
