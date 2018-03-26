@@ -1,8 +1,8 @@
 const winstonLogHandler = require('../handler/util/winstonLogHandler');
 const logger = winstonLogHandler.getLogger();
 
-exports.run = (client, oldMember, newMember) => {
-    logger.silly(`Presence update!`);
+exports.run = () => {
+    logger.silly('Presence update!');
     // TODO currently disabled. Will be enabled at a later version
     /*    if (!newMember) return;
         const memberId = newMember.user.id;

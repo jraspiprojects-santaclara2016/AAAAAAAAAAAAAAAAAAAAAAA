@@ -6,9 +6,9 @@ const fs = require('fs');
 exports.run = async (client) => {
     client.commands = new Discord.Collection();
     try {
-        let folders = fs.readdirSync('./commands/');
+        const folders = fs.readdirSync('./commands/');
         folders.forEach(folder => {
-            let files = fs.readdirSync(`./commands/${folder}`);
+            const files = fs.readdirSync(`./commands/${folder}`);
             files.forEach(file => {
                 const command = require(`./../../commands/${folder}/${file}`);
                 client.commands.set(command.name, command);

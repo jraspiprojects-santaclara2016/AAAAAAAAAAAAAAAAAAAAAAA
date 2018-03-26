@@ -4,7 +4,7 @@ const logger = winstonLogHandler.getLogger();
 
 exports.run = async (client) => {
     try {
-        let files = fs.readdirSync('./events/');
+        const files = fs.readdirSync('./events/');
         files.forEach(file => {
             const eventFunction = require(`./../../events/${file}`);
             const eventName = file.split('.')[0];

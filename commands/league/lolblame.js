@@ -8,12 +8,17 @@ const winstonLogHandler = require('../../handler/util/winstonLogHandler');
 const logger = winstonLogHandler.getLogger();
 const accountIdFaker = 3440481;
 
+let leagueConfig;
+let generalConfig;
+
 module.exports = {
     name: 'lolblame',
     description: 'Compare the game data of a filthy casual to Faker',
     disabled: true,
     execute(client, message, args) {
-        const leagueConfig = configHandler.getLeagueConfig();
+        leagueConfig = configHandler.getLeagueConfig();
+        generalConfig = configHandler.getGeneralConfig();
+
         lolApi.base.setBaseURL(leagueConfig.baseURL);
         lolApi.base.setRateLimit(leagueConfig.rateLimit);
         lolApi.base.setKey(secretHandler.getApiKey('LOL_KEY'));
@@ -36,10 +41,12 @@ module.exports = {
                         .addField('Assists', `${pgsFaker.general.assists} / ${pgsBlamed.general.assists}`)
                         .addField('Gold/min', `${Math.round(pgsFaker.gold.goldEarned / (pgsFaker.general.gameTime / 60))} / ${Math.round(pgsBlamed.gold.goldEarned / (pgsBlamed.general.gameTime / 60))}`)
                         .addField('Minions/min', `${Math.round((pgsFaker.killStats.totalMinionsKilled + pgsFaker.killStats.neutralMinionsKilled) / (pgsFaker.general.gameTime / 60))} / ${Math.round((pgsBlamed.killStats.totalMinionsKilled + pgsBlamed.killStats.neutralMinionsKilled) / (pgsBlamed.general.gameTime / 60))}`)
-                        .setFooter(`Data obtained by ${config.botName} from "RIOT" API`)
+                        .setFooter(`Data obtained by ${generalConfig.botName} from "RIOT" API`)
                         .setTimestamp()
                     ;
-                    message.channel.send({ embed }).catch(error => {logger.log(`lolblame: Error while sending message: ${error}`);});
+                    message.channel.send({ embed }).catch(error => {
+                        logger.log(`lolblame: Error while sending message: ${error}`);
+                    });
                 }).catch(error => {
                     logger.error(`lolBlame: API Error: ${error}`);
                     discordErrorEmbedHandler.run(client, message, `Couldn't request the summoner profile of summoner: "${args.join(' ')}"`);

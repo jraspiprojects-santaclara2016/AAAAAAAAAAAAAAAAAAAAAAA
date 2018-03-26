@@ -6,7 +6,7 @@ let config;
 let sampleConfig;
 
 async function generateSampleConfig(client) {
-    let botName = client.user.username;
+    const botName = client.user.username;
     let botPrefix;
     if (isCharLetter(botName.charAt(0))) {
         botPrefix = botName.charAt(0);
