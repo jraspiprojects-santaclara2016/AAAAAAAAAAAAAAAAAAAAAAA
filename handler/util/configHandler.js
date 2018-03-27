@@ -13,12 +13,12 @@ async function generateSampleConfig(client) {
     } else {
         botPrefix = 'b';
     }
+    console.log(client);
     sampleConfig = {
         'general': {
             'botName': `${botName}`,
             'commandPrefix': `!${botPrefix}.`,
             'presenceGame': `@${botName} help`,
-            'ownerID': '127938763535024128',
         },
         'league': {
             'rateLimit': 20,

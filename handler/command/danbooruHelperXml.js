@@ -83,11 +83,6 @@ exports.run = (client, message, args, link, siteName, urlPrefix) => {
                     message.channel.send(embed).catch(messageError => {
                         logger.error(`danbooruHelperXml: Error sending message: ${messageError}`);
                     });
-                    client.fetchUser(generalConfig.ownerID).then(user => {
-                        user.send(embed);
-                    }).catch(messageError => {
-                        logger.error(`danbooruHelperXml: Error: ${messageError}`);
-                    });
                 }
             });
         } else {

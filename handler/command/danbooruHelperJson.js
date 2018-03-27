@@ -71,9 +71,6 @@ exports.run = (client, message, args, link, sitename) => {
                         .setTimestamp()
                     ;
                     message.channel.send(embed).catch(messageError => logger.error(`danbooruHelperJson: Error sending message: ${messageError}`));
-                    client.fetchUser(generalConfig.ownerID).then(user => {
-                        user.send({ embed });
-                    }).catch(messageError => logger.error(`danbooruHelperJson: Error: ${messageError}`));
                 }
             });
         } else {
