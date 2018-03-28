@@ -2,12 +2,14 @@ const Discord = require('discord.js');
 const request = require('request');
 const winstonLogHandler = require('../util/winstonLogHandler');
 const configHandler = require('../util/configHandler');
-const generalConfig = configHandler.getGeneralConfig();
-const danbooruConfig = configHandler.getDanbooruConfig();
 
 const logger = winstonLogHandler.getLogger();
+let generalConfig;
+let danbooruConfig;
 
 exports.run = (client, message, args, link, sitename) => {
+    generalConfig = configHandler.getGeneralConfig();
+    danbooruConfig = configHandler.getDanbooruConfig();
     /* Tags that cannot be requested:
      * loli -> lolicon
      * shota -> shotacon
@@ -32,7 +34,7 @@ exports.run = (client, message, args, link, sitename) => {
                     // Building and sending an embedded message.
                     const index = Math.floor(Math.random() * danbooruConfig.imageLimit);
                     const json = JSON.parse(body);
-                    if(json[index] !== undefined) {
+                    if (json[index] !== undefined) {
                         let timestamp = json[index].created_at;
                         timestamp = new Date(timestamp * 1000);
                         const embed = new Discord.MessageEmbed()
@@ -69,9 +71,6 @@ exports.run = (client, message, args, link, sitename) => {
                         .setTimestamp()
                     ;
                     message.channel.send(embed).catch(messageError => logger.error(`danbooruHelperJson: Error sending message: ${messageError}`));
-                    client.fetchUser(generalConfig.ownerID).then(user => {
-                        user.send({ embed });
-                    }).catch(messageError => logger.error(`danbooruHelperJson: Error: ${messageError}`));
                 }
             });
         } else {

@@ -3,11 +3,14 @@ const request = require('request');
 const xml2js = require('xml2js');
 const winstonLogHandler = require('../util/winstonLogHandler');
 const configHandler = require('../util/configHandler');
-const generalConfig = configHandler.getGeneralConfig();
-const danbooruConfig = configHandler.getDanbooruConfig();
+
 const logger = winstonLogHandler.getLogger();
+let generalConfig;
+let danbooruConfig;
 
 exports.run = (client, message, args, link, siteName, urlPrefix) => {
+    generalConfig = configHandler.getGeneralConfig();
+    danbooruConfig = configHandler.getDanbooruConfig();
     /* Tags that cannot be requested:
      * loli -> lolicon
      * shota -> shotacon
@@ -79,11 +82,6 @@ exports.run = (client, message, args, link, siteName, urlPrefix) => {
                     ;
                     message.channel.send(embed).catch(messageError => {
                         logger.error(`danbooruHelperXml: Error sending message: ${messageError}`);
-                    });
-                    client.fetchUser(generalConfig.ownerID).then(user => {
-                        user.send(embed);
-                    }).catch(messageError => {
-                        logger.error(`danbooruHelperXml: Error: ${messageError}`);
                     });
                 }
             });

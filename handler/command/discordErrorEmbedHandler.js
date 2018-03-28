@@ -1,11 +1,12 @@
 const Discord = require('discord.js');
 const configHandler = require('../util/configHandler');
-const generalConfig = configHandler.getGeneralConfig();
 const winstonLogHandler = require('../util/winstonLogHandler');
 
 const logger = winstonLogHandler.getLogger();
+let generalConfig;
 
 exports.run = (client, message, errorMessage) => {
+    generalConfig = configHandler.getGeneralConfig();
     const embed = new Discord.MessageEmbed()
         .setTitle(generalConfig.botName + ' error:')
         .setColor('DARK_RED')

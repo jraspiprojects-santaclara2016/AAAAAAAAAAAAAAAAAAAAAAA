@@ -2,8 +2,7 @@
   "general": {
     "botName": "Monika",
     "commandPrefix": "!m.",
-    "presenceGame": "@Monika help",
-    "ownerID": "127938763535024128"
+    "presenceGame": "@Monika help"
   },
   "league": {
     "rateLimit": 20,
