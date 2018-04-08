@@ -17,7 +17,7 @@ pool.on('release', function(connection) {
 
 const functions = {
     setFavPlaylist: async function(favPlaylist, userId) {
-        let connection = await pool.getConnection();
+        const connection = await pool.getConnection();
         const escapedPlaylist = connection.escape(favPlaylist);
         const setFavPlaylist = `INSERT INTO discordUser (favPlaylist, discordId) VALUES(${escapedPlaylist}, ${userId}) ON DUPLICATE KEY UPDATE favPlaylist = ${escapedPlaylist}`;
         try {
@@ -31,10 +31,10 @@ const functions = {
         }
     },
     getFavPlaylist: async function(userId) {
-        let connection = await pool.getConnection();
+        const connection = await pool.getConnection();
         const getFavPlaylist = `SELECT favPlaylist FROM discordUser WHERE discordId = ${userId}`;
         try {
-            //TODO Possible checks
+            // TODO Possible checks
             return await connection.query(getFavPlaylist);
         } catch (error) {
             logger.error('mariadbHandler: Error executing getFavPlaylist: ${error}');
@@ -44,7 +44,7 @@ const functions = {
         }
     },
     setGuildPrefix: async function(prefix, guildId) {
-        let connection = await pool.getConnection();
+        const connection = await pool.getConnection();
         const escapedPrefix = connection.escape(prefix);
         const setGuildPrefix = `INSERT INTO guildConfiguration (guildId, prefix) VALUES(${guildId}, ${escapedPrefix}) ON DUPLICATE KEY UPDATE prefix = ${escapedPrefix}`;
         try {
@@ -58,10 +58,10 @@ const functions = {
         }
     },
     getGuildPrefix: async function(guildId) {
-        let connection = await pool.getConnection();
+        const connection = await pool.getConnection();
         const getGuildPrefix = `SELECT prefix FROM guildConfiguration WHERE guildId = ${guildId}`;
         try {
-            //TODO possible checks
+            // TODO possible checks
             return await connection.query(getGuildPrefix);
         } catch (error) {
             logger.error('mariadbHandler: Error executing getGuildPrefix: ${error}');
@@ -70,12 +70,12 @@ const functions = {
             connection.release();
         }
     },
-    //TODO depracated?
+    // TODO depracated?
     getEnableLiveGameStatsForDiscordId: async function(discordId) {
-        let connection = await pool.getConnection();
+        const connection = await pool.getConnection();
         const selectSummonerNames = `SELECT enableLiveGameStats FROM discordUser WHERE discordUser.discordId = ${connection.escape(discordId)}`;
         try {
-            //TODO possible checks
+            // TODO possible checks
             return await connection.query(selectSummonerNames);
         } catch (error) {
             logger.error('mariadbHandler: Error executing getEnableLiveGameStatsForDiscordId: ${error}');
@@ -84,12 +84,12 @@ const functions = {
             connection.release();
         }
     },
-    //TODO depracated?
+    // TODO depracated?
     getLeagueAccountsOfDiscordId: async function(discordId) {
-        let connection = await pool.getConnection();
+        const connection = await pool.getConnection();
         const selectSummonerNames = `SELECT summonerName, region, isMain FROM summonerNames, discordUser WHERE summonerNames.discordId = discordUser.discordId AND discordUser.discordId = ${connection.escape(discordId)}`;
         try {
-            //TODO possible checks
+            // TODO possible checks
             return await connection.query(selectSummonerNames);
         } catch (error) {
             logger.error('mariadbHandler: Error executing getLeagueAccountsOfDiscordId: ${error}');
@@ -98,9 +98,9 @@ const functions = {
             connection.release();
         }
     },
-    //TODO depracated?
+    // TODO depracated?
     addLeagueAccount: async function(summonerName, region, discordId, isMain) {
-        let connection = await pool.getConnection();
+        const connection = await pool.getConnection();
         const insertDiscordId = `INSERT INTO discordUser (discordId) VALUES (${connection.escape(discordId)})`;
         const insertSummonerName = `INSERT INTO summonerNames (summonerName, region, discordId, isMain) VALUES (${connection.escape(summonerName)}, ${connection.escape(region)}, ${connection.escape(discordId)}, ${connection.escape(isMain)})`;
         try {
@@ -114,12 +114,12 @@ const functions = {
             connection.release();
         }
     },
-    //TODO depracated?
+    // TODO depracated?
     deleteLeagueAccount: async function(summonerName, discordId) {
-        let connection = await pool.getConnection();
+        const connection = await pool.getConnection();
         const deleteSummonerName = `DELETE FROM summonerNames WHERE summonerName = ${connection.escape(summonerName)} AND discordId = ${connection.escape(discordId)}`;
         try {
-            //TODO possible checks
+            // TODO possible checks
             await connection.query(deleteSummonerName);
             return true;
         } catch (error) {
