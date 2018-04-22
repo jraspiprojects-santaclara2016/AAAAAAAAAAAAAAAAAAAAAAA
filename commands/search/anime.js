@@ -19,7 +19,6 @@ module.exports = {
 async function lookupAnime(searchString, textChannel) {
     try {
         const anime = await mal.anime.searchAnime(searchString);
-        console.log(anime);
         if(anime.length > 1) return await awaitMessageSearch(anime, textChannel);
         await sendAnimeEmbed(anime[0], textChannel);
     } catch(error) {

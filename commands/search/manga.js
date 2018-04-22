@@ -19,7 +19,6 @@ module.exports = {
 async function lookupManga(searchString, textChannel) {
     try {
         const manga = await mal.manga.searchManga(searchString);
-        console.log(manga);
         if(manga.length > 1) return await awaitMessageSearch(manga, textChannel);
         await sendMangaEmbed(manga[0], textChannel);
     } catch(error) {
