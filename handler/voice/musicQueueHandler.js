@@ -13,7 +13,7 @@ module.exports = {
         const musicQueue = musicCache.get(guildId);
         if (!song) return dispatcherHandler.stop(guildId);
         const dispatcher = musicQueue.connection.play(ytdl(song.url, { type: 'opus', seek: 0, quality: 'highestaudio', retries: 10 }))
-            .on('end', () => {
+            .on('finish', () => {
                 logger.debug('play: Dispatcher.end() triggered.');
                 if(!musicQueue.loop) musicQueue.songs.shift();
                 this.play(guildId, musicQueue.songs[0]);

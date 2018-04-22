@@ -8,7 +8,14 @@ module.exports = {
     },
     async stop(guildId) {
         const musicQueue = musicCache.get(guildId);
-        musicQueue.voiceChannel.leave();
+        if(!musicQueue) return;
+        musicQueue.songs = [];
+        if(!musicQueue.playing) {
+            musicQueue.playing = musicQueue.playing = true;
+            await musicQueue.connection.dispatcher.resume();
+        }
+        musicQueue.connection.dispatcher.end();
+        await musicQueue.voiceChannel.leave();
         musicCache.delete(guildId);
     },
 };
