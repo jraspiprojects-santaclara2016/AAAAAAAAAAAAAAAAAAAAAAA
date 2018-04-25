@@ -4,13 +4,14 @@ const messageHandler = require('../../handler/command/discordMessageHandler');
 const musicCache = cacheHandler.getMusicCache();
 
 module.exports = {
-    name: 'commandName',
-    description: 'Description of the command.',
-    disabled : true,
+    name: 'shuffle',
+    description: 'shuffle.',
+    disabled : false,
     async execute(client, message) {
-        const musicQueue = musicCache.get(message.member.guild.id);
+        console.log(message.guild.id);
+        const musicQueue = musicCache.get(message.guild.id);
         if(musicQueue.voiceChannel !== message.member.voiceChannel) return await sendNotInChannelEmbed(message.channel);
-        await flipShuffleState();
+        await flipShuffleState(message);
     },
 };
 
@@ -25,7 +26,17 @@ async function sendNotInChannelEmbed(channel) {
 }
 
 async function flipShuffleState(message) {
-    const musicQueue = musicCache.get(message.member.guild.id);
+    const musicQueue = musicCache.get(message.guild.id);
     musicQueue.shuffle = !musicQueue.shuffle;
+    await sendShuffleEmbed(message);
+}
 
+async function sendShuffleEmbed(message) {
+    const embed = new Discord.MessageEmbed()
+        .setTitle('🔀 Shuffle:')
+        .setColor('DARK_GREEN')
+        .addField('❯Shuffle', 'Shuffle will be applied after the current song is over!')
+        .setTimestamp()
+    ;
+    messageHandler.sendEmbed('volume', embed, message.channel);
 }
