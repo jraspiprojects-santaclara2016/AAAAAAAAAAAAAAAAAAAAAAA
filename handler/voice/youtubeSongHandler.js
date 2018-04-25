@@ -61,6 +61,7 @@ async function handleYoutubeVideo(video, message, voiceChannel, playlist = false
     let musicQueue = musicCache.get(message.guild.id);
     const song = {
         id: video.id,
+        source: 'youtube',
         title: video.title,
         url: `https://youtube.com/watch?v=${video.id}`,
         requested_by: message.author,

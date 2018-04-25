@@ -1,9 +1,7 @@
 const Discord = require('discord.js');
 const cacheHandler = require('../../handler/util/cacheHandler');
-const winstonLogHandler = require('../../handler/util/winstonLogHandler');
 const messageHandler = require('../../handler/command/discordMessageHandler');
 const dispatcherHandler = require('../../handler/voice/dispatcherHandler');
-const logger = winstonLogHandler.getLogger();
 const musicCache = cacheHandler.getMusicCache();
 
 module.exports = {

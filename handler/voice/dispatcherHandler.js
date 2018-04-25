@@ -1,3 +1,5 @@
+const winstonLogHandler = require('../../handler/util/winstonLogHandler');
+const logger = winstonLogHandler.getLogger();
 const cacheHandler = require('../util/cacheHandler');
 const musicCache = cacheHandler.getMusicCache();
 
@@ -17,5 +19,6 @@ module.exports = {
         musicQueue.connection.dispatcher.end();
         await musicQueue.voiceChannel.leave();
         musicCache.delete(guildId);
+        logger.silly('dispatcherHandler: Stopped playback');
     },
 };
