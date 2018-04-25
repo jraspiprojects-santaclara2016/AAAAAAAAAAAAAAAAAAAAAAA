@@ -24,7 +24,7 @@ ${videos.map(searchVideo => `**${index++} -** ${searchVideo.title}`).join('\n')}
     
 ***Usage: 1-10 (Timeout 10sec)***`);
             try {
-                const response = await message.channel.awaitMessages(m => m.content > 0 && m.content < 11, {
+                const response = await message.channel.awaitMessages(m => m.author === message.author && m.content > 0 && m.content < 11, {
                     max: 1,
                     time: 10000,
                     errors: ['time'],
@@ -61,6 +61,7 @@ async function handleYoutubeVideo(video, message, voiceChannel, playlist = false
     let musicQueue = musicCache.get(message.guild.id);
     const song = {
         id: video.id,
+        source: 'youtube',
         title: video.title,
         url: `https://youtube.com/watch?v=${video.id}`,
         requested_by: message.author,

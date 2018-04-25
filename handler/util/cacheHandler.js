@@ -19,6 +19,7 @@ module.exports = {
             'volume': 0.1,
             'playing': false,
             'loop': false,
+            'shuffle': false,
         });
     },
     getMusicCache: function() {

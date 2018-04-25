@@ -1,5 +1,6 @@
 const youtubeSongHandler = require('../../handler/voice/youtubeSongHandler');
 const winstonLogHandler = require('../../handler/util/winstonLogHandler');
+const streamHandler = require('../../handler/voice/streamHandler');
 const logger = winstonLogHandler.getLogger();
 
 module.exports = {
@@ -11,6 +12,7 @@ module.exports = {
         if(!voiceChannel) return message.channel.send('You need to be in a voice channel!');
         if(!await checkPermissions(client, message, voiceChannel)) return;
         if(await isYoutubeLink(args[0])) return await youtubeSongHandler.handleYoutubeLink(args[0], message, voiceChannel);
+        if(await isStreamLink(args[0])) return streamHandler.handleStreamLink(args[0], message, voiceChannel);
         return await youtubeSongHandler.youtubeSearch(args.join(' '), message, voiceChannel);
     },
 };
@@ -33,4 +35,8 @@ async function checkPermissions(client, message, voiceChannel) {
 
 async function isYoutubeLink(link) {
     return link.match(/^https?:\/\/(www.youtube.com|youtube.com)\/(.*)$/);
+}
+
+async function isStreamLink(link) {
+    return link.match(/(^http:\/\/|https:\/\/)(.*)(.mp3)/);
 }

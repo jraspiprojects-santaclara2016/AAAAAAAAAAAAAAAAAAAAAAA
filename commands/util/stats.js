@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const winstonLogHandler = require('../../handler/util/winstonLogHandler');
 const configHandler = require('../../handler/util/configHandler');
 const package = require('../../package.json');
+const os = require('os');
 const logger = winstonLogHandler.getLogger();
 
 let generalConfig;
@@ -22,6 +23,7 @@ module.exports = {
             .addField('❯Uptime', uptime, true)
             .addField('❯RAM', `${usedRAM}MB`, true)
             .addField('❯Version', `v${package.version}`, true)
+            .addField('❯Host', os.hostname(), true)
             .addField('❯Source', '[Click here!](https://github.com/weebs-online/Monika)', true)
         ;
         message.channel.send(embed).catch(error => {
