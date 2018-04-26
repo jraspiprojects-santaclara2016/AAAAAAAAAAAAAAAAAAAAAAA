@@ -9,6 +9,7 @@
     "knex": "^0.14.5",
     "mariasql": "^0.2.6",
     "promise-mysql": "^3.2.1",
+    "mal-api": "^2.0.0",
     "node-opus": "^0.2.7",
     "request": "^2.83.0",
     "league-api-2.0": "^3.0.0",

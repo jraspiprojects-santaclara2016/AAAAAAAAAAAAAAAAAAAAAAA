@@ -1,8 +1,7 @@
 const Discord = require('discord.js');
 const cacheHandler = require('../../handler/util/cacheHandler');
-const winstonLogHandler = require('../../handler/util/winstonLogHandler');
 const messageHandler = require('../../handler/command/discordMessageHandler');
-const logger = winstonLogHandler.getLogger();
+const dispatcherHandler = require('../../handler/voice/dispatcherHandler');
 const musicCache = cacheHandler.getMusicCache();
 
 module.exports = {
@@ -12,15 +11,13 @@ module.exports = {
     async execute(client, message) {
         const serverQueue = musicCache.get(message.guild.id);
         if (!serverQueue) return await sendNothingPlayingEmbed();
-        await clearQueueAndStopPlayback(serverQueue);
+        await clearQueueAndStopPlayback(message.guild.id);
         await sendStopEmbed(serverQueue, message);
     },
 };
 
-async function clearQueueAndStopPlayback(serverQueue) {
-    serverQueue.songs = [];
-    serverQueue.connection.dispatcher.end();
-    logger.debug('stop: dispatcher end event called.');
+async function clearQueueAndStopPlayback(guildId) {
+    await dispatcherHandler.stop(guildId);
 }
 
 async function sendNothingPlayingEmbed(message) {
