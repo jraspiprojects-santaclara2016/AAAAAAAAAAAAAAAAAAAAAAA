@@ -27,6 +27,10 @@ function writeSampleConfig() {
             'YOUTUBE_KEY': 'YOUR YOUTUBE API KEY',
             'OPENWEATHERMAP_KEY': 'YOUR OPENWEATHERMAP API KEY',
         },
+        'myAnimeList': {
+            'username': 'MY ANIME LIST USERNAME',
+            'password': 'MY ANIME LIST PASSWORD',
+        },
     };
     try {
         fs.writeFileSync('./configuration/secrets.json', JSON.stringify(sampleSecrets));
@@ -38,6 +42,9 @@ function writeSampleConfig() {
 }
 
 module.exports = {
+    getMyAnimeListSecrets: function() {
+        return secrets.myAnimeList;
+    },
     getDatabaseSecrets: function() {
         return secrets.database;
     },
