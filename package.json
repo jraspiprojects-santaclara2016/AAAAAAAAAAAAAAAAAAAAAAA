@@ -6,10 +6,12 @@
   "dependencies": {
     "discord.js": "github:discordjs/discord.js#master",
     "ffmpeg-binaries": "^3.2.2-3",
-    "league-api-2.0": "^3.0.0",
-    "mysql": "^2.15.0",
+    "knex": "^0.14.5",
+    "mariasql": "^0.2.6",
+    "promise-mysql": "^3.2.1",
     "node-opus": "^0.2.7",
     "request": "^2.83.0",
+    "league-api-2.0": "^3.0.0",
     "simple-youtube-api": "^5.0.1",
     "winston": "^2.4.0",
     "winston-daily-rotate-file": "^1.7.2",
@@ -24,7 +26,7 @@
   "scripts": {
     "eslint": "eslint .",
     "eslint-fix": "eslint . --fix",
-    "start": "node index.js"
+    "start": "knex migrate:latest && node index.js"
   },
   "author": "emdix",
   "license": "ISC"

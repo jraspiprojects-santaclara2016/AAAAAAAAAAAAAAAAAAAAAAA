@@ -1,4 +1,4 @@
-const mysql = require('mysql');
+const mysql = require('promise-mysql');
 const secretHandler = require('./secretHandler');
 const logHandler = require('./winstonLogHandler');
 const logger = logHandler.getLogger();
@@ -65,65 +65,6 @@ const functions = {
             return await connection.query(getGuildPrefix);
         } catch (error) {
             logger.error('mariadbHandler: Error executing getGuildPrefix: ${error}');
-            return false;
-        } finally {
-            connection.release();
-        }
-    },
-    // TODO depracated?
-    getEnableLiveGameStatsForDiscordId: async function(discordId) {
-        const connection = await pool.getConnection();
-        const selectSummonerNames = `SELECT enableLiveGameStats FROM discordUser WHERE discordUser.discordId = ${connection.escape(discordId)}`;
-        try {
-            // TODO possible checks
-            return await connection.query(selectSummonerNames);
-        } catch (error) {
-            logger.error('mariadbHandler: Error executing getEnableLiveGameStatsForDiscordId: ${error}');
-            return false;
-        } finally {
-            connection.release();
-        }
-    },
-    // TODO depracated?
-    getLeagueAccountsOfDiscordId: async function(discordId) {
-        const connection = await pool.getConnection();
-        const selectSummonerNames = `SELECT summonerName, region, isMain FROM summonerNames, discordUser WHERE summonerNames.discordId = discordUser.discordId AND discordUser.discordId = ${connection.escape(discordId)}`;
-        try {
-            // TODO possible checks
-            return await connection.query(selectSummonerNames);
-        } catch (error) {
-            logger.error('mariadbHandler: Error executing getLeagueAccountsOfDiscordId: ${error}');
-            return false;
-        } finally {
-            connection.release();
-        }
-    },
-    // TODO depracated?
-    addLeagueAccount: async function(summonerName, region, discordId, isMain) {
-        const connection = await pool.getConnection();
-        const insertDiscordId = `INSERT INTO discordUser (discordId) VALUES (${connection.escape(discordId)})`;
-        const insertSummonerName = `INSERT INTO summonerNames (summonerName, region, discordId, isMain) VALUES (${connection.escape(summonerName)}, ${connection.escape(region)}, ${connection.escape(discordId)}, ${connection.escape(isMain)})`;
-        try {
-            await connection.query(insertDiscordId);
-            await connection.query(insertSummonerName);
-            return true;
-        } catch (error) {
-            logger.error('mariadbHandler: Error executing addLeagueAccount: ${error}');
-            return false;
-        } finally {
-            connection.release();
-        }
-    },
-    // TODO depracated?
-    deleteLeagueAccount: async function(summonerName, discordId) {
-        const connection = await pool.getConnection();
-        const deleteSummonerName = `DELETE FROM summonerNames WHERE summonerName = ${connection.escape(summonerName)} AND discordId = ${connection.escape(discordId)}`;
-        try {
-            // TODO possible checks
-            await connection.query(deleteSummonerName);
-            return true;
-        } catch (error) {
-            logger.error('mariadbHandler: Error executing addLeagueAccount: ${error}');
             return false;
         } finally {
             connection.release();
