@@ -7,7 +7,7 @@ module.exports = {
         return logger;
     },
 
-    createLogger : function(client) {
+    createLogger : function(label) {
         // define directory where the logs are located
         const logDir = 'logs';
         // define environment
@@ -17,13 +17,6 @@ module.exports = {
         // Create the log directory if it does not exist
         if (!fs.existsSync(logDir)) {
             fs.mkdirSync(logDir);
-        }
-
-        let label;
-        if(client !== undefined) {
-            label = `Shard ${client.shard.client.options.shardId}`;
-        } else {
-            label = 'Sharder';
         }
 
         // winston configuration

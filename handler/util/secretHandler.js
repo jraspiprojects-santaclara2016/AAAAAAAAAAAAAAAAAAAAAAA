@@ -1,6 +1,6 @@
 const fs = require('fs');
 const winstonLogHandler = require('./winstonLogHandler');
-const logger = winstonLogHandler.getLogger();
+const logger = winstonLogHandler.createLogger('Secret Handler');
 
 let secrets;
 
