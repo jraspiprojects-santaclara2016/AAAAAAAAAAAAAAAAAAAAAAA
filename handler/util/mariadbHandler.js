@@ -34,7 +34,6 @@ const functions = {
         const connection = await pool.getConnection();
         const getFavPlaylist = `SELECT favPlaylist FROM discordUser WHERE discordId = ${userId}`;
         try {
-            // TODO Possible checks
             return await connection.query(getFavPlaylist);
         } catch (error) {
             logger.error('mariadbHandler: Error executing getFavPlaylist: ${error}');
@@ -61,7 +60,6 @@ const functions = {
         const connection = await pool.getConnection();
         const getGuildPrefix = `SELECT prefix FROM guildConfiguration WHERE guildId = ${guildId}`;
         try {
-            // TODO possible checks
             return await connection.query(getGuildPrefix);
         } catch (error) {
             logger.error('mariadbHandler: Error executing getGuildPrefix: ${error}');

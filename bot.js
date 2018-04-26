@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 
 const winstonLogHandler = require('./handler/util/winstonLogHandler');
-const logger = winstonLogHandler.createLogger(client);
+const logger = winstonLogHandler.createLogger(`Shard ${client.shard.client.options.shardId}`);
 
 const discordEventHandler = require('./handler/util/discordEventHandler');
 const discordLoginHandler = require('./handler/util/discordLoginHandler');

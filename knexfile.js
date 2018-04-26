@@ -1,10 +1,11 @@
-const secret = require('./configuration/secrets');
+const secretHandler = require('./handler/util/secretHandler.js');
+const databaseSecret = secretHandler.getDatabaseSecrets();
 module.exports = {
     client: 'mysql',
     connection: {
-        host: secret.database.host,
-        user: secret.database.user,
-        password: secret.database.password,
-        database: secret.database.database,
+        host: databaseSecret.host,
+        user: databaseSecret.user,
+        password: databaseSecret.password,
+        database: databaseSecret.database,
     },
 };
