@@ -13,13 +13,13 @@ module.exports = {
     async execute(client, message, args) {
         if (!message.guild) return;
         const guildId = message.guild.id;
-        let prefix = args.join(' ');
-        if (prefix.length > 0) {
+        const newPrefix = args.join(' ');
+        if (newPrefix.length > 0) {
             if (message.member.hasPermission('MANAGE_GUILD')) {
                 try {
-                    await mariadbHandler.functions.setGuildPrefix(prefix, guildId);
-                    cacheHandler.createPrefixCache(guildId, prefix);
-                    message.channel.send(`Set the Prefix to **${prefix}**`).catch(error => logger.error(`GuildPrefix: error sending message: ${error}`));
+                    await mariadbHandler.functions.setGuildPrefix(newPrefix, guildId);
+                    cacheHandler.createPrefixCache(guildId, newPrefix);
+                    message.channel.send(`Set the Prefix to **${newPrefix}**`).catch(error => logger.error(`GuildPrefix: error sending message: ${error}`));
                 } catch (error) {
                     logger.error(`GuildPrefix: ${error}`);
                 }
@@ -28,7 +28,7 @@ module.exports = {
             }
         } else {
             generalConfig = configHandler.getGeneralConfig();
-            let prefix = checkCacheAndGetPrefix(guildId);
+            const prefix = checkCacheAndGetPrefix(guildId);
             try {
                 await message.channel.send(`The Prefix is: **${prefix}**`);
             } catch (error) {
