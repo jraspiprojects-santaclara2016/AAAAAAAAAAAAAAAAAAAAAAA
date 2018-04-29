@@ -8,6 +8,7 @@ module.exports = {
     name: 'stop',
     description: 'Stop the current queue and leave the voice channel.',
     disabled: false,
+    requireDB: false,
     async execute(client, message) {
         const serverQueue = musicCache.get(message.guild.id);
         if (!serverQueue) return await sendNothingPlayingEmbed();

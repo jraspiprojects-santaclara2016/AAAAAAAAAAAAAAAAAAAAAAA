@@ -6,6 +6,7 @@ module.exports = {
     name: 'removeleagueaccount',
     description: 'Delete the link between the LeagueOfLegends and the Discord account',
     disabled: true,
+    requireDB: false,
     execute(client, message, args) {
         mariadbHandler.functions.deleteLeagueAccount(args.join(' ').toUpperCase(), message.author.id).then(data => {
             logger.silly(`RemoveLeagueAccount: Result from DB: ${data}`);

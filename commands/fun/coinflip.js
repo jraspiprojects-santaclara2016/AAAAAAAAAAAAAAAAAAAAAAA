@@ -7,6 +7,7 @@ module.exports = {
     name: 'coinflip',
     description: 'Flip a coin.',
     disabled: false,
+    requireDB: false,
     execute(client, message) {
         const flip = Math.round(Math.random());
         logger.silly(`Coinflip: I flipped a ${flip}`);

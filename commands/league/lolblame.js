@@ -15,6 +15,7 @@ module.exports = {
     name: 'lolblame',
     description: 'Compare the game data of a filthy casual to Faker',
     disabled: true,
+    requireDB: false,
     execute(client, message, args) {
         leagueConfig = configHandler.getLeagueConfig();
         generalConfig = configHandler.getGeneralConfig();

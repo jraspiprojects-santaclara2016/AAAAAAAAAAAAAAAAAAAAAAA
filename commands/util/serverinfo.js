@@ -7,6 +7,7 @@ module.exports = {
     name: 'serverinfo',
     description: 'Information about the server.',
     disabled: false,
+    requireDB: false,
     execute(client, message) {
         const embed = new Discord.MessageEmbed()
             .setTitle('Serverinfo:')

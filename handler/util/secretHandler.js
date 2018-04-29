@@ -1,7 +1,7 @@
 const fs = require('fs');
 const winstonLogHandler = require('./winstonLogHandler');
 const logger = winstonLogHandler.createLogger('Secret Handler');
-
+//TODO logging is mixed up
 let secrets;
 
 try {

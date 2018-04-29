@@ -10,6 +10,7 @@ module.exports = {
     name: 'help',
     description: 'Display the help page.',
     disabled: false,
+    requireDB: false,
     async execute(client, message) {
         generalConfig = configHandler.getGeneralConfig();
         let prefix;

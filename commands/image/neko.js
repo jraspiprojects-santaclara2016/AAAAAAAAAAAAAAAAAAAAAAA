@@ -8,6 +8,7 @@ module.exports = {
     name: 'neko',
     description: 'Display a random neko image.',
     disabled: false,
+    requireDB: false,
     execute(client, message) {
         request.get('https://nekos.brussell.me/api/v1/random/image', {
             qs: {

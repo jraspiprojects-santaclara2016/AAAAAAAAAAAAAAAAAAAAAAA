@@ -11,6 +11,7 @@ module.exports = {
     name: 'stats',
     description: 'Show stats about the bot.',
     disabled: false,
+    requireDB: false,
     execute(client, message) {
         generalConfig = configHandler.getGeneralConfig();
         const uptime = convertUptime(process.uptime());

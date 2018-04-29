@@ -4,6 +4,7 @@ module.exports = {
     name: 'yandere',
     description: 'Get a random image from yande.re',
     disabled: false,
+    requireDB: false,
     execute(client, message, args) {
         danbooruHandler.run(client, message, args, 'https://yande.re/', 'Yandere');
     },

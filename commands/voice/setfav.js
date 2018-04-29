@@ -8,6 +8,7 @@ module.exports = {
     name: 'setfav',
     description: 'List or set your favorite playlist/song.',
     disabled: false,
+    requireDB: true,
     async execute(client, message, args) {
         if (args.length === 0) return await sendListFavEmbed(message);
         if (args.length === 1) return await insertFavIntoDatabase(args[0], message);

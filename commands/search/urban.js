@@ -11,6 +11,7 @@ module.exports = {
     name: 'urban',
     description: 'Look something up on Urban Dictionary.',
     disabled: false,
+    requireDB: false,
     execute(client, message, args) {
         generalConfig = configHandler.getGeneralConfig();
         request(apiEndpoint + args.join(' '), function(error, response) {

@@ -16,6 +16,14 @@ pool.on('release', function(connection) {
 });
 
 const functions = {
+    checkDatabase: async function() {
+        try {
+            const connection = await pool.getConnection();
+            return false;
+        } catch(error) {
+            return true;
+        }
+    },
     setFavPlaylist: async function(favPlaylist, userId) {
         const connection = await pool.getConnection();
         const escapedPlaylist = connection.escape(favPlaylist);

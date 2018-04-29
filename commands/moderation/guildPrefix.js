@@ -10,6 +10,7 @@ module.exports = {
     name: 'guildprefix',
     description: 'Sets the Prefix for the Guild the author is in, if he has the Permissions to do so. If no Prefix is given it will show the current.',
     disabled: false,
+    requireDB: true,
     async execute(client, message, args) {
         if (!message.guild) return;
         const guildId = message.guild.id;
