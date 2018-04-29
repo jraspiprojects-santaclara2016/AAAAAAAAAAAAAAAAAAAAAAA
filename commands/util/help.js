@@ -33,11 +33,15 @@ ${commandCollection.map(command => `**-${prefix}${command.name}** - ${command.de
 async function checkCacheAndGetPrefix(guildId) {
     let prefix;
     if (!cacheHandler.getPrefixCache().has(guildId)) {
-        prefix = await mariadbHandler.functions.getGuildPrefix(guildId);
-        if (!prefix) {
+        if (await !mariadbHandler.functions.checkDatabase()) {
+            prefix = await mariadbHandler.functions.getGuildPrefix(guildId);
+            if (!prefix) {
+                prefix = generalConfig.commandPrefix;
+            }
+            cacheHandler.createPrefixCache(guildId, prefix);
+        } else {
             prefix = generalConfig.commandPrefix;
         }
-        cacheHandler.createPrefixCache(guildId, prefix);
     } else {
         prefix = cacheHandler.getPrefixCache().get(guildId).prefix;
     }
