@@ -18,7 +18,7 @@ pool.on('release', function(connection) {
 const functions = {
     checkDatabase: async function() {
         try {
-            const connection = await pool.getConnection();
+            await pool.getConnection();
             return false;
         } catch(error) {
             return true;
