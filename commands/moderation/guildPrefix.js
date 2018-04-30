@@ -44,7 +44,7 @@ async function setNewPrefix(prefix, guildId, channel) {
 async function checkCacheAndGetPrefix(guildId) {
     let prefix;
     if (cacheHandler.getPrefixCache().has(guildId)) return cacheHandler.getPrefixCache().get(guildId).prefix;
-    if (await mariadbHandler.functions.checkDatabase()) {
+    if (!await mariadbHandler.functions.isAvailable()) {
         prefix = generalConfig.commandPrefix;
     } else {
         prefix = await mariadbHandler.functions.getGuildPrefix(guildId);

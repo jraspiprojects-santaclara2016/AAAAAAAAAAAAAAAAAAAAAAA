@@ -15,7 +15,7 @@ exports.run = async (client) => {
                 client.commands.set(command.name, command);
             });
         });
-        if (await mariadbHandler.functions.checkDatabase()) {
+        if (!await mariadbHandler.functions.isAvailable()) {
             client.commands = client.commands.filter((value) => !value.requireDB);
             logger.info('discordMessageHandler: Disabled Database commands!');
         }

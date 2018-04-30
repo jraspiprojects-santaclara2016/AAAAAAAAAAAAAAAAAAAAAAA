@@ -16,12 +16,12 @@ pool.on('release', function(connection) {
 });
 
 const functions = {
-    checkDatabase: async function() {
+    isAvailable: async function() {
         try {
             await pool.getConnection();
-            return false;
-        } catch(error) {
             return true;
+        } catch(error) {
+            return false;
         }
     },
     setFavPlaylist: async function(favPlaylist, userId) {
