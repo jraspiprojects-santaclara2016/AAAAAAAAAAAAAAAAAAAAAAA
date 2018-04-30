@@ -9,6 +9,7 @@ module.exports = {
     name: 'playfav',
     description: 'Play your favorite playlist.',
     disabled: false,
+    requireDB: true,
     async execute(client, message, args) {
         if (args.length === 0) return await playFavorite(client, message, message.author.id);
         if(message.mentions.users.first() === undefined) return await sendWrongFormatEmbed(message);

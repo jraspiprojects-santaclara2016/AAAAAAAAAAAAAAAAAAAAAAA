@@ -9,6 +9,7 @@ module.exports = {
     name: 'resume',
     description: 'Resume the music.',
     disabled: false,
+    requireDB: false,
     async execute(client, message) {
         const musicQueue = musicCache.get(message.guild.id);
         if (!(musicQueue && !musicQueue.playing)) return await sendNothingPlayingEmbed(message);

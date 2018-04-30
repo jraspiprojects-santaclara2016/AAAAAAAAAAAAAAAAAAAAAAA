@@ -1,7 +1,9 @@
 const fs = require('fs');
 const winstonLogHandler = require('./winstonLogHandler');
-const logger = winstonLogHandler.createLogger('Secret Handler');
-
+let logger = winstonLogHandler.getLogger();
+if (!logger) {
+    logger = winstonLogHandler.createLogger('Secret Handler');
+}
 let secrets;
 
 try {

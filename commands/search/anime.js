@@ -10,6 +10,7 @@ module.exports = {
     name: 'anime',
     description: 'Search for information about an anime.',
     disabled: false,
+    requireDB: false,
     async execute(client, message, args) {
         if(!args.length > 0) return;
         await lookupAnime(args.join(' '), message.channel);

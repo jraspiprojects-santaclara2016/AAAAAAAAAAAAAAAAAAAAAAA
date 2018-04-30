@@ -7,6 +7,7 @@ module.exports = {
     name: 'listleagueaccounts',
     description: 'List all LeagueOfLegends accounts that are linked with your Discord account.',
     disabled: true,
+    requireDB: false,
     execute(client, message) {
         mariadbHandler.functions.getLeagueAccountsOfDiscordId(message.author.id).then(data => {
             logger.silly(`ListLeagueAccounts: Data: \n ${data}`);

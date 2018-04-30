@@ -7,6 +7,7 @@ module.exports = {
     name: 'np',
     description: 'Now playing command for the voice integration.',
     disabled: false,
+    requireDB: false,
     async execute(client, message) {
         const musicQueue = musicCache.get(message.guild.id);
         if (!musicQueue) return await sendNothingPlayingEmbed(message);

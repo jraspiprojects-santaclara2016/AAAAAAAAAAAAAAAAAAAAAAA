@@ -7,6 +7,7 @@ module.exports = {
     name: 'shuffle',
     description: 'shuffle.',
     disabled : false,
+    requireDB: false,
     async execute(client, message) {
         console.log(message.guild.id);
         const musicQueue = musicCache.get(message.guild.id);
