@@ -11,6 +11,7 @@ module.exports = {
     name: 'volume',
     description: 'Either display the volume ot set it to the specified value.',
     disabled: false,
+    requireDB: false,
     async execute(client, message, args) {
         let embed;
         const serverQueue = musicCache.get(message.guild.id);

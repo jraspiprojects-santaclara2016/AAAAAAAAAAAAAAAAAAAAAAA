@@ -7,6 +7,7 @@ module.exports = {
     name: 'play',
     description: 'Play music.',
     disabled: false,
+    requireDB: false,
     async execute(client, message, args) {
         const voiceChannel = message.member.voiceChannel;
         if(!voiceChannel) return message.channel.send('You need to be in a voice channel!');

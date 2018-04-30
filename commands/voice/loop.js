@@ -9,6 +9,7 @@ module.exports = {
     name: 'loop',
     description: 'loop/unloop the current playing music.',
     disabled: false,
+    requireDB: false,
     async execute(client, message) {
         const musicQueue = musicCache.get(message.guild.id);
         if (!musicQueue) return sendNothingPlayingEmbed(message);

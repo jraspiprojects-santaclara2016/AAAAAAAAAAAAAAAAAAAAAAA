@@ -16,6 +16,14 @@ pool.on('release', function(connection) {
 });
 
 const functions = {
+    isAvailable: async function() {
+        try {
+            await pool.getConnection();
+            return true;
+        } catch(error) {
+            return false;
+        }
+    },
     setFavPlaylist: async function(favPlaylist, userId) {
         const connection = await pool.getConnection();
         const escapedPlaylist = connection.escape(favPlaylist);
@@ -24,7 +32,7 @@ const functions = {
             await connection.query(setFavPlaylist);
             return true;
         } catch (error) {
-            logger.error('mariadbHandler: Error executing setFavPlaylist: ${error}');
+            logger.error(`mariadbHandler: Error executing setFavPlaylist: ${error}`);
             return false;
         } finally {
             connection.release();
@@ -36,7 +44,7 @@ const functions = {
         try {
             return await connection.query(getFavPlaylist);
         } catch (error) {
-            logger.error('mariadbHandler: Error executing getFavPlaylist: ${error}');
+            logger.error(`mariadbHandler: Error executing getFavPlaylist: ${error}`);
             return false;
         } finally {
             connection.release();
@@ -50,7 +58,7 @@ const functions = {
             await connection.query(setGuildPrefix);
             return true;
         } catch (error) {
-            logger.error('mariadbHandler: Error executing setGuildPrefix: ${error}');
+            logger.error(`mariadbHandler: Error executing setGuildPrefix: ${error}`);
             return false;
         } finally {
             connection.release();
@@ -60,10 +68,11 @@ const functions = {
         const connection = await pool.getConnection();
         const getGuildPrefix = `SELECT prefix FROM guildConfiguration WHERE guildId = ${guildId}`;
         try {
-            return await connection.query(getGuildPrefix);
+            const result = await connection.query(getGuildPrefix);
+            return result[0].prefix;
         } catch (error) {
-            logger.error('mariadbHandler: Error executing getGuildPrefix: ${error}');
-            return false;
+            logger.error(`mariadbHandler: Error executing getGuildPrefix: ${error}`);
+            return undefined;
         } finally {
             connection.release();
         }

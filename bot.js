@@ -13,7 +13,6 @@ initialize();
 async function initialize() {
 
     await discordLoginHandler.run(client);
-
     await discordEventHandler.run(client);
     await discordMessageHandler.run(client);
 

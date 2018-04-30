@@ -9,6 +9,7 @@ module.exports = {
     name: 'skip',
     description: 'Skip to the next song.',
     disabled: false,
+    requireDB: false,
     async execute(client, message) {
         const musicQueue = musicCache.get(message.guild.id);
         if (!musicQueue) return await sendNothingPlayingEmbed(message);

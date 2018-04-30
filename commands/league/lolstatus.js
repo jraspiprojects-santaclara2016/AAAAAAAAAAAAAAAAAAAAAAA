@@ -11,6 +11,7 @@ module.exports = {
     name: 'lolstatus',
     description: 'Display the current status of the LeagueOfLegends server.',
     disabled: true,
+    requireDB: false,
     execute(client, message, args) {
         const leagueConfig = configHandler.getLeagueConfig();
         lolApi.base.setBaseURL(leagueConfig.baseURL);

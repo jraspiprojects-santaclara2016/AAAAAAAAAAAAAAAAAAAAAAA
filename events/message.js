@@ -15,30 +15,25 @@ exports.run = async (client, message) => {
     if (message.mentions.has(client.user.id)) {
         await handleMentionMessage(message, client);
     } else if (message.guild) {
-        prefix = await checkCacheAndGetPrefix(message);
+        prefix = await checkCacheAndGetPrefix(message.guild.id);
     } else {
         prefix = generalConfig.commandPrefix;
     }
     await handlePrefixMessage(message, prefix, client);
 };
 
-async function checkCacheAndGetPrefix(message) {
-    const guildId = message.guild.id;
+async function checkCacheAndGetPrefix(guildId) {
     let prefix;
-    if (!cacheHandler.getPrefixCache().has(guildId)) {
-        try {
-            const result = await mariadbHandler.functions.getGuildPrefix(guildId);
-            if (result.length === 1) {
-                prefix = result[0].prefix;
-                cacheHandler.createPrefixCache(guildId, prefix);
-            }
-        } catch (error) {
-            logger.warn('Message: Warning DB error: ' + error);
+    if (cacheHandler.getPrefixCache().has(guildId)) return cacheHandler.getPrefixCache().get(guildId).prefix;
+    if (!await mariadbHandler.functions.isAvailable()) {
+        prefix = generalConfig.commandPrefix;
+    } else {
+        prefix = await mariadbHandler.functions.getGuildPrefix(guildId);
+        if (!prefix) {
             prefix = generalConfig.commandPrefix;
         }
-    } else {
-        prefix = cacheHandler.getPrefixCache().get(guildId).prefix;
     }
+    cacheHandler.createPrefixCache(guildId, prefix);
     return prefix;
 }
 

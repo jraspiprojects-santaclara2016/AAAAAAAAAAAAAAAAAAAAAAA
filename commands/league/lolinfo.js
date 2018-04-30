@@ -10,6 +10,7 @@ module.exports = {
     name: 'lolinfo',
     description: 'Display information about the specified summoner.',
     disabled: true,
+    requireDB: false,
     execute(client, message, args) {
         const leagueConfig = configHandler.getLeagueConfig();
         lolApi.base.setBaseURL(leagueConfig.baseURL);

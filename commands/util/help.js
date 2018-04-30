@@ -1,23 +1,18 @@
-const config = require('../../configuration/config');
 const winstonLogHandler = require('../../handler/util/winstonLogHandler');
 const cacheHandler = require('../../handler/util/cacheHandler');
-const prefixCache = cacheHandler.getPrefixCache();
 const logger = winstonLogHandler.getLogger();
 
 module.exports = {
     name: 'help',
     description: 'Display the help page.',
     disabled: false,
-    execute(client, message) {
+    requireDB: false,
+    async execute(client, message) {
         let prefix;
         if (message.guild) {
-            if (prefixCache.has(message.guild.id)) {
-                prefix = prefixCache.get(message.guild.id).prefix;
-            } else {
-                prefix = config.commandPrefix;
-            }
+            prefix = await checkCacheOrGetMention(message.guild.id, client);
         } else {
-            prefix = config.commandPrefix;
+            prefix = client.user.name;
         }
         const commandCollection = client.commands.filter(function(command) {
             return !command.disabled;
@@ -29,3 +24,8 @@ ${commandCollection.map(command => `**-${prefix}${command.name}** - ${command.de
         });
     },
 };
+
+async function checkCacheOrGetMention(guildId, client) {
+    if (cacheHandler.getPrefixCache().has(guildId)) return cacheHandler.getPrefixCache().get(guildId).prefix;
+    return client.user.name;
+}

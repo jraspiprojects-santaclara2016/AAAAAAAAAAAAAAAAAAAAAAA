@@ -10,6 +10,7 @@ module.exports = {
     name: 'addleagueaccount',
     description: 'Link a LeagueOfLegends account to your Discord account',
     disabled: true,
+    requireDB: false,
     async execute(client, message) {
         let filter = m => m.author === message.author && m.content !== '';
         let embed = new Discord.MessageEmbed()

@@ -7,6 +7,7 @@ module.exports = {
     name: 'whoami',
     description: 'Display information either about you, or somebody you\'ve mentioned.',
     disabled: false,
+    requireDB: false,
     execute(client, message, args) {
         let user;
         if (args.length === 1 && message.mentions.users.first() !== undefined) {

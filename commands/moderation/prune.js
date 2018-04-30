@@ -5,6 +5,7 @@ module.exports = {
     name: 'prune',
     description: 'Delete the specified amount of messages from the current channel.',
     disabled: false,
+    requireDB: false,
     async execute(client, message, args) {
         if (!await checkPermissions(message.author, message, 'MANAGE_MESSAGES')) return;
         if (!await checkPermissions(client.user, message, 'MANAGE_MESSAGES')) return;
