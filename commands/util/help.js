@@ -32,18 +32,15 @@ ${commandCollection.map(command => `**-${prefix}${command.name}** - ${command.de
 
 async function checkCacheAndGetPrefix(guildId) {
     let prefix;
-    if (!cacheHandler.getPrefixCache().has(guildId)) {
-        if (await !mariadbHandler.functions.checkDatabase()) {
-            prefix = await mariadbHandler.functions.getGuildPrefix(guildId);
-            if (!prefix) {
-                prefix = generalConfig.commandPrefix;
-            }
-            cacheHandler.createPrefixCache(guildId, prefix);
-        } else {
+    if (cacheHandler.getPrefixCache().has(guildId)) return cacheHandler.getPrefixCache().get(guildId).prefix;
+    if (await mariadbHandler.functions.checkDatabase()) {
+        prefix = generalConfig.commandPrefix;
+    } else {
+        prefix = await mariadbHandler.functions.getGuildPrefix(guildId);
+        if (!prefix) {
             prefix = generalConfig.commandPrefix;
         }
-    } else {
-        prefix = cacheHandler.getPrefixCache().get(guildId).prefix;
     }
+    cacheHandler.createPrefixCache(guildId, prefix);
     return prefix;
 }

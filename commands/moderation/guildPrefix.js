@@ -1,7 +1,9 @@
+const Discord = require('discord.js');
 const winstonLogHandler = require('../../handler/util/winstonLogHandler');
 const mariadbHandler = require('../../handler/util/mariadbHandler');
 const cacheHandler = require('../../handler/util/cacheHandler');
 const configHandler = require('../../handler/util/configHandler');
+const messageHandler = require('../../handler/command/discordMessageHandler');
 const logger = winstonLogHandler.getLogger();
 
 let generalConfig;
@@ -14,45 +16,72 @@ module.exports = {
     async execute(client, message, args) {
         if (!message.guild) return;
         const guildId = message.guild.id;
-        const newPrefix = args.join(' ');
-        if (newPrefix.length > 0) {
+        generalConfig = configHandler.getGeneralConfig();
+        if (args.length > 0) {
+            const newPrefix = args.join(' ');
             if (message.member.hasPermission('MANAGE_GUILD')) {
-                try {
-                    await mariadbHandler.functions.setGuildPrefix(newPrefix, guildId);
-                    cacheHandler.createPrefixCache(guildId, newPrefix);
-                    message.channel.send(`Set the Prefix to **${newPrefix}**`).catch(error => logger.error(`GuildPrefix: error sending message: ${error}`));
-                } catch (error) {
-                    logger.error(`GuildPrefix: ${error}`);
-                }
+                await setNewPrefix(newPrefix, guildId, message.channel);
             } else {
-                message.channel.send('You don\'t have the Permission (MANAGE_GUILD) to set the Prefix for this Server!').catch(error => logger.error(`GuildPrefix: error sending message: ${error}`));
+                sendPermissionDeniedEmbed(message.channel);
             }
         } else {
-            generalConfig = configHandler.getGeneralConfig();
-            const prefix = checkCacheAndGetPrefix(guildId);
-            try {
-                await message.channel.send(`The Prefix is: **${prefix}**`);
-            } catch (error) {
-                logger.error(`GuildPrefix: Error while trying to send Prefix: ${error}`);
-            }
+            const prefix = await checkCacheAndGetPrefix(guildId);
+            sendPrefixEmbed(prefix, message.channel);
         }
     },
 };
 
+async function setNewPrefix(prefix, guildId, channel) {
+    logger.debug(`GuildPrefix: Set new Prefix: ${prefix} for guild: ${guildId}`);
+    if (await mariadbHandler.functions.setGuildPrefix(prefix, guildId)) {
+        cacheHandler.createPrefixCache(guildId, prefix);
+        sendNewPrefixEmbed(prefix, channel);
+    } else {
+        logger.error(`GuildPrefix: Error setting new Prefix: ${prefix} for guild: ${guildId}`);
+    }
+}
+
 async function checkCacheAndGetPrefix(guildId) {
     let prefix;
-    if (!cacheHandler.getPrefixCache().has(guildId)) {
-        if (await !mariadbHandler.functions.checkDatabase()) {
-            prefix = await mariadbHandler.functions.getGuildPrefix(guildId);
-            if (!prefix) {
-                prefix = generalConfig.commandPrefix;
-            }
-            cacheHandler.createPrefixCache(guildId, prefix);
-        } else {
+    if (cacheHandler.getPrefixCache().has(guildId)) return cacheHandler.getPrefixCache().get(guildId).prefix;
+    if (await mariadbHandler.functions.checkDatabase()) {
+        prefix = generalConfig.commandPrefix;
+    } else {
+        prefix = await mariadbHandler.functions.getGuildPrefix(guildId);
+        if (!prefix) {
             prefix = generalConfig.commandPrefix;
         }
-    } else {
-        prefix = cacheHandler.getPrefixCache().get(guildId).prefix;
     }
+    cacheHandler.createPrefixCache(guildId, prefix);
     return prefix;
+}
+
+function sendPrefixEmbed(prefix, channel) {
+    const embed = new Discord.MessageEmbed()
+        .setTitle('Guild Prefix:')
+        .setColor('DARK_GREEN')
+        .addField('❯Current Prefix: ', `**${prefix}**`)
+        .setTimestamp()
+        .setFooter(`By ${generalConfig.botName}`);
+    messageHandler.sendEmbed('prefix', embed, channel);
+}
+
+function sendNewPrefixEmbed(prefix, channel) {
+    const embed = new Discord.MessageEmbed()
+        .setTitle('Guild Prefix:')
+        .setColor('DARK_GREEN')
+        .addField('❯New Prefix', `**${prefix}**`)
+        .setTimestamp()
+        .setFooter(`By ${generalConfig.botName}`);
+    messageHandler.sendEmbed('prefix', embed, channel);
+}
+
+function sendPermissionDeniedEmbed(channel) {
+    const embed = new Discord.MessageEmbed()
+        .setTitle('Guild Prefix:')
+        .setColor('DARK_RED')
+        .addField('You don\'t have the Permission (MANAGE_GUILD) to set the Prefix for this Server!')
+        .setTimestamp()
+        .setFooter(`By ${generalConfig.botName}`);
+    messageHandler.sendEmbed('prefix', embed, channel);
 }
