@@ -4,7 +4,7 @@ const winstonLogHandler = require('../util/winstonLogHandler');
 
 const logger = winstonLogHandler.getLogger();
 let generalConfig;
-//Depracated use discordMessageHandler
+// Deprecated use discordMessageHandler
 exports.run = (client, message, errorMessage) => {
     generalConfig = configHandler.getGeneralConfig();
     const embed = new Discord.MessageEmbed()
