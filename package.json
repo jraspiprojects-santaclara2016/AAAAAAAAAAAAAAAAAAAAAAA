@@ -7,12 +7,12 @@
     "discord.js": "github:discordjs/discord.js#master",
     "ffmpeg-binaries": "^3.2.2-3",
     "knex": "^0.14.5",
-    "mariasql": "^0.2.6",
-    "promise-mysql": "^3.2.1",
-    "mal-api": "^2.0.0",
-    "node-opus": "^0.2.7",
-    "request": "^2.83.0",
     "league-api-2.0": "^3.0.0",
+    "mal-api": "^2.0.0",
+    "mariasql": "^0.2.6",
+    "node-opus": "^0.2.7",
+    "promise-mysql": "^3.2.1",
+    "request": "^2.83.0",
     "simple-youtube-api": "^5.0.1",
     "winston": "^2.4.0",
     "winston-daily-rotate-file": "^1.7.2",
@@ -22,11 +22,13 @@
   "devDependencies": {
     "chai": "^4.1.2",
     "mocha": "^5.0.3",
-    "eslint": "^4.18.1"
+    "eslint": "^4.18.1",
+    "jest": "^22.4.3"
   },
   "scripts": {
     "eslint": "eslint .",
     "eslint-fix": "eslint . --fix",
+    "test": "jest",
     "start": "knex migrate:latest && node index.js"
   },
   "author": "emdix",
