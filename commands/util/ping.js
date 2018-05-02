@@ -6,7 +6,7 @@ module.exports = {
     description: 'pong!',
     disabled: false,
     requireDB: false,
-    execute(client, message) {
+    async execute(client, message) {
         message.channel.send('pong!').catch(error => {
             logger.error(`Ping: Error sending message: ${error}`);
         });

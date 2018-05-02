@@ -1,39 +1,50 @@
-const ping = require('../.././commands/util/ping');
-const winstonLogHandler = require('../../handler/util/winstonLogHandler');
-jest.mock('../../handler/util/winstonLogHandler');
+const mockedLogger = require('../util/loggerMock');
+const messageMock = require('../util/messageMock');
 
-const sendMock = jest
-    .fn()
+const errorMsg = 'Error Message';
+
+jest.mock('../../handler/util/winstonLogHandler', () => {
+    return {
+        getLogger: function() {
+            return mockedLogger;
+        },
+    };
+});
+
+messageMock.channel.send
     .mockImplementationOnce(() => {
         return new Promise(function(resolve, reject) {
-            resolve('something');
+            resolve('succesfull');
         });
     })
     .mockImplementationOnce(() => {
         return new Promise(function(resolve, reject) {
-            reject('some error');
+            reject(errorMsg);
         });
     });
-const message = {
-    channel: {
-        send: sendMock,
-    },
-};
 
-describe('Testing the ping command', () => {
-    test('it should have properties', () => {
+const ping = require('../.././commands/util/ping');
+
+//TODO check if necesarry in the future
+afterAll(() => {
+    mockedLogger.error.mockClear();
+    messageMock.channel.send.mockClear();
+});
+
+describe('The Ping command', () => {
+    test('should have properties', () => {
         expect(ping.name).not.toBe(undefined);
         expect(ping.name).not.toBe(undefined);
         expect(ping.name).not.toBe(undefined);
     });
-    describe('it should execute', () => {
-        test('and send a message', () => {
-            ping.execute(null, message);
-            expect(sendMock.mock.calls.length).toBe(1);
+    describe('should execute', () => {
+        test('and send a message', async () => {
+            await ping.execute(null, messageMock);
+            expect(messageMock.channel.send).toBeCalled();
         });
-        test('or log an error', () => {
-            ping.execute(null, message);
-            //expect(loggingMock.mock.calls.length).toBe(1);
+        test('or log an error', async () => {
+            await ping.execute(null, messageMock);
+            expect(mockedLogger.error).toBeCalledWith(`Ping: Error sending message: ${errorMsg}`);
         });
     });
 });
