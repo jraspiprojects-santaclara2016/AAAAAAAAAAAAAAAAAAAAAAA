@@ -13,7 +13,7 @@ jest.mock('../../handler/util/winstonLogHandler', () => {
 
 messageMock.channel.send
     .mockImplementationOnce(() => {
-        return new Promise(function(resolve, reject) {
+        return new Promise(function(resolve) {
             resolve('succesfull');
         });
     })
@@ -25,7 +25,7 @@ messageMock.channel.send
 
 const ping = require('../.././commands/util/ping');
 
-//TODO check if necesarry in the future
+// TODO check if necesarry in the future
 afterAll(() => {
     mockedLogger.error.mockClear();
     messageMock.channel.send.mockClear();
@@ -48,6 +48,3 @@ describe('The Ping command', () => {
         });
     });
 });
-
-
-
