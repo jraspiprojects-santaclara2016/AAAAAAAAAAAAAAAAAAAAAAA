@@ -34,8 +34,9 @@ afterAll(() => {
 describe('The Ping command', () => {
     test('should have properties', () => {
         expect(ping.name).not.toBe(undefined);
-        expect(ping.name).not.toBe(undefined);
-        expect(ping.name).not.toBe(undefined);
+        expect(ping.disabled).not.toBe(undefined);
+        expect(ping.description).not.toBe(undefined);
+        expect(ping.requireDB).not.toBe(undefined);
     });
     describe('should execute', () => {
         test('and send a message', async () => {
