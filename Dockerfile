@@ -6,4 +6,4 @@ WORKDIR ./Monika
 
 RUN npm install
 
-ENTRYPOINT ["npm", "start-migrate"]
+ENTRYPOINT ["npm", "start"]
