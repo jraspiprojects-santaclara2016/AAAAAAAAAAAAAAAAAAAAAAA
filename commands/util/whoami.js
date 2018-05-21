@@ -1,13 +1,13 @@
 const Discord = require('discord.js');
 const winstonLogHandler = require('../../handler/util/winstonLogHandler');
 const logger = winstonLogHandler.getLogger();
-
-const config = require('../../configuration/config');
+const configHandler = require('../../handler/util/configHandler');
 
 module.exports = {
     name: 'whoami',
     description: 'Display information either about you, or somebody you\'ve mentioned.',
     disabled: false,
+    requireDB: false,
     execute(client, message, args) {
         let user;
         if (args.length === 1 && message.mentions.users.first() !== undefined) {
@@ -22,7 +22,7 @@ module.exports = {
             .addField('Name:', user.tag)
             .addField('UserID:', user.id)
             .addField('Created at:', user.createdAt)
-            .setFooter('By ' + config.botName)
+            .setFooter('By ' + configHandler.getGeneralConfig().botName)
             .setTimestamp()
         ;
         message.channel.send({ embed }).catch(error => {

@@ -1,7 +1,8 @@
 const Discord = require('discord.js');
 const mariadbHandler = require('../../handler/util/mariadbHandler');
 const winstonLogHandler = require('../../handler/util/winstonLogHandler');
-const apiKeys = require('../../configuration/apiKeyConfig');
+const secretHandler = require('../../handler/util/secretHandler');
+const configHandler = require('../../handler/util/configHandler');
 const lolApi = require('league-api-2.0');
 const logger = winstonLogHandler.getLogger();
 
@@ -9,6 +10,7 @@ module.exports = {
     name: 'addleagueaccount',
     description: 'Link a LeagueOfLegends account to your Discord account',
     disabled: true,
+    requireDB: false,
     async execute(client, message) {
         let filter = m => m.author === message.author && m.content !== '';
         let embed = new Discord.MessageEmbed()
@@ -60,9 +62,10 @@ async function waitingMessage(client, message, embed, filter) {
 }
 
 async function checkForValidLeagueAccount(summonerName, region) {
-    lolApi.base.loadConfig('./configuration/lolConfig.json');
-    lolApi.base.setKey(apiKeys.leagueOfLegends);
-    lolApi.base.setRegion(region);
+    const leagueConfig = configHandler.getLeagueConfig();
+    lolApi.base.setBaseURL(leagueConfig.baseURL);
+    lolApi.base.setRateLimit(leagueConfig.rateLimit);
+    lolApi.base.setKey(secretHandler.getApiKey('LOL_KEY'));
     lolApi.executeCall('Summoner', 'getSummonerBySummonerName', summonerName, region).then(data => {
         logger.verbose(`AddLeagueAccount: Response for SummonerName: ${data}`);
         return true;

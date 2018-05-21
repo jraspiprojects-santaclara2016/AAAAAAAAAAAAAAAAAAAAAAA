@@ -1,20 +1,26 @@
 const winstonLogHandler = require('./winstonLogHandler');
 const logger = winstonLogHandler.getLogger();
+const mariadbHandler = require('./mariadbHandler');
 const Discord = require('discord.js');
 const fs = require('fs');
 
-exports.run = (client) => {
+exports.run = async (client) => {
     client.commands = new Discord.Collection();
-    fs.readdir('./commands/', (err, folders) => {
-        if (err) return logger.error(`discordMessageHandler: Error: ${err}`);
+    try {
+        const folders = fs.readdirSync('./commands/');
         folders.forEach(folder => {
-            fs.readdir(`./commands/${folder}`, (err, files) => {
-                files.forEach(file => {
-                    const command = require(`./../../commands/${folder}/${file}`);
-                    client.commands.set(command.name, command);
-                });
+            const files = fs.readdirSync(`./commands/${folder}`);
+            files.forEach(file => {
+                const command = require(`./../../commands/${folder}/${file}`);
+                client.commands.set(command.name, command);
             });
         });
-    });
-    logger.debug('discordMessageHandler: Success! All Commands were loaded successfully!');
+        if (!await mariadbHandler.functions.isAvailable()) {
+            client.commands = client.commands.filter((value) => !value.requireDB);
+            logger.info('discordMessageHandler: Disabled Database commands!');
+        }
+        logger.debug('discordMessageHandler: Success! All Commands were loaded successfully!');
+    } catch (error) {
+        logger.error(`discordMessageHandler: Error: ${error}`);
+    }
 };

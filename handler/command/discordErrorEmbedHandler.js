@@ -1,16 +1,18 @@
 const Discord = require('discord.js');
-const config = require('../../configuration/config.json');
+const configHandler = require('../util/configHandler');
 const winstonLogHandler = require('../util/winstonLogHandler');
 
 const logger = winstonLogHandler.getLogger();
-
+let generalConfig;
+// Deprecated use discordMessageHandler
 exports.run = (client, message, errorMessage) => {
+    generalConfig = configHandler.getGeneralConfig();
     const embed = new Discord.MessageEmbed()
-        .setTitle(config.botName + ' error:')
+        .setTitle(generalConfig.botName + ' error:')
         .setColor('DARK_RED')
         .addField('Error', errorMessage)
         .setTimestamp()
-        .setFooter('By ' + config.botName)
+        .setFooter('By ' + generalConfig.botName)
     ;
     message.channel.send(embed).catch(error => logger.error(`discordErrorEmbedHandler: Error sending message: ${error}`));
 };

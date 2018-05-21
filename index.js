@@ -1,12 +1,11 @@
 const Discord = require('discord.js');
-const apiKeys = require('./configuration/apiKeyConfig');
-
 const winstonLogHandler = require('./handler/util/winstonLogHandler');
-const logger = winstonLogHandler.createLogger();
+const logger = winstonLogHandler.createLogger('Sharder');
+const secretHandler = require('./handler/util/secretHandler');
 
 const ShardManager = new Discord.ShardingManager('./bot.js', {
     totalShards: 'auto',
-    token: apiKeys.discord,
+    token: secretHandler.getApiKey('DISCORD_KEY'),
     respawn: true,
 });
 

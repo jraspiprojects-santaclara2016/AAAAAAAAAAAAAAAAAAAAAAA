@@ -1,15 +1,19 @@
 const Discord = require('discord.js');
 const request = require('request');
-const config = require('../../configuration/config.json');
+const configHandler = require('../../handler/util/configHandler');
 const winstonLogHandler = require('../../handler/util/winstonLogHandler');
 const logger = winstonLogHandler.getLogger();
 const apiEndpoint = 'http://api.urbandictionary.com/v0/define?term=';
+
+let generalConfig;
 
 module.exports = {
     name: 'urban',
     description: 'Look something up on Urban Dictionary.',
     disabled: false,
+    requireDB: false,
     execute(client, message, args) {
+        generalConfig = configHandler.getGeneralConfig();
         request(apiEndpoint + args.join(' '), function(error, response) {
             if(error) return requestError(error, response, message);
             if(response.toJSON().statusCode !== 200) return apiError(error, response, message);
@@ -28,7 +32,7 @@ function requestError(error, response, message) {
         .setColor('DARK_RED')
         .addField('There was an error while processing your request!', 'Please contact the developers and include a screenshot of this error.')
         .setTimestamp()
-        .setFooter(`By ${config.botName}`)
+        .setFooter(`By ${generalConfig.botName}`)
     ;
     message.channel.send(embed).catch(messageError => logger.error(`Urban: Error sending message: ${messageError}`));
 }
@@ -41,7 +45,7 @@ function apiError(error, response, message) {
         .addField('HTTP Statuscode:', response.toJSON().statusCode)
         .addField('We could not process the information we got from the API!', 'Please contact the developers if this error pops up after trying the same command again at a later time.')
         .setTimestamp()
-        .setFooter(`By ${config.botName}`)
+        .setFooter(`By ${generalConfig.botName}`)
     ;
     message.channel.send(embed).catch(messageError => logger.error(`Urban: Error sending message: ${messageError}`));
 }
@@ -53,7 +57,7 @@ function noResults(error, response, searchTerm, message) {
         .setColor('DARK_RED')
         .addField('Not found', `We could not find the term: "${searchTerm}" in the Urban Dictionary!`)
         .setTimestamp()
-        .setFooter(`By ${config.botName}`)
+        .setFooter(`By ${generalConfig.botName}`)
     ;
     message.channel.send(embed).catch(messageError => logger.error(`Urban: Error sending message: ${messageError}`));
 }

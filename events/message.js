@@ -1,43 +1,39 @@
-const config = require('../configuration/config.json');
 const errorEmbedHandler = require('../handler/command/discordErrorEmbedHandler');
 const winstonLogHandler = require('../handler/util/winstonLogHandler');
 const mariadbHandler = require('../handler/util/mariadbHandler');
 const cacheHandler = require('../handler/util/cacheHandler');
+const configHandler = require('../handler/util/configHandler');
 
 const logger = winstonLogHandler.getLogger();
-
+let generalConfig;
 
 exports.run = async (client, message) => {
+    generalConfig = configHandler.getGeneralConfig();
     if (message.author.bot) return;
     let prefix;
     if (message.mentions.everyone) return;
     if (message.mentions.has(client.user.id)) {
         await handleMentionMessage(message, client);
     } else if (message.guild) {
-        prefix = await checkCacheAndGetPrefix(message);
+        prefix = await checkCacheAndGetPrefix(message.guild.id);
     } else {
-        prefix = config.commandPrefix;
+        prefix = generalConfig.commandPrefix;
     }
     await handlePrefixMessage(message, prefix, client);
 };
 
-async function checkCacheAndGetPrefix(message) {
-    const guildId = message.guild.id;
+async function checkCacheAndGetPrefix(guildId) {
     let prefix;
-    if (!cacheHandler.getPrefixCache().has(guildId)) {
-        try {
-            const result = await mariadbHandler.functions.getGuildPrefix(guildId);
-            if (result.length === 1) {
-                prefix = result[0].prefix;
-                cacheHandler.createPrefixCache(guildId, prefix);
-            }
-        } catch (error) {
-            logger.warn('Message: Warning DB error: ' + error);
-            prefix = config.commandPrefix;
-        }
+    if (cacheHandler.getPrefixCache().has(guildId)) return cacheHandler.getPrefixCache().get(guildId).prefix;
+    if (!await mariadbHandler.functions.isAvailable()) {
+        prefix = generalConfig.commandPrefix;
     } else {
-        prefix = cacheHandler.getPrefixCache().get(guildId).prefix;
+        prefix = await mariadbHandler.functions.getGuildPrefix(guildId);
+        if (!prefix) {
+            prefix = generalConfig.commandPrefix;
+        }
     }
+    cacheHandler.createPrefixCache(guildId, prefix);
     return prefix;
 }
 

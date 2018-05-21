@@ -63,5 +63,6 @@ typings/
 #configs
 configuration/databaseConfig.json
 configuration/apiKeyConfig.json
+configuration/secrets.json
 
 package-lock.json

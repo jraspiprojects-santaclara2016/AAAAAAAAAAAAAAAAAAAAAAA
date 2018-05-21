@@ -2,19 +2,23 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 
 const winstonLogHandler = require('./handler/util/winstonLogHandler');
-const logger = winstonLogHandler.createLogger(client);
+const logger = winstonLogHandler.createLogger(`Shard ${client.shard.client.options.shardId}`);
 
 const discordEventHandler = require('./handler/util/discordEventHandler');
 const discordLoginHandler = require('./handler/util/discordLoginHandler');
 const discordMessageHandler = require('./handler/util/discordMessageHandler');
 
-discordEventHandler.run(client, logger);
-discordMessageHandler.run(client, logger);
+initialize();
 
-discordLoginHandler.run(client, logger);
+async function initialize() {
 
-process.on('unhandledRejection', err => logger.error(`Uncaught Promise Rejection: \n${err.stack}`));
-process.on('SIGINT', () => client.destroy());
+    await discordLoginHandler.run(client);
+    await discordEventHandler.run(client);
+    await discordMessageHandler.run(client);
+
+    process.on('unhandledRejection', err => logger.error(`Uncaught Promise Rejection: \n${err.stack}`));
+    process.on('SIGINT', () => client.destroy());
+}
 
 /*
 Every day, I imagine a future where I can be with you
