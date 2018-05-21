@@ -9,6 +9,7 @@
     "baseURL": ".api.riotgames.com"
   },
   "danbooru": {
-    "imageLimit": 100
+    "imageLimit": 100,
+    "bannedTags": ["loli", "shota", "child", "kids", "furry", "monika"]
   }
 }
