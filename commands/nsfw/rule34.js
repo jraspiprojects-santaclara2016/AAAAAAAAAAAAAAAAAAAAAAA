@@ -1,8 +1,9 @@
 const Discord = require('discord.js');
 const messageHandler = require('../../handler/command/discordMessageHandler');
-const config = require('../../configuration/config');
+const configHandler = require('../../handler/util/configHandler');
 const Kaori = require('kaori');
 const kaori = new Kaori();
+
 
 module.exports = {
     name: 'rule34',
@@ -12,7 +13,7 @@ module.exports = {
     async execute(client, message, args) {
         console.log(message.channel.nsfw);
         if(!message.channel.nsfw) return await sendNsfwOnlyEmbed(message.channel);
-        const argContainsBannedTags = config.danbooru.bannedTags.some(r => args.indexOf(r) >= 0);
+        const argContainsBannedTags = configHandler.getDanbooruConfig().bannedTags.some(r => args.indexOf(r) >= 0);
         if (argContainsBannedTags) return await sendIllegalTagsEmbed(message.channel);
         try {
             const image = await kaori.search('rule34', { tags: args, limit: 1, random: true });
